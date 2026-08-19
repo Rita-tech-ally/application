@@ -1,0 +1,199 @@
+## Installation of postgresql
+
+# 1. Install repository keyring & source
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+
+# 2. Update and install version 14
+sudo apt update
+sudo apt install -y postgresql-14 postgresql-client-14
+
+pg_lsclusters
+sudo -u postgres psql
+
+CREATE DATABASE attendance_db;
+ALTER USER postgres WITH PASSWORD 'password';
+GRANT ALL PRIVILEGES ON DATABASE attendance_db TO postgres;
+\q
+
+psql -h 127.0.0.1 -U postgres -d attendance_db
+
+
+## Installation of redis:
+
+sudo apt install redis
+start and enable Redis:
+
+sudo systemctl start redis-server
+sudo systemctl enable redis-server
+ sudo systemctl status redis-server
+
+Test Redis connection:
+redis-cli ping
+
+Confirm port 6379 is active:
+ss -lntp | grep 6379
+
+## Java install
+
+sudo apt install -y openjdk-17-jdk openjdk-17-jre
+java -version
+
+## Liquibase install:
+
+# Remove any old repository configurations:
+sudo rm -f /etc/apt/sources.list.d/liquibase.list
+sudo rm -f /usr/share/keyrings/liquibase-keyring.gpg
+
+# Import the Liquibase GPG key and set permissions:
+curl -fsSL https://repo.liquibase.com/liquibase.asc | gpg --dearmor | sudo tee /usr/share/keyrings/liquibase-keyring.gpg >/dev/null
+sudo chmod 644 /usr/share/keyrings/liquibase-keyring.gpg
+
+# Add the repository and install Liquibase:
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/liquibase-keyring.gpg] https://repo.liquibase.com stable main" | sudo tee /etc/apt/sources.list.d/liquibase.list
+sudo apt update
+sudo apt install -y liquibase
+
+# Verify installation:
+which liquibase
+liquibase --version
+
+## Clone:
+
+git clone https://github.com/OT-MICROSERVICES/attendance-api.git
+
+# Download the PostgreSQL JDBC Driver:
+mkdir -p lib
+wget -P lib/ https://jdbc.postgresql.org/download/postgresql-42.7.2.jar
+
+## Verify the file exists:
+ls -lh lib/
+
+# Configure and Run Liquibase Migrations:
+cat > liquibase.properties << 'EOF'
+url=jdbc:postgresql://127.0.0.1:5432/attendance_db
+username=postgres
+password=password
+classpath=lib/postgresql-42.7.2.jar
+changeLogFile=migration/db.changelog-master.xml
+EOF
+
+# Run database migrations:
+
+sudo apt install make 
+make run-migrations
+
+## Verify tables in PostgreSQL:
+psql -h 127.0.0.1 -U postgres -d attendance_db -c "\dt"
+
+# Add Deadsnakes PPA and Update
+sudo add-apt-repository ppa:deadsnakes/ppa -y
+sudo apt update
+
+#  Install Python 3.11 and Build Dependencies
+sudo apt install -y python3.11 python3.11-dev libpq-dev build-essential
+
+# Verify Python header availability:
+ls -l /usr/include/python3.11/Python.h
+
+## Poetry Setup:
+
+# Remove old Ubuntu Poetry package if present:
+sudo apt remove -y python3-poetry
+
+# Install current Poetry version:
+curl -sSL https://install.python-poetry.org | python3 -
+
+# Add Poetry to your PATH and reload configuration:
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+
+# Verify Poetry and configure Python 3.11:
+poetry --version
+poetry env use /usr/bin/python3.11
+poetry env info
+
+# Install Dependencies and Gunicorn:
+poetry install --no-root
+
+# Verify psycopg2 can be imported successfully:
+poetry run python -c "import psycopg2; print('psycopg2 OK')"
+
+# Add and verify Gunicorn:
+poetry add Gunicorn
+poetry run gunicorn --version
+
+## config.yaml
+
+cat > config.yaml << 'EOF'
+postgres:
+  database: attendance_db
+  host: 127.0.0.1
+  port: 5432
+  user: postgres
+  password: password
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password: ""
+EOF
+
+# Verify:
+cat config.yaml
+
+# Start the Attendance API
+Run Gunicorn in the background via Poetry:
+
+nohup poetry run gunicorn --bind 0.0.0.0:8081 app:app > ~/attendance.log 2>&1 &
+
+# Verify the running process and logs:
+ps aux | grep gunicorn
+cat ~/attendance.log
+
+# Detailed dependency health check:
+curl http://localhost:8081/api/v1/attendance/health/detail
+
+## A swagger API:
+
+http://3.111.214.6:8081/apidocs
+
+pkill gunicorn
+
+nohup poetry run gunicorn --bind 0.0.0.0:8081 --workers 1 --timeout 120 app:app > ~/attendance.log 2>&1 &
+
+
+# 2GB ki swap file banayein
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+
+
+## Data create:
+table :
+CREATE TABLE employees (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(150),
+    department VARCHAR(100)
+);
+
+check:
+\dt
+
+## Employee Data:
+
+INSERT INTO employees (name, email, department)
+VALUES
+('Rahul', 'rahul@gmail.com', 'IT'),
+('Amit', 'amit@gmail.com', 'HR'),
+('Priya', 'priya@gmail.com', 'Finance');
+
+## Data check:
+
+SELECT * FROM employees;
+
+
+
+
+
