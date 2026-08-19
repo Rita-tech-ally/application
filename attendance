@@ -1,4 +1,4 @@
-## Installation of postgresql
+### Installation of postgresql
 
 # 1. Install repository keyring & source
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
@@ -15,23 +15,22 @@ CREATE DATABASE attendance_db;
 ALTER USER postgres WITH PASSWORD 'password';
 GRANT ALL PRIVILEGES ON DATABASE attendance_db TO postgres;
 \q
-
 psql -h 127.0.0.1 -U postgres -d attendance_db
 
 
 ## Installation of redis:
 
 sudo apt install redis
-start and enable Redis:
+## start and enable Redis:
 
 sudo systemctl start redis-server
 sudo systemctl enable redis-server
  sudo systemctl status redis-server
 
-Test Redis connection:
+## Test Redis connection:
 redis-cli ping
 
-Confirm port 6379 is active:
+## Confirm port 6379 is active:
 ss -lntp | grep 6379
 
 ## Java install
@@ -39,8 +38,7 @@ ss -lntp | grep 6379
 sudo apt install -y openjdk-17-jdk openjdk-17-jre
 java -version
 
-## Liquibase install:
-
+## Liquibase install: Migration tool tool ( Liquibase ka main kaam database migrations (database changes ko manage aur execute karna) karna hai.)
 # Remove any old repository configurations:
 sudo rm -f /etc/apt/sources.list.d/liquibase.list
 sudo rm -f /usr/share/keyrings/liquibase-keyring.gpg
@@ -59,10 +57,10 @@ which liquibase
 liquibase --version
 
 ## Clone:
-
 git clone https://github.com/OT-MICROSERVICES/attendance-api.git
 
-# Download the PostgreSQL JDBC Driver:
+# Download the PostgreSQL JDBC Driver: Database Connection ke liye: Jab Liquibase database migrations run karta hai (jaise 
+## tables create karna), toh use PostgreSQL database (attendance_db) ke sath connect aur communicate karne ke liye ek driver ki zaroorat padti hai.
 mkdir -p lib
 wget -P lib/ https://jdbc.postgresql.org/download/postgresql-42.7.2.jar
 
@@ -70,6 +68,7 @@ wget -P lib/ https://jdbc.postgresql.org/download/postgresql-42.7.2.jar
 ls -lh lib/
 
 # Configure and Run Liquibase Migrations:
+
 cat > liquibase.properties << 'EOF'
 url=jdbc:postgresql://127.0.0.1:5432/attendance_db
 username=postgres
@@ -79,14 +78,15 @@ changeLogFile=migration/db.changelog-master.xml
 EOF
 
 # Run database migrations:
-
 sudo apt install make 
 make run-migrations
 
 ## Verify tables in PostgreSQL:
 psql -h 127.0.0.1 -U postgres -d attendance_db -c "\dt"
 
-# Add Deadsnakes PPA and Update
+# Add Deadsnakes PPA and Update: (Yeh command "Deadsnakes PPA" (Personal Package Archive) ko system ke software sources mein add karti hai.
+Deadsnakes ek popular repository hai jo Ubuntu par Python ke alag-alag aur naye versions (jaise Python 3.11) provide karti hai.)
+
 sudo add-apt-repository ppa:deadsnakes/ppa -y
 sudo apt update
 
@@ -96,7 +96,11 @@ sudo apt install -y python3.11 python3.11-dev libpq-dev build-essential
 # Verify Python header availability:
 ls -l /usr/include/python3.11/Python.h
 
-## Poetry Setup:
+## Poetry Setup: Dependency Management: Yeh project ke saare Python packages aur libraries (jaise 
+psycopg2, gunicorn, etc.) ko ek hi jagah manage karta hai aur pyproject.toml
+file ki madad se exact versions ko track karta hai.
+Isolated Environment:
+
 
 # Remove old Ubuntu Poetry package if present:
 sudo apt remove -y python3-poetry
@@ -142,7 +146,11 @@ EOF
 cat config.yaml
 
 # Start the Attendance API
-Run Gunicorn in the background via Poetry:
+(( Run Gunicorn in the background via Poetry: Gunicorn ka use isliye kiya gaya hai kyunki yeh ek WSGI HTTP server hai jo
+Python applications (jaise ki is Attendance API) ko production ya local server par run karne ke kaam aata hai. Iske mukhya kaaran yeh hain:  
+HTTP Requests Handle Karna:,Port Binding: Yeh application ko specified port (8081) par bind karke active rakhta hai taaki APIs ko access kiya ja sake.  
+Background Running
+))
 
 nohup poetry run gunicorn --bind 0.0.0.0:8081 app:app > ~/attendance.log 2>&1 &
 
