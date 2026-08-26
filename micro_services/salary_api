@@ -1,0 +1,114 @@
+## clone repo:
+git clone https://github.com/OT-MICROSERVICES/salary-api.git
+cd salary-api
+
+## Install jave 17: (importantfor  Maven, Make)
+sudo apt update
+sudo apt install make openjdk-17-jdk maven -y
+
+##  Database (ScyllaDB) Setup
+
+# ScyllaDB Install aur Start karein:
+curl -sSf get.scylladb.com/server | sudo bash
+sudo scylla_dev_mode_setup --developer-mode 1
+sudo systemctl enable scylla-server
+sudo systemctl start scylla-server
+
+# Keyspace (Database)
+cqlsh
+CREATE KEYSPACE employee_db WITH replication = {'class': 'NetworkTopologyStrategy', 'replication_factor': 1};
+exit
+
+##  Redis (Cache) Setup
+# Install aur Start karein:
+
+sudo apt install redis-server -y
+sudo systemctl start redis-server
+sudo systemctl enable redis-server
+
+# Migration Setup
+# Migrate binary download karein:
+wget https://github.com/golang-migrate/migrate/releases/download/v4.16.2/migrate.linux-amd64.tar.gz
+tar -xvf migrate.linux-amd64.tar.gz
+sudo mv migrate /usr/local/bin/
+sudo chmod +x /usr/local/bin/migrate
+
+## Config Update karein:
+# migration.json file:( Ip change )
+cat > migration.json 
+{"database": "cassandra://127.0.0.1:9042/employee_db?username=scylladb&password=password"}
+Press enter
+ctrl c
+
+ # Verfiy:
+ cat migration.json
+
+# Update this file only if you working on ec2 to change ip localhost to (Server-ip):
+
+  cd /salary-api/src/main/java/com/opstree/microservice/salary/config
+  
+  cat > OpenAPIConfig.java 
+  package com.opstree.microservice.salary.swagger;
+
+import java.util.List;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.servers.Server;
+
+@Configuration
+public class OpenAPIConfig {
+
+  @Bean
+  public OpenAPI myOpenAPI() {
+    Server prodServer = new Server();
+    prodServer.setUrl("http://<Server-IP>:8080"); // <-- Yahan apna public IP set kar diya
+    prodServer.setDescription("Server URL in Production environment");
+
+    Contact contact = new Contact();
+    contact.setEmail("opensource@opstree.com");
+    contact.setName("Opstree Solutions");
+    contact.setUrl("https://opstree.com");
+
+    License mitLicense = new License().name("MIT License").url("https://choosealicense.com/licenses/mit/");
+
+    Info info = new Info()
+        .title("Salary Microservice API")
+        .version("1.0")
+        .contact(contact)
+        .description("This API exposes endpoints to manage salary information.")
+        .termsOfService("https://www.opstree.com/terms")
+        .license(mitLicense);
+
+    return new OpenAPI().info(info).servers(List.of(prodServer));
+  }
+}
+Enter 
+Ctrl c
+
+
+# Migrations run karein:
+make run-migrations
+
+# Application Configuration
+nano src/main/resources/application.yml  (change ScyllaDB aur Redis ka host 127.0.0.1)
+
+# Build aur Run
+mvn clean package -DskipTests
+
+# Application Start:
+java -jar target/salary-0.1.0-RELEASE.jar &
+
+# Testing (Final Verification):
+curl http://localhost:8080/actuator/health
+
+# Swagger UI Page:
+http://<Server-IP>:8080/swagger-ui/index.html 
+
+
+make pdf again step 7 me jo maina info provide ki sari ani chiya
