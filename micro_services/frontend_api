@@ -1,0 +1,40 @@
+###  System Update aur Node.js (v18) Install
+
+# NVM (Node Version Manager) install karein
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
+# NVM ko current terminal session mein load karein
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Node.js version 18 install karke use set karein
+nvm install 18
+nvm use 18
+
+### Repository Clone
+git clone https://github.com/OT-MICROSERVICES/frontend.git
+cd frontend
+
+### Server Memory (RAM) Fix ( if u are using t3.micro_instance)
+# 2GB ki Swap Memory create karein
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+# Node.js ke liye memory limit badhayein
+export NODE_OPTIONS="--max-old-space-size=4096"
+
+### Dependencies Install:
+npm install
+
+### Production Build (OpenSSL Legacy Flag)
+export NODE_OPTIONS=--openssl-legacy-provider
+npm run build
+
+### Background  Service Start
+nohup npx serve -s build -l 3000 > app.log 2>&1 &
+
+🌐 Access URL:
+http://<Server-IP>:3000/
+
+pdf bna  do
