@@ -63,6 +63,8 @@ You can also check the cron service:
 ```bash
 systemctl status cron
 ```
+<img width="1599" height="518" alt="Screenshot from 2026-08-26 22-47-02" src="https://github.com/user-attachments/assets/ea0105ba-ba74-4004-a6b7-7f209860ecc4" />
+
 
 ### RHEL/CentOS/Amazon Linux
 
@@ -124,6 +126,7 @@ Each user can maintain their own cron jobs using:
 ```bash
 crontab -e
 ```
+<img width="862" height="247" alt="Screenshot from 2026-08-26 22-59-37" src="https://github.com/user-attachments/assets/8d37b935-e1cf-4ddb-a278-0412066ae16e" />
 
 To display the current user's cron jobs:
 
@@ -209,38 +212,29 @@ Both `0` and `7` generally represent Sunday.
 ```bash
 * * * * * /path/to/script.sh
 ```
+<img width="566" height="69" alt="Screenshot from 2026-08-26 23-15-37" src="https://github.com/user-attachments/assets/e5f1a44c-a840-4c8a-a297-e998addd5a6a" />
+
 
 ### Run every 5 minutes
 
 ```bash
 */5 * * * * /path/to/script.sh
 ```
+<img width="566" height="69" alt="Screenshot from 2026-08-26 23-17-49" src="https://github.com/user-attachments/assets/4efdbc9b-8d8f-41c0-b170-bd554f097d0e" />
 
-### Run every day at 2:00 AM
-
-```bash
-0 2 * * * /path/to/script.sh
-```
-
-### Run every Sunday at 5:00 AM
+### Run every 30 sec 
 
 ```bash
-0 5 * * 0 /path/to/script.sh
+* * * * * sleep 30; /path/to/script.sh
 ```
+<img width="562" height="89" alt="Screenshot from 2026-08-26 23-26-12" src="https://github.com/user-attachments/assets/3ff79dd8-3526-4c4a-a976-efd4f256b6a5" />
 
 ### Run every Monday to Friday at 9:00 AM
 
 ```bash
 0 9 * * 1-5 /path/to/script.sh
 ```
-
-### Run on the 1st day of every month at 12:00 AM
-
-```bash
-0 0 1 * * /path/to/script.sh
-```
-
----
+<img width="558" height="64" alt="Screenshot from 2026-08-26 23-24-03" src="https://github.com/user-attachments/assets/b3f87140-c478-4285-a2b4-d1e0b90ba781" />
 
 # 5. Configuration Steps
 
@@ -261,7 +255,7 @@ First create the script that needs to be executed.
 Example:
 
 ```bash
-nano /home/user/backup.sh
+nano /home/ritu/backup.sh
 ```
 
 Example script:
@@ -269,7 +263,7 @@ Example script:
 ```bash
 #!/bin/bash
 
-echo "Backup started at $(date)" >> /home/user/backup.log
+echo "Backup started at $(date)" >> /home/ritu/backup.log
 ```
 
 ---
@@ -279,14 +273,15 @@ echo "Backup started at $(date)" >> /home/user/backup.log
 Give execute permission:
 
 ```bash
-chmod +x /home/user/backup.sh
+chmod +x /home/ritu/backup.sh
 ```
 
 Verify the permissions:
 
 ```bash
-ls -l /home/user/backup.sh
+ls -l /home/ritu/backup.sh
 ```
+<img width="625" height="49" alt="Screenshot from 2026-08-26 23-55-42" src="https://github.com/user-attachments/assets/20ea2ef9-b7eb-4353-87ef-3e39cececc09" />
 
 ---
 
@@ -301,7 +296,7 @@ crontab -e
 Add the following entry:
 
 ```text
-0 2 * * * /home/user/backup.sh
+0 2 * * * /home/ritu/backup.sh
 ```
 
 This configuration runs the script **every day at 2:00 AM**.
@@ -319,8 +314,9 @@ crontab -l
 Expected output:
 
 ```text
-0 2 * * * /home/user/backup.sh
+0 2 * * * /home/ritu/backup.sh
 ```
+<img width="564" height="73" alt="Screenshot from 2026-08-26 23-47-13" src="https://github.com/user-attachments/assets/f7b393c5-7125-42c9-8162-e198cf64d550" />
 
 ---
 
@@ -333,13 +329,13 @@ It is important to verify the cron configuration and ensure that the scheduled c
 Before scheduling the script, execute it manually:
 
 ```bash
-/home/user/backup.sh
+/home/ritu/backup.sh
 ```
 
 Check the output log:
 
 ```bash
-cat /home/user/backup.log
+cat /home/ritu/backup.log
 ```
 
 ---
@@ -349,13 +345,15 @@ cat /home/user/backup.log
 For testing purposes, configure the cron job to run every minute:
 
 ```text
-* * * * * /home/user/backup.sh
+* * * * * /home/ritu/backup.sh
 ```
+<img width="564" height="73" alt="Screenshot from 2026-08-26 23-47-13" src="https://github.com/user-attachments/assets/9e74ce39-150d-4a40-a83a-8553278d2cb9" />
 
 Wait for a minute and check the log:
 
 ```bash
-cat /home/user/backup.log
+cat /home/ritu
+/backup.log
 ```
 
 After successful testing, change the cron schedule to the required production schedule.
@@ -401,22 +399,17 @@ A backup script can be scheduled every day at 1:00 AM:
 ```text
 0 1 * * * /home/user/backup.sh
 ```
+<img width="559" height="87" alt="Screenshot from 2026-08-26 23-49-25" src="https://github.com/user-attachments/assets/8e874c2c-3e4b-41f9-94f6-8a4301d59f5d" />
 
-## 7.2 Example: Log Cleanup
 
-A cleanup script can be scheduled every Sunday at 3:00 AM:
-
-```text
-0 3 * * 0 /home/user/cleanup.sh
-```
-
-## 7.3 Redirect Output to a Log File
+## 7.2 Redirect Output to a Log File
 
 Cron jobs can redirect standard output and errors to a log file:
 
 ```text
 0 2 * * * /home/user/backup.sh >> /home/user/cron.log 2>&1
 ```
+<img width="556" height="109" alt="Screenshot from 2026-08-26 23-50-01" src="https://github.com/user-attachments/assets/83544106-8372-4dc1-b9ee-94d6a8f0c09d" />
 
 Here:
 
@@ -434,6 +427,7 @@ Display the current user's cron jobs:
 ```bash
 crontab -l
 ```
+<img width="556" height="109" alt="Screenshot from 2026-08-26 23-50-01" src="https://github.com/user-attachments/assets/2caffd5b-c763-4635-aaf2-8dcbf356adc1" />
 
 ---
 
