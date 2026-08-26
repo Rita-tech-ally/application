@@ -1,0 +1,77 @@
+## What is Cronjob ?
+A Cron job is a schedule task that allows you to run scripts or commands at a specified intervals. 
+
+## Why use cron jobs ?
+Cron jobs automates repetitive task ensuring they run at scheduled without manual intervention
+Example = Backing up files, running system maintenance, or sending email reportes.
+
+## How does Cron Work ?
+Cron use a demon (a background process) called cron to execute cron tasks.
+The configuration of these tasks is stored in a file called a Crontab.
+
+Name of the services is Cron
+
+# Basic Format for Cron jobs.
+* * * * * home/ritu/myscript.sh
+
+# Explanation of syntax:-
+* minute 
+* hour 
+* day (month)
+* month
+* day (week)
+
+* * * * * command
+│ │ │ │ │
+│ │ │ │ └─ Day of week (0–7, Sunday = 0 or 7)
+│ │ │ └─── Month (1–12)
+│ │ └───── Day of month (1–31)
+│ └─────── Hour (0–23)
+└───────── Minute (0–59)
+
+# Creating Cron job:
+To create, view, or manage cron jobs in your system, you can use the following commands:
+
+crontab -e = Open and edit the cron jobs file.
+crontab -l = List all currently scheduled cron jobs.
+crontab -r = Remove/delete all cron jobs for the user.
+
+## Important Points to Remember:
+* Absolute Paths: Always use the full path for your scripts (e.g., /home/ritu/myscript.sh instead of home/ritu/myscript.sh) because cron runs in a minimal environment.
+
+* Output redirection: If your script prints anything, cron might try to email it. You can redirect output to a log file like this:
+* * * * * /home/ritu/myscript.sh > /home/ritu/logfile.log 2>&1
+
+## Checking Cron Logs
+Since cron runs in the background, we can check its system logs to see if our jobs executed successfully or if they encountered any errors:
+
+For Ubuntu / Debian systems:
+grep CRON /var/log/syslog (or use journalctl -u cron to view the service logs).
+
+For RedHat / CentOS / Rocky Linux:
+grep CRON /var/log/messages or check the systemd journal using journalctl -u crond.
+
+## Syntax for Scheduling Tasks (Advanced Examples)
+Cron syntax gives us immense flexibility to schedule tasks precisely when we need them. Here are some common examples and special characters used in cron expressions:
+
+Common Scheduling Examples:
+*/10 * * * * = Run every 10 minutes.
+0 */2 * * * = Run every 2 hours (at minute 0 of every 2nd hour).
+30 2 * * * = Run every day at 2:30 AM.
+0 9 * * 1 = Run every Monday at 9:00 AM.
+0 0 1,15 * * = Run twice a month (on the 1st and 15th of every month at midnight).
+
+Special Characters Explained:
+* (Asterisk) = Specifies all values (e.g., every minute, every hour).
+, (Comma) = Specifies a list of values (e.g., 1,15 for the 1st and 15th).
+- (Hyphen) = Specifies a range of values (e.g., 1-5 for Monday through Friday).
+/ (Slash) = Specifies step values or intervals (e.g., */5 for every 5 units).
+
+## Special Strings List for Cron jobs:
+@reboot = Run once at startup (Runs once when the system reboots/restarts).
+@yearly or @annually = 0 0 1 1 * (Runs once a year on January 1st at midnight).
+@monthly = 0 0 1 * * (Runs once a month on the 1st of every month at midnight).
+@weekly = 0 0 * * 0 (Runs once a week on Sunday at midnight).
+@daily or @midnight = 0 0 * * * (Runs once a day at midnight).
+@hourly = 0 * * * * (Runs at the beginning of every hour).
+is content ko is pdf ka format me kr do
