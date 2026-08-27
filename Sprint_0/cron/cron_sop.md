@@ -133,12 +133,14 @@ To display the current user's cron jobs:
 ```bash
 crontab -l
 ```
+<img width="707" height="153" alt="Screenshot from 2026-08-27 12-36-50" src="https://github.com/user-attachments/assets/d7bc4dcd-0b4e-4291-841c-c928f9f72c5a" />
 
 To remove the current user's cron jobs:
 
 ```bash
 crontab -r
 ```
+<img width="1311" height="314" alt="Screenshot from 2026-08-27 13-41-06" src="https://github.com/user-attachments/assets/6c83520e-1938-45a5-ba2c-2ead8efcbe50" />
 
 > **Note:** `crontab -r` removes all cron jobs for the current user. Use it carefully.
 
@@ -220,21 +222,22 @@ Both `0` and `7` generally represent Sunday.
 ```bash
 */5 * * * * /path/to/script.sh
 ```
-<img width="566" height="69" alt="Screenshot from 2026-08-26 23-17-49" src="https://github.com/user-attachments/assets/4efdbc9b-8d8f-41c0-b170-bd554f097d0e" />
+<img width="713" height="142" alt="Screenshot from 2026-08-27 12-44-01" src="https://github.com/user-attachments/assets/8ae75a75-b604-4e6f-8ac5-f3b8e2b5abce" />
 
 ### Run every 30 sec 
 
 ```bash
 * * * * * sleep 30; /path/to/script.sh
 ```
-<img width="562" height="89" alt="Screenshot from 2026-08-26 23-26-12" src="https://github.com/user-attachments/assets/3ff79dd8-3526-4c4a-a976-efd4f256b6a5" />
+<img width="716" height="163" alt="Screenshot from 2026-08-27 12-48-50" src="https://github.com/user-attachments/assets/90a6685a-f1f4-402e-b4b1-5256c238f92a" />
+
 
 ### Run every Monday to Friday at 9:00 AM
 
 ```bash
-0 9 * * 1-5 /path/to/script.sh
+25 12 * * 1-5 /path/to/script.sh
 ```
-<img width="558" height="64" alt="Screenshot from 2026-08-26 23-24-03" src="https://github.com/user-attachments/assets/b3f87140-c478-4285-a2b4-d1e0b90ba781" />
+<img width="719" height="154" alt="Screenshot from 2026-08-27 12-50-17" src="https://github.com/user-attachments/assets/9d86f799-26dd-4f41-9f8c-88f6395b3679" />
 
 # 5. Configuration Steps
 
@@ -281,7 +284,8 @@ Verify the permissions:
 ```bash
 ls -l /home/ritu/backup.sh
 ```
-<img width="625" height="49" alt="Screenshot from 2026-08-26 23-55-42" src="https://github.com/user-attachments/assets/20ea2ef9-b7eb-4353-87ef-3e39cececc09" />
+<img width="730" height="102" alt="Screenshot from 2026-08-27 12-54-25" src="https://github.com/user-attachments/assets/e861f5fb-65f0-4f34-8fc4-6ea141f9e460" />
+
 
 ---
 
@@ -316,7 +320,7 @@ Expected output:
 ```text
 0 2 * * * /home/ritu/backup.sh
 ```
-<img width="564" height="73" alt="Screenshot from 2026-08-26 23-47-13" src="https://github.com/user-attachments/assets/f7b393c5-7125-42c9-8162-e198cf64d550" />
+<img width="710" height="152" alt="Screenshot from 2026-08-27 12-56-32" src="https://github.com/user-attachments/assets/b8fac8b3-8b1e-4bf8-8297-269efce9321b" />
 
 ---
 
@@ -345,16 +349,20 @@ cat /home/ritu/backup.log
 For testing purposes, configure the cron job to run every minute:
 
 ```text
-* * * * * /home/ritu/backup.sh
+* * * * * /home/ubuntu/script.sh
 ```
-<img width="564" height="73" alt="Screenshot from 2026-08-26 23-47-13" src="https://github.com/user-attachments/assets/9e74ce39-150d-4a40-a83a-8553278d2cb9" />
+
+<img width="710" height="152" alt="Screenshot from 2026-08-27 12-58-01" src="https://github.com/user-attachments/assets/23b1b437-90a2-4807-863f-ed88c6b1dd49" />
+
 
 Wait for a minute and check the log:
 
 ```bash
-cat /home/ritu
+cat /home/ubuntu
 /backup.log
 ```
+
+<img width="717" height="87" alt="Screenshot from 2026-08-27 13-23-24" src="https://github.com/user-attachments/assets/d1959ef4-3608-4408-baaf-7ea42dd00284" />
 
 After successful testing, change the cron schedule to the required production schedule.
 
@@ -438,12 +446,14 @@ On Ubuntu/Debian systems, cron activity can commonly be checked using:
 ```bash
 grep CRON /var/log/syslog
 ```
+<img width="1316" height="69" alt="Screenshot from 2026-08-27 13-34-14" src="https://github.com/user-attachments/assets/4e6766d5-4d1e-40cf-ae85-34ef0c09c111" />
 
 On systems using systemd journal:
 
 ```bash
 journalctl -u cron
 ```
+<img width="1316" height="69" alt="Screenshot from 2026-08-27 13-33-19" src="https://github.com/user-attachments/assets/18ea5c69-f036-4576-a77a-5f14fe3e5702" />
 
 For RHEL/CentOS/Amazon Linux:
 
