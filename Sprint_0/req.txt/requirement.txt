@@ -1,30 +1,69 @@
-sudo apt update && sudo apt install python-is-python3 -y
-python --version
+Step 1: Ubuntu mein venv Package Install Karein
+Agar aapke paas virtual environment package installed nahi hai, toh pehle ise install karein:
 
-: Project ke liye Folder Banayein aur Virtual Environment Setup Karein
-
+Bash
+sudo apt update && sudo apt install python3.12-venv
+Step 2: Project Folder Banayein aur Enter Karein
+Bash
 mkdir my_python_project
 cd my_python_project
-Virtual Environment banayein
-sudo apt update && sudo apt install python3.12-venv
-python -m venv venv
-
-Virtual Environment ko Activate karein:
-
-
+Step 3: Virtual Environment Create aur Activate Karein
+Bash
+python3 -m venv venv
 source venv/bin/activate
+(Terminal ke starting mein (venv) likha hua aane lagega).
 
-Packages Install karein:
+Step 4: Zaroori Packages Install Karein
+SOP ke mutabiq project ke liye initial packages install karein:
 
 Bash
 pip install flask requests
-
-requirements.txt generate karein:
+Step 5: requirements.txt Generate Karein
+Installed packages ki exact list ko file mein save karein:
 
 Bash
 pip freeze > requirements.txt
 
-File check karke screenshot lein:
+Step 6: Development Dependencies (requirements-dev.txt) Banayein
+File create karne ke liye:
 
 Bash
-cat requirements.txt
+nano requirements-dev.txt
+Iske andar yeh text paste kar dein:
+
+Plaintext
+-r requirements.txt
+pytest==8.2.0
+black==24.4.2
+flake8==7.0.0
+(Save karne ke liye Ctrl + O -> Enter -> Ctrl + X dabayein)
+
+Dev dependencies install karein:
+
+Bash
+pip install -r requirements-dev.txt
+
+Step 7: Testing aur Validation (SOP Section 6)
+Installed packages check karne ke liye:
+
+Bash
+pip list
+Dependency Conflicts check karne ke liye (pip check):
+
+Bash
+pip check
+
+Dry-Run Validation karne ke liye:
+
+Bash
+pip install -r requirements.txt --dry-run
+Step 8: Security Audit / Vulnerabilities Scan (SOP Section 9.2)
+pip-audit install karein:
+
+Bash
+pip install pip-audit
+Requirements file ko scan karein:
+
+Bash
+pip-audit -r requirements.txt
+
