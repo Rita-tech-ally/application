@@ -133,7 +133,7 @@ To display the current user's cron jobs:
 ```bash
 crontab -l
 ```
-<img width="707" height="153" alt="Screenshot from 2026-08-27 12-36-50" src="https://github.com/user-attachments/assets/d7bc4dcd-0b4e-4291-841c-c928f9f72c5a" />
+<img width="862" height="153" alt="Screenshot from 2026-08-27 14-15-14" src="https://github.com/user-attachments/assets/fa6a9e35-a043-4071-b7e4-8061855dd230" />
 
 To remove the current user's cron jobs:
 
@@ -214,30 +214,30 @@ Both `0` and `7` generally represent Sunday.
 ```bash
 * * * * * /path/to/script.sh
 ```
-<img width="566" height="69" alt="Screenshot from 2026-08-26 23-15-37" src="https://github.com/user-attachments/assets/e5f1a44c-a840-4c8a-a297-e998addd5a6a" />
 
+<img width="865" height="88" alt="Screenshot from 2026-08-27 14-28-06" src="https://github.com/user-attachments/assets/453ffbe1-b2db-451b-8ffb-d49685d768c3" />
 
 ### Run every 5 minutes
 
 ```bash
 */5 * * * * /path/to/script.sh
 ```
-<img width="713" height="142" alt="Screenshot from 2026-08-27 12-44-01" src="https://github.com/user-attachments/assets/8ae75a75-b604-4e6f-8ac5-f3b8e2b5abce" />
+<img width="861" height="133" alt="Screenshot from 2026-08-27 14-32-58" src="https://github.com/user-attachments/assets/78247c4c-ddbd-4ea1-bb00-b7bbf4147890" />
 
 ### Run every 30 sec 
 
 ```bash
 * * * * * sleep 30; /path/to/script.sh
 ```
-<img width="716" height="163" alt="Screenshot from 2026-08-27 12-48-50" src="https://github.com/user-attachments/assets/90a6685a-f1f4-402e-b4b1-5256c238f92a" />
+<img width="769" height="154" alt="Screenshot from 2026-08-27 14-34-42" src="https://github.com/user-attachments/assets/51f25ede-e6de-46b1-8535-71bebbf61f96" />
 
 
 ### Run every Monday to Friday at 9:00 AM
 
 ```bash
-25 12 * * 1-5 /path/to/script.sh
+23 13 * * 1-5 /path/to/script.sh
 ```
-<img width="719" height="154" alt="Screenshot from 2026-08-27 12-50-17" src="https://github.com/user-attachments/assets/9d86f799-26dd-4f41-9f8c-88f6395b3679" />
+<img width="862" height="153" alt="Screenshot from 2026-08-27 14-25-25" src="https://github.com/user-attachments/assets/7b3d49b4-17ff-4b27-a0ee-593127e14693" />
 
 # 5. Configuration Steps
 
