@@ -407,7 +407,7 @@ Cron can be used for several automation tasks, including:
 A backup script can be scheduled every day at 1:00 AM:
 
 ```text
-0 1 * * * /home/ubuntu/backup.sh
+0 1 * * * /home/ritu/backup.sh
 ```
 <img width="559" height="87" alt="Screenshot from 2026-08-26 23-49-25" src="https://github.com/user-attachments/assets/8e874c2c-3e4b-41f9-94f6-8a4301d59f5d" />
 
@@ -417,7 +417,7 @@ A backup script can be scheduled every day at 1:00 AM:
 Cron jobs can redirect standard output and errors to a log file:
 
 ```text
-0 2 * * * /home/ubuntu/backup.sh >> /home/user/cron.log 2>&1
+0 2 * * * /home/ritu/backup.sh >> /home/ritu/cron.log 2>&1
 ```
 <img width="556" height="109" alt="Screenshot from 2026-08-26 23-50-01" src="https://github.com/user-attachments/assets/83544106-8372-4dc1-b9ee-94d6a8f0c09d" />
 
