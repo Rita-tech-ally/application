@@ -1,1 +1,30 @@
+sudo apt update && sudo apt install python-is-python3 -y
+python --version
 
+: Project ke liye Folder Banayein aur Virtual Environment Setup Karein
+
+mkdir my_python_project
+cd my_python_project
+Virtual Environment banayein
+sudo apt update && sudo apt install python3.12-venv
+python -m venv venv
+
+Virtual Environment ko Activate karein:
+
+
+source venv/bin/activate
+
+Packages Install karein:
+
+Bash
+pip install flask requests
+
+requirements.txt generate karein:
+
+Bash
+pip freeze > requirements.txt
+
+File check karke screenshot lein:
+
+Bash
+cat requirements.txt
