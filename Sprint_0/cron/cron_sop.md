@@ -89,6 +89,7 @@ Enable the service to start automatically after system reboot:
 ```bash
 sudo systemctl enable cron
 ```
+<img width="959" height="119" alt="Screenshot from 2026-08-27 14-41-02" src="https://github.com/user-attachments/assets/97069d56-f9f3-40bb-ae6d-f06f7cd249e4" />
 
 or:
 
@@ -107,6 +108,7 @@ The commonly used cron configuration locations are:
 ```text
 /var/spool/cron/crontabs/
 ```
+<img width="961" height="80" alt="Screenshot from 2026-08-27 14-43-11" src="https://github.com/user-attachments/assets/9c167287-c421-4113-9f2d-f8d21f6a4531" />
 
 and:
 
@@ -227,7 +229,7 @@ Both `0` and `7` generally represent Sunday.
 ### Run every 30 sec 
 
 ```bash
-* * * * * sleep 30; /path/to/script.sh
+* * * * * sleep 30; /path/to/backup.sh
 ```
 <img width="769" height="154" alt="Screenshot from 2026-08-27 14-34-42" src="https://github.com/user-attachments/assets/51f25ede-e6de-46b1-8535-71bebbf61f96" />
 
@@ -235,7 +237,7 @@ Both `0` and `7` generally represent Sunday.
 ### Run every Monday to Friday at 9:00 AM
 
 ```bash
-23 13 * * 1-5 /path/to/script.sh
+23 13 * * 1-5 /path/to/backup.sh
 ```
 <img width="862" height="153" alt="Screenshot from 2026-08-27 14-25-25" src="https://github.com/user-attachments/assets/7b3d49b4-17ff-4b27-a0ee-593127e14693" />
 
@@ -258,7 +260,7 @@ First create the script that needs to be executed.
 Example:
 
 ```bash
-nano /home/ritu/backup.sh
+nano /home/ubuntu/backup.sh
 ```
 
 Example script:
@@ -266,7 +268,7 @@ Example script:
 ```bash
 #!/bin/bash
 
-echo "Backup started at $(date)" >> /home/ritu/backup.log
+echo "Backup started at $(date)" >> /home/ubuntu/backup.log
 ```
 
 ---
@@ -276,13 +278,13 @@ echo "Backup started at $(date)" >> /home/ritu/backup.log
 Give execute permission:
 
 ```bash
-chmod +x /home/ritu/backup.sh
+chmod +x /home/ubuntu/backup.sh
 ```
 
 Verify the permissions:
 
 ```bash
-ls -l /home/ritu/backup.sh
+ls -l /home/ubuntu/backup.sh
 ```
 <img width="730" height="102" alt="Screenshot from 2026-08-27 12-54-25" src="https://github.com/user-attachments/assets/e861f5fb-65f0-4f34-8fc4-6ea141f9e460" />
 
@@ -300,7 +302,7 @@ crontab -e
 Add the following entry:
 
 ```text
-0 2 * * * /home/ritu/backup.sh
+0 2 * * * /home/ubuntu/backup.sh
 ```
 
 This configuration runs the script **every day at 2:00 AM**.
@@ -318,7 +320,7 @@ crontab -l
 Expected output:
 
 ```text
-0 2 * * * /home/ritu/backup.sh
+0 2 * * * /home/ubuntu/backup.sh
 ```
 <img width="710" height="152" alt="Screenshot from 2026-08-27 12-56-32" src="https://github.com/user-attachments/assets/b8fac8b3-8b1e-4bf8-8297-269efce9321b" />
 
@@ -333,13 +335,13 @@ It is important to verify the cron configuration and ensure that the scheduled c
 Before scheduling the script, execute it manually:
 
 ```bash
-/home/ritu/backup.sh
+/home/ubuntu/backup.sh
 ```
 
 Check the output log:
 
 ```bash
-cat /home/ritu/backup.log
+cat /home/ubuntu/backup.log
 ```
 
 ---
@@ -405,7 +407,7 @@ Cron can be used for several automation tasks, including:
 A backup script can be scheduled every day at 1:00 AM:
 
 ```text
-0 1 * * * /home/user/backup.sh
+0 1 * * * /home/ubuntu/backup.sh
 ```
 <img width="559" height="87" alt="Screenshot from 2026-08-26 23-49-25" src="https://github.com/user-attachments/assets/8e874c2c-3e4b-41f9-94f6-8a4301d59f5d" />
 
@@ -415,7 +417,7 @@ A backup script can be scheduled every day at 1:00 AM:
 Cron jobs can redirect standard output and errors to a log file:
 
 ```text
-0 2 * * * /home/user/backup.sh >> /home/user/cron.log 2>&1
+0 2 * * * /home/ubuntu/backup.sh >> /home/user/cron.log 2>&1
 ```
 <img width="556" height="109" alt="Screenshot from 2026-08-26 23-50-01" src="https://github.com/user-attachments/assets/83544106-8372-4dc1-b9ee-94d6a8f0c09d" />
 
