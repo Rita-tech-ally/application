@@ -229,7 +229,7 @@ Both `0` and `7` generally represent Sunday.
 ### Run every 30 sec 
 
 ```bash
-* * * * * sleep 30; /path/to/backup.sh
+* * * * * sleep 30; /path/to/script.sh
 ```
 <img width="769" height="154" alt="Screenshot from 2026-08-27 14-34-42" src="https://github.com/user-attachments/assets/51f25ede-e6de-46b1-8535-71bebbf61f96" />
 
@@ -341,7 +341,7 @@ Before scheduling the script, execute it manually:
 Check the output log:
 
 ```bash
-cat /home/ubuntu/backup.log
+cat /home/ubuntu/log.file
 ```
 
 ---
@@ -361,10 +361,10 @@ Wait for a minute and check the log:
 
 ```bash
 cat /home/ubuntu
-/backup.log
+/log.file
 ```
+<img width="715" height="241" alt="log" src="https://github.com/user-attachments/assets/f20683e2-aa18-44f6-9b19-f36147ef21d2" />
 
-<img width="717" height="87" alt="Screenshot from 2026-08-27 13-23-24" src="https://github.com/user-attachments/assets/d1959ef4-3608-4408-baaf-7ea42dd00284" />
 
 After successful testing, change the cron schedule to the required production schedule.
 
