@@ -575,9 +575,9 @@ systemctl status crond
 
 # 11. Contact Information
 
-| Name | Email Address |
-| ---- | ------------- |
-| Ritu |               |
+| Name |         Email Address             |
+| ---- | ----------------------------------|
+| Ritu | ritu.dogra.snaatak@mygurukulam.co |
 
 ---
 
