@@ -54,12 +54,14 @@ Verify that Python is installed:
 ```bash
 python3 --version
 ```
+<img width="794" height="47" alt="Screenshot from 2026-08-27 18-32-54" src="https://github.com/user-attachments/assets/d175e07b-4287-4881-8993-c3cfed6eafdb" />
 
 Verify that pip is available:
 
 ```bash
 pip3 --version
 ```
+<img width="894" height="58" alt="Screenshot from 2026-08-27 18-34-31" src="https://github.com/user-attachments/assets/40cc98f2-1bed-4531-b4fe-23690fd6c9f9" />
 
 It is strongly recommended to use a virtual environment so that dependencies are isolated per project:
 
@@ -68,6 +70,7 @@ python3 -m venv venv
 source venv/bin/activate      # Linux / macOS
 venv\Scripts\activate         # Windows
 ```
+<img width="891" height="42" alt="image" src="https://github.com/user-attachments/assets/6a7f6821-bf6e-47ef-b8b7-88424ef924df" />
 
 > **Note:** Always work inside an activated virtual environment before installing or freezing packages, otherwise system-wide packages may get captured or affected.
 
@@ -151,6 +154,7 @@ After installing the packages a project needs, capture the exact installed versi
 ```bash
 pip freeze > requirements.txt
 ```
+<img width="897" height="257" alt="Screenshot from 2026-08-27 18-37-25" src="https://github.com/user-attachments/assets/2215a3b7-774e-4b2a-9980-108fcb5a3868" />
 
 ### 5.2 Installing From requirements.txt
 
@@ -159,6 +163,7 @@ On a new machine or environment, install all listed dependencies in one step:
 ```bash
 pip install -r requirements.txt
 ```
+<img width="1231" height="232" alt="Screenshot from 2026-08-27 18-38-18" src="https://github.com/user-attachments/assets/25ea94f6-785c-4e9e-b29b-4a732e5283e6" />
 
 ### 5.3 Separating Dependencies by Environment
 
@@ -197,6 +202,7 @@ pip install -r requirements.txt
 ```bash
 pip list
 ```
+<img width="1271" height="505" alt="Screenshot from 2026-08-27 18-40-40" src="https://github.com/user-attachments/assets/2c6e4c35-e2de-4a04-b607-78f3f18a7137" />
 
 ### 6.3 Check for Dependency Conflicts
 
@@ -213,6 +219,7 @@ Use pip's resolver in report-only mode to preview what would be installed withou
 ```bash
 pip install -r requirements.txt --dry-run --report -
 ```
+<img width="1266" height="62" alt="image" src="https://github.com/user-attachments/assets/f0005ff4-88c4-4f36-852d-3bc9c7777c16" />
 
 ---
 
