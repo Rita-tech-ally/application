@@ -75,3 +75,33 @@ Special Characters Explained:
 @daily or @midnight = 0 0 * * * (Runs once a day at midnight).
 @hourly = 0 * * * * (Runs at the beginning of every hour).
 is content ko is pdf ka format me kr do
+
+Short Summary
+
+Cron job har 45 seconds mein directly run nahi ho sakti, kyunki Cron ka minimum interval 1 minute (60 seconds) hai.
+
+Cron mein seconds ka field nahi hota.
+*/45 ka matlab 45 seconds nahi, balki minute field mein 0 aur 45 minutes hota hai.
+45 seconds ke interval ke liye while loop + sleep 45 ya systemd service/timer use karna better hai.
+
+Conclusion: Cron → minimum 1 minute; 45 seconds → Cron directly possible nahi.
+
+sleep 49 isliye likhte hain kyunki Cron seconds ko directly support nahi karta.
+
+* * * * * sleep 49; /path/to/script.sh
+
+Iska matlab:
+
+Cron har minute command start karega.
+sleep 49 → process 49 seconds wait karega.
+Uske baad /path/to/script.sh run hoga.
+
+Example:
+
+10:00:00 → Cron starts → 49 sec wait → 10:00:49 → Script runs
+
+Phir:
+
+10:01:00 → Cron starts → 49 sec wait → 10:01:49 → Script runs
+
+So sleep 49 ka purpose hai minute ke 49th second tak wait karna.
