@@ -360,8 +360,7 @@ For testing purposes, configure the cron job to run every minute:
 Wait for a minute and check the log:
 
 ```bash
-cat /home/ubuntu
-/log.file
+cat /home/ubuntu/log.file
 ```
 <img width="715" height="241" alt="log" src="https://github.com/user-attachments/assets/f20683e2-aa18-44f6-9b19-f36147ef21d2" />
 
