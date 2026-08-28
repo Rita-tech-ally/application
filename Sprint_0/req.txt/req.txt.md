@@ -17,14 +17,12 @@
 3. [Why requirements.txt is Used](#3-why-requirementstxt-is-used)
 4. [File Structure and Syntax](#4-file-structure-and-syntax)
 5. [Configuration Steps](#5-configuration-steps)
-6. [Testing requirements.txt](#6-testing-requirementstxt)
-7. [Dependency Versioning Best Practices](#7-dependency-versioning-best-practices)
-8. [Automation](#8-automation)
-9. [Monitoring and Troubleshooting](#9-monitoring-and-troubleshooting)
-10. [Conclusion](#10-conclusion)
-11. [FAQs](#11-faqs)
-12. [Contact Information](#12-contact-information)
-13. [References](#13-references)
+6. [Dependency Versioning Best Practices](#7-dependency-versioning-best-practices)
+7. [Monitoring and Troubleshooting](#9-monitoring-and-troubleshooting)
+8. [Conclusion](#10-conclusion)
+9. [FAQs](#11-faqs)
+10. [Contact Information](#12-contact-information)
+11. [References](#13-references)
 
 ---
 
@@ -185,47 +183,9 @@ flake8==7.0.0
 
 ---
 
-## 6. Testing requirements.txt
+## 6. Dependency Versioning Best Practices
 
-### 6.1 Test Installation in a Clean Environment
-
-Always validate the file in a fresh virtual environment before relying on it:
-
-```bash
-python3 -m venv test-venv
-source test-venv/bin/activate
-pip install -r requirements.txt
-```
-
-### 6.2 Verify Installed Packages
-
-```bash
-pip list
-```
-<img width="1271" height="505" alt="Screenshot from 2026-08-27 18-40-40" src="https://github.com/user-attachments/assets/2c6e4c35-e2de-4a04-b607-78f3f18a7137" />
-
-### 6.3 Check for Dependency Conflicts
-
-pip's built-in checker reports incompatible or missing dependencies:
-
-```bash
-pip check
-```
-
-### 6.4 Dry-Run Style Validation
-
-Use pip's resolver in report-only mode to preview what would be installed without making changes:
-
-```bash
-pip install -r requirements.txt --dry-run --report -
-```
-<img width="1266" height="62" alt="image" src="https://github.com/user-attachments/assets/f0005ff4-88c4-4f36-852d-3bc9c7777c16" />
-
----
-
-## 7. Dependency Versioning Best Practices
-
-### 7.1 Pin Exact Versions for Production
+### 6.1 Pin Exact Versions for Production
 
 For production and deployment files, pin exact versions using `==` so that builds are fully reproducible and unaffected by upstream releases.
 
@@ -233,7 +193,7 @@ For production and deployment files, pin exact versions using `==` so that build
 gunicorn==22.0.0
 ```
 
-### 7.2 Allow Controlled Flexibility for Libraries
+### 6.2 Allow Controlled Flexibility for Libraries
 
 When building a reusable library (not a deployed application), overly strict pins can cause conflicts for consumers. Prefer compatible ranges using `~=` or explicit lower/upper bounds.
 
@@ -241,7 +201,7 @@ When building a reusable library (not a deployed application), overly strict pin
 requests~=2.31
 ```
 
-### 7.3 Follow Semantic Versioning Awareness
+### 6.3 Follow Semantic Versioning Awareness
 
 Most Python packages follow `MAJOR.MINOR.PATCH` semantic versioning. Understanding this helps choose safe ranges:
 
@@ -251,7 +211,7 @@ Most Python packages follow `MAJOR.MINOR.PATCH` semantic versioning. Understandi
 | MINOR   | New backward-compatible features   | Low to Medium                              |
 | PATCH   | Backward-compatible bug fixes      | Low                                        |
 
-### 7.4 Use a Lock File for Full Reproducibility
+### 6.4 Use a Lock File for Full Reproducibility
 
 `pip freeze` captures a flat snapshot but does not record the dependency graph. Tools such as `pip-tools` generate a fully resolved, hash-locked file from a lightweight source file.
 
@@ -260,14 +220,14 @@ pip install pip-tools
 pip-compile requirements.in -o requirements.txt
 ```
 
-### 7.5 Keep Dependencies Minimal and Reviewed
+### 6.5 Keep Dependencies Minimal and Reviewed
 
 * Only include packages that are actually imported by the project.
 * Remove unused packages regularly to reduce the attack surface.
 * Avoid pinning to pre-release or nightly builds in production.
 * Document why an unusual version constraint exists, using a comment.
 
-### 7.6 Keep Dependencies Updated Safely
+### 6.6 Keep Dependencies Updated Safely
 
 List outdated packages before upgrading, and upgrade one package at a time where possible:
 
@@ -275,7 +235,7 @@ List outdated packages before upgrading, and upgrade one package at a time where
 pip list --outdated
 ```
 
-### 7.7 Never Commit Secrets or Local Paths
+### 6.7 Never Commit Secrets or Local Paths
 
 Avoid referencing local file paths or private credentials directly inside `requirements.txt`. Use private package indexes or environment variables instead.
 
@@ -283,44 +243,17 @@ Avoid referencing local file paths or private credentials directly inside `requi
 
 ---
 
-## 8. Automation
 
-`requirements.txt` integrates naturally into automated workflows:
 
-* Docker image builds install dependencies as a cached layer.
-* CI/CD pipelines install dependencies before running tests.
-* Dependabot or Renovate can raise automated pull requests for version updates.
+## 7. Monitoring and Troubleshooting
 
-### 8.1 Example: Dockerfile
-
-```dockerfile
-FROM python:3.12-slim
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-COPY . .
-```
-
-### 8.2 Example: CI Pipeline Step (GitHub Actions)
-
-```yaml
-- name: Install dependencies
-  run: |
-    python -m pip install --upgrade pip
-    pip install -r requirements.txt
-```
-
----
-
-## 9. Monitoring and Troubleshooting
-
-### 9.1 Check Installed vs Declared Packages
+### 7.1 Check Installed vs Declared Packages
 
 ```bash
 pip freeze
 ```
 
-### 9.2 Audit for Known Vulnerabilities
+### 7.2 Audit for Known Vulnerabilities
 
 Use `pip-audit` to scan installed packages against known vulnerability databases:
 
@@ -329,7 +262,7 @@ pip install pip-audit
 pip-audit -r requirements.txt
 ```
 
-### 9.3 Common Issues
+### 7.3 Common Issues
 
 | Issue                                   | Cause                                                     | Solution                                                        |
 | ------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------------- |
@@ -342,7 +275,7 @@ pip-audit -r requirements.txt
 
 ---
 
-## 10. Conclusion
+## 8. Conclusion
 
 `requirements.txt` provides a simple, portable way to declare and reproduce Python dependencies across development, testing, and production environments. Combined with disciplined versioning practices, it prevents unexpected breakages and keeps environments consistent across the team and across deployments.
 
@@ -352,7 +285,7 @@ Regularly reviewing and updating dependencies helps keep the project secure and 
 
 ---
 
-## 11. FAQs
+## 9. FAQs
 
 **What is requirements.txt?**
 It is a plain text file that lists the Python packages, and optionally their versions, that a project depends on, used by pip to install those dependencies.
@@ -369,9 +302,6 @@ pip freeze > requirements.txt
 pip install -r requirements.txt
 ```
 
-**What is the difference between == and ~=?**
-`==` pins an exact version. `~=` allows compatible updates — for example `requests~=2.31` permits `2.31.x` updates but not `2.32` or higher.
-
 **Should I pin exact versions?**
 For applications and production deployments, yes — exact pins keep builds reproducible. For shared libraries, looser, well-considered ranges are usually preferred.
 
@@ -383,7 +313,7 @@ Run `pip-audit` periodically, subscribe to Dependabot or Renovate alerts, and re
 
 ---
 
-## 12. Contact Information
+## 10. Contact Information
 
 | Name | Email Address |
 | ---- | -------------- |
@@ -391,7 +321,7 @@ Run `pip-audit` periodically, subscribe to Dependabot or Renovate alerts, and re
 
 ---
 
-## 13. References
+## 11. References
 
 | Links                                                                                   | Description                                             |
 | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------- |
