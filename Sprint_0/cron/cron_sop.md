@@ -230,6 +230,9 @@ Both `0` and `7` generally represent Sunday.
 
 ```bash
 * * * * * sleep 30; /path/to/script.sh
+
+Note: Cron does not have a seconds field. The sleep 30 command delays execution by 30 seconds after Cron starts the
+command each minute. Therefore, this runs the script at approximately 30 seconds past each minute, not every 30 seconds.
 ```
 <img width="769" height="154" alt="Screenshot from 2026-08-27 14-34-42" src="https://github.com/user-attachments/assets/51f25ede-e6de-46b1-8535-71bebbf61f96" />
 
