@@ -226,7 +226,7 @@ Both `0` and `7` generally represent Sunday.
 ```
 <img width="861" height="133" alt="Screenshot from 2026-08-27 14-32-58" src="https://github.com/user-attachments/assets/78247c4c-ddbd-4ea1-bb00-b7bbf4147890" />
 
-### Run every 30 sec 
+### Run the script 30 seconds after every minute 
 
 ```bash
 * * * * * sleep 30; /path/to/script.sh
@@ -234,7 +234,7 @@ Both `0` and `7` generally represent Sunday.
 <img width="769" height="154" alt="Screenshot from 2026-08-27 14-34-42" src="https://github.com/user-attachments/assets/51f25ede-e6de-46b1-8535-71bebbf61f96" />
 
 
-### Run every Monday to Friday at 9:00 AM
+### Run every Monday to Friday at 1:23 PM
 
 ```bash
 23 13 * * 1-5 /path/to/backup.sh
