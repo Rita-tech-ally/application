@@ -208,15 +208,15 @@ By following the standard role structure and keeping each role focused on a spec
 
 ## 7. FAQs
 
-### 7.1 What is an Ansible Role?
+###  What is an Ansible Role?
 
 An Ansible Role is a predefined directory structure used to organize and reuse Ansible automation code, including tasks, variables, handlers, templates, files, and dependencies.
 
-### 7.2 Why are Ansible Roles used?
+### Why are Ansible Roles used?
 
 Ansible Roles are used to make automation code **reusable, modular, organized, maintainable, and scalable**.
 
-### 7.3 What are the main directories of an Ansible Role?
+### What are the main directories of an Ansible Role?
 
 The commonly used directories are:
 
@@ -230,33 +230,33 @@ files/
 meta/
 ```
 
-### 7.4 What is `tasks/main.yml` used for?
+### What is `tasks/main.yml` used for?
 
 `tasks/main.yml` contains the main tasks that Ansible executes when the role is applied.
 
-### 7.5 What is the purpose of `handlers/main.yml`?
+###  What is the purpose of `handlers/main.yml`?
 
 Handlers are used for actions that should run when they are notified by a task, such as restarting or reloading a service after a configuration change.
 
-### 7.6 What is the difference between `defaults` and `vars`?
+###  What is the difference between `defaults` and `vars`?
 
 `defaults/main.yml` is generally used for default variable values that can be easily overridden.
 
 `vars/main.yml` is used for role-specific variables that normally have higher precedence and are intended to be less frequently overridden.
 
-### 7.7 What is the purpose of the `templates` directory?
+### What is the purpose of the `templates` directory?
 
 The `templates` directory stores Jinja2 template files used to generate dynamic configuration files based on variables.
 
-### 7.8 What is the purpose of the `files` directory?
+### What is the purpose of the `files` directory?
 
 The `files` directory stores static files that need to be copied to managed nodes.
 
-### 7.9 What is `meta/main.yml` used for?
+### What is `meta/main.yml` used for?
 
 `meta/main.yml` contains role metadata and can be used to define dependencies on other Ansible Roles.
 
-### 7.10 Can the same role be used for multiple environments?
+### Can the same role be used for multiple environments?
 
 Yes. The same role can be reused across Development, Testing, Staging, and Production environments by providing environment-specific variables.
 
@@ -264,9 +264,9 @@ Yes. The same role can be reused across Development, Testing, Staging, and Produ
 
 ## 8. Contact Information
 
-| Name | Email Address |
-| ---- | ------------- |
-| Ritu |               |
+| Name |            Email Address         |
+| ---- | ---------------------------------|
+| Ritu | ritu.dogra.snaatak@mygurukulam.co|
 
 ---
 
