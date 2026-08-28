@@ -187,89 +187,67 @@ A typical SonarQube workflow is:
                                            v
                                      +-----------+
                                      | Re-analysis|
-                                     +-----------+
+
+---
 
 ## Workflow Steps
-# Step 1 — Developer Writes Code
-Developers create or modify application source code.
 
-# Step 2 — Code is Committed
-The developer pushes the code to the organization's source-code repository.
+* **Step 1 — Developer Writes Code:** Developers create or modify application source code.
+* **Step 2 — Code is Committed:** The developer pushes the code to the organization's source-code repository.
+* **Step 3 — CI/CD Pipeline Starts:** A CI/CD tool such as Jenkins, GitHub Actions, GitLab CI/CD, or another supported system starts the build process.
+* **Step 4 — SonarScanner Performs Analysis:** SonarScanner analyzes the project's source code according to the configured rules and sends the analysis data to SonarQube.
+* **Step 5 — SonarQube Processes the Analysis:** SonarQube evaluates the code and generates metrics and issues.
+* **Step 6 — Quality Gate is Evaluated:** The project's Quality Gate determines whether the analyzed code satisfies the configured quality requirements.
+* **Step 7 — Action is Taken:** If the Quality Gate passes, the pipeline continues. If it fails, developers review and fix the reported issues before continuing.
 
-Step 3 — CI/CD Pipeline Starts
-A CI/CD tool such as Jenkins, GitHub Actions, GitLab CI/CD, or another supported system starts the build process.
+---
 
-Step 4 — SonarScanner Performs Analysis
-SonarScanner analyzes the project's source code according to the configured rules and sends the analysis data to SonarQube.
+## 7. Best Practices
 
-Step 5 — SonarQube Processes the Analysis
-SonarQube evaluates the code and generates metrics and issues.
+* **7.1 Integrate SonarQube with CI/CD:** Run code analysis automatically as part of the CI/CD pipeline.
+* **7.2 Use Quality Gates:** Define meaningful quality conditions instead of allowing every project to use unrestricted code quality standards.
+* **7.3 Review New Code:** Focus on issues introduced by new or changed code rather than attempting to fix an entire legacy codebase at once.
+* **7.4 Maintain Quality Profiles:** Review and maintain Quality Profiles according to project requirements and supported languages.
+* **7.5 Avoid Ignoring Issues Without Justification:** Issues should only be marked as ignored or accepted when there is a valid technical reason.
+* **7.6 Fix Critical Issues First:** Prioritize security vulnerabilities, reliability issues, and high-impact maintainability problems.
+* **7.7 Keep SonarQube Updated:** Regularly review SonarQube releases and update the platform and related components according to organizational change-management procedures.
+* **7.8 Secure SonarQube Access:** Use appropriate authentication, authorization, HTTPS, and access controls.
+* **7.9 Monitor the SonarQube Server:** Monitor server health, storage, database availability, and analysis performance.
+* **7.10 Integrate Security into Development:** Use SonarQube as one component of a broader application-security process rather than relying on it as the only security control.
 
-Step 6 — Quality Gate is Evaluated
-The project's Quality Gate determines whether the analyzed code satisfies the configured quality requirements.
+---
 
-Step 7 — Action is Taken
-If the Quality Gate passes, the pipeline can continue.
+## 8. Conclusion
 
-If the Quality Gate fails, developers review and fix the reported issues before continuing, depending on the organization's CI/CD policy.
-
-7. Best Practices
-7.1 Integrate SonarQube with CI/CD
-Run code analysis automatically as part of the CI/CD pipeline.
-
-7.2 Use Quality Gates
-Define meaningful quality conditions instead of allowing every project to use unrestricted code quality standards.
-
-7.3 Review New Code
-Focus on issues introduced by new or changed code rather than attempting to fix an entire legacy codebase at once.
-
-7.4 Maintain Quality Profiles
-Review and maintain Quality Profiles according to project requirements and supported languages.
-
-7.5 Avoid Ignoring Issues Without Justification
-Issues should only be marked as ignored or accepted when there is a valid technical reason.
-
-7.6 Fix Critical Issues First
-Prioritize security vulnerabilities, reliability issues, and high-impact maintainability problems.
-
-7.7 Keep SonarQube Updated
-Regularly review SonarQube releases and update the platform and related components according to organizational change-management procedures.
-
-7.8 Secure SonarQube Access
-Use appropriate authentication, authorization, HTTPS, and access controls.
-
-7.9 Monitor the SonarQube Server
-Monitor server health, storage, database availability, and analysis performance.
-
-7.10 Integrate Security into Development
-Use SonarQube as one component of a broader application-security process rather than relying on it as the only security control.
-
-8. Conclusion
 SonarQube provides an effective way to continuously inspect source code for quality and security issues. It helps organizations identify:
 
-Bugs
-Vulnerabilities
-Code smells
-Duplicated code
-Maintainability problems
-Reliability issues
+* Bugs
+* Vulnerabilities
+* Code smells
+* Duplicated code
+* Maintainability problems
+* Reliability issues
+
 By integrating SonarQube with CI/CD pipelines and implementing appropriate Quality Gates and Quality Profiles, organizations can detect issues earlier and maintain consistent software-quality standards.
 
-SonarQube should be used as part of a broader software-development and security process that includes:
+SonarQube should be used as part of a broader software-development and security process that includes testing, code review, dependency management, secure development practices, and continuous code-quality monitoring.
 
-Testing
-Code review
-Dependency management
-Secure development practices
-Continuous code-quality monitoring
-9. Contact Information
-Name	Email Address
-Ritu	
+---
+
+## 9. Contact Information
+
+| Name | Email Address |
+|---|---|
+| Ritu | — |
+
+---
 
 ## 10. References
+
 For references, use official Sonar documentation rather than random blogs.
 
-Reference	Description
-SonarQube Documentation	Official SonarQube Server documentation.
-SonarQube Concepts	SonarQube concepts and quality-related information.
-SonarQube Scanners	Documentation for SonarQube code-analysis scanners.
+| Reference | Description |
+|---|---|
+| SonarQube Documentation | Official SonarQube Server documentation. |
+| SonarQube Concepts | SonarQube concepts and quality-related information. |
+| SonarQube Scanners | Documentation for SonarQube code-analysis scanners. |
