@@ -105,3 +105,42 @@ Phir:
 10:01:00 → Cron starts → 49 sec wait → 10:01:49 → Script runs
 
 So sleep 49 ka purpose hai minute ke 49th second tak wait karna.
+
+
+buntu@ip-172-31-16-113:~$ sudo crontab -u ritu -e
+no crontab for ritu - using an empty one
+
+Select an editor.  To change later, run 'select-editor'.
+  1. /bin/nano        <---- easiest
+  2. /usr/bin/vim.basic
+  3. /usr/bin/vim.tiny
+  4. /bin/ed
+
+####------------------------------------------------
+buntu@ip-172-31-16-113:~$ sudo crontab -u ritu -e
+no crontab for ritu - using an empty one
+Select an editor.  To change later, run 'select-editor'.
+  1. /bin/nano        <---- easiest
+  2. /usr/bin/vim.basic
+crontab: installing new crontab
+ubuntu@ip-172-31-16-113:~$ cat /home/ritu/cron.log
+cat: /home/ritu/cron.log: Permission denied
+ubuntu@ip-172-31-16-113:~$ sudo cat /home/ritu/cron.log
+cat: /home/ritu/cron.log: No such file or directory
+ubuntu@ip-172-31-16-113:~$ su - ritu
+Password: 
+ritu@ip-172-31-16-113:~$ ls
+cron.log2
+ritu@ip-172-31-16-113:~$ cat cron.log2 
+Sat Aug 29 19:36:01 UTC 2026
+Sat Aug 29 19:37:01 UTC 2026
+ritu@ip-172-31-16-113:~$ 
+
+* * * * *  → har minute
+date       → current date/time
+>>         → output ko file me append karo
+/home/ritu/cron.log → log file
+2>&1       → errors bhi same file me save karo
+
+
+
