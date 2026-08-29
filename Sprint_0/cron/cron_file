@@ -142,5 +142,27 @@ date       → current date/time
 /home/ritu/cron.log → log file
 2>&1       → errors bhi same file me save karo
 
+crontab -l                         → current user
+sudo crontab -l                   → root
+sudo crontab -u ritu -l           → ritu
+/etc/crontab                      → system-wide
+/etc/cron.d/                      → additional system jobs
+/var/spool/cron/crontabs/         → users' crontabs
+
+| `crontab -e`                      | `/etc/cron.hourly/`                              | `/etc/cron.daily/`                               | `/etc/cron.weekly/`                              | `/etc/cron.monthly/`                             |
+| --------------------------------- | ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
+| User-specific jobs ke liye        | System-level hourly scripts                      | System-level daily scripts                       | System-level weekly scripts                      | System-level monthly scripts                     |
+| Schedule khud likhte ho           | Hourly schedule                                  | Daily schedule                                   | Weekly schedule                                  | Monthly schedule                                 |
+| `0 2 * * * command`               | Sirf executable script                           | Sirf executable script                           | Sirf executable script                           | Sirf executable script                           |
+| User ki crontab me save hoti hai  | `/etc/cron.hourly/` me file                      | `/etc/cron.daily/` me file                       | `/etc/cron.weekly/` me file                      | `/etc/cron.monthly/` me file                     |
+| Exact timing specify kar sakte ho | Exact time system configuration decide karti hai | Exact time system configuration decide karti hai | Exact time system configuration decide karti hai | Exact time system configuration decide karti hai |
+
+/etc
+ │
+ ├── cron.hourly
+ ├── cron.daily
+ ├── cron.weekly
+ └── cron.monthly
+
 
 
