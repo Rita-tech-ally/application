@@ -546,34 +546,6 @@ Month
 Day of Week
 ```
 
-* **Can Cron run scripts?**
-
-  * Yes, Cron can execute shell scripts and other executable commands at scheduled times.
-
-* **How can I run a Cron Job every 5 minutes?**
-
-  * Use:
-
-```text
-*/5 * * * * /path/to/script.sh
-```
-
-* **How can I check whether Cron is running?**
-
-  * On Ubuntu/Debian:
-
-```bash
-systemctl status cron
-```
-
-* On RHEL/CentOS/Amazon Linux:
-
-```bash
-systemctl status crond
-```
-
----
-
 # 11. Contact Information
 
 | Name |         Email Address             |
