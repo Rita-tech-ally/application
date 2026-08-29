@@ -67,3 +67,19 @@ Requirements file ko scan karein:
 Bash
 pip-audit -r requirements.txt
 
+pip install -r requirements.txt
+pip → Python packages install karne ka tool
+install → package install karne ke liye
+-r → requirements file ko read karo
+requirements.txt → jis file mein dependencies/packages listed hain
+
+pip freeze > requirements.txt
+pip
+
+👉 Python ka package manager hai.
+👉 freeze current environment mein installed Python packages aur unki exact versions ki list dikhata hai.
+>
+
+👉 Ye redirection operator hai.
+"Command ka output screen par dikhane ke bajay file mein likh do."
+
