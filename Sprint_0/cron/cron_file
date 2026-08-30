@@ -162,7 +162,22 @@ sudo crontab -u ritu -l           → ritu
  ├── cron.hourly
  ├── cron.daily
  ├── cron.weekly
- └── cron.monthly
+└── cron.monthly
+
+#######
+cd /etc/cron.daily
+ls
+Ye kya kaam karti hain?
+apport → system/application crashes ki information collect/report karta hai.
+apt-compat → APT package-management ke kuch automatic maintenance tasks handle karta hai.
+dpkg → installed packages ke related housekeeping/maintenance tasks.
+logrotate → purani log files ko rotate/compress karta hai, taaki logs disk space na bhar dein.
+man-db → Linux man pages ka database update karta hai.
+sysstat → system performance/statistics collection se related tasks run karta hai.
+
+/etc/cron.weekly/
+└── man-db
+man-db ka weekly job ensure karta hai ki naye/updated manual pages ka database properly updated rahe, jisse man commands ko information jaldi mil sake.
 
 
 
