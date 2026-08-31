@@ -1,4 +1,5 @@
 # SOP: Common Stack | Applications | JQ | Installation
+<img width="603" height="331" alt="image" src="https://github.com/user-attachments/assets/142575b9-e6a0-4bb6-8040-48c7be5aa348" />
 
 ---
 
@@ -6,7 +7,7 @@
 
 | Author | Created On | Version | L0 Reviewer | L1 Reviewer | L2 Reviewer |
 | --- | --- | --- | --- | --- | --- |
-| Ritu | 29/08/2026 | 1.0 | Liyakhat | Aman Raj | Sandeep Rawat/Ravindra |
+| Ritu | 31/08/2026 | 1.0 | Liyakhat | Aman Raj | Sandeep Rawat/Ravindra |
 
 ---
 
@@ -168,7 +169,7 @@ This confirms that the JQ command is available and executable.
 Run:
 
 ```bash
-echo '{"name":"Yogesh","role":"DevOps","tool":"JQ"}' > sample.json
+echo '{"name":"Shiv","role":"DevOps","tool":"JQ"}' > sample.json
 ```
 
 ## Step 2: Display JSON
@@ -180,7 +181,7 @@ cat sample.json
 Expected:
 
 ```json
-{"name":"Yogesh","role":"DevOps","tool":"JQ"}
+{"name":"Shiv","role":"DevOps","tool":"JQ"}
 ```
 
 ## Step 3: Parse JSON Using JQ
@@ -195,7 +196,7 @@ Expected:
 
 ```json
 {
-  "name": "Yogesh",
+  "name": "Shiv",
   "role": "DevOps",
   "tool": "JQ"
 }
@@ -212,7 +213,7 @@ jq '.name' sample.json
 Expected:
 
 ```text
-"Yogesh"
+"Shiv"
 ```
 
 <details>
@@ -281,9 +282,9 @@ Following these procedures helps DevOps engineers reliably use JQ for **JSON par
 
 # 12. Contact Information
 
-| **Name** | **Email** |
-| -------- | --------- |
-| Yogesh   | <email>   |
+| Name |         Email Address             |
+|-------|-----------------------------------
+| Ritu | ritu.dogra.snaatak@mygurukulam.co— |
 
 ---
 
