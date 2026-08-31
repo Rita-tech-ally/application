@@ -17,11 +17,10 @@
 2. [What is an Ansible Role](#2-what-is-an-ansible-role)
 3. [Why Ansible Roles are Used](#3-why-ansible-roles-are-used)
 4. [Features of Ansible Roles](#4-features-of-ansible-roles)
-5. [Benefits of Ansible Roles](#5-benefits-of-ansible-roles)
-6. [Conclusion](#6-conclusion)
-7. [FAQs](#7-faqs)
-8. [Contact Information](#8-contact-information)
-9. [References](#9-references)
+5. [Conclusion](#5-conclusion)
+6. [FAQs](#6-faqs)
+7. [Contact Information](#7-contact-information)
+8. [References](#8-references)
 
 ---
 
@@ -52,7 +51,7 @@ A role can contain:
 * **Meta** – Define role dependencies and metadata.
 
 ---
-## Why Use Roles?
+## 3. Why Ansible Roles are Used
 * **Modularity**: Break large, complex playbooks into small, manageable chunks.
 * **Reusability**: Write a "MySQL" role once, and use it across 10 different projects.
 * **Structure**: Enforces a standard layout that any Ansible developer can instantly understand.
@@ -88,19 +87,6 @@ ansible-galaxy init role
 
 ---
 
-## 5. Benefits of Ansible Roles
-
-Ansible Roles provide several benefits for infrastructure and application automation:
-
-* Reduce duplicate automation code.
-* Improve code organization.
-* Make automation easier to understand.
-* Support reuse across different environments.
-* Simplify troubleshooting and maintenance.
-* Improve team collaboration.
-* Make large Ansible projects easier to scale.
-* Provide a standard and predictable project structure.
-
 ### Example
 
 Without a role, a playbook may contain all installation, configuration, template, service, and variable logic in one place.
@@ -125,13 +111,13 @@ This separation makes the automation **cleaner, reusable, maintainable, and easi
 
 ---
 
-## 6. Conclusion
+## 5. Conclusion
 
 Ansible roles organize automation into a structured directory of tasks, variables, and handlers, making it reusable, modular, maintainable, and scalable across environments. Following this standard structure simplifies development, testing, troubleshooting, and team collaboration.
 
 ---
 
-## 7. FAQs
+## 6. FAQs
 
 ###  What is an Ansible Role?
 
@@ -175,7 +161,7 @@ The `templates` directory stores Jinja2 template files used to generate dynamic 
 
 ---
 
-## 8. Contact Information
+## 7. Contact Information
 
 | Name |            Email Address         |
 | ---- | ---------------------------------|
@@ -183,7 +169,7 @@ The `templates` directory stores Jinja2 template files used to generate dynamic 
 
 ---
 
-## 9. References
+## 8. References
 
 | Reference                                                                                                        | Description                                                           |
 | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
