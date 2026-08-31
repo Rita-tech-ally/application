@@ -2,9 +2,10 @@
 
 ## Document Information
 
-| Author | Created On | Version | L0 Reviewer | L1 Reviewer | L2 Reviewer |
-|---|---|---|---|---|---|
-| Ritu | 29-08-2026 | v1.0 | | | |
+| Author       | Created On | Version | Last Updated By | Last Edited On | | L0 Reviewer | L1 Reviewer | L2 Reviewer  |
+| ------------ | ---------- | ------- | --------------- | -------------- | ------------ | ----------- | ----------- | ------------ |
+| Ritu | 31/08/2026 | 1.0     | Ritu  | 31/08/2026     |      |Liyakhat |Aman Raj |Sandeep Rawat/Ravindra |
+|
 
 ---
 
