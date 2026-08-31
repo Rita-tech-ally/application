@@ -1,5 +1,4 @@
-
-  <img width="738" height="225" alt="image" src="https://github.com/user-attachments/assets/10f793ae-0178-49dc-8e6b-08064a58fbef" />
+<img width="1850" height="451" alt="image" src="https://github.com/user-attachments/assets/a89b05c7-99d6-495d-8e34-84d137b72298" />
 
   
 # SonarQube Documentation
@@ -119,7 +118,7 @@ Despite its benefits, SonarQube has some limitations:
 
 A typical SonarQube workflow is:
 
-<img width="1225" height="1284" alt="image" src="https://github.com/user-attachments/assets/a16b690f-2546-44fc-a083-86d705a7eb6e" />
+<img width="1024" height="1536" alt="image" src="https://github.com/user-attachments/assets/a15d555f-88d9-4ded-8606-f762a81a4bb8" />
 
 
 ## Workflow Steps
