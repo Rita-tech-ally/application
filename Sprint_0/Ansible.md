@@ -1,3 +1,5 @@
+<img width="554" height="361" alt="image" src="https://github.com/user-attachments/assets/0b0374f5-9eb8-4881-bfee-c381e13fd504" />
+
 # Documentation for Ansible Role
 
 ## Document Information
