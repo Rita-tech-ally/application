@@ -277,11 +277,7 @@ pip-audit -r requirements.txt
 
 ## 8. Conclusion
 
-`requirements.txt` provides a simple, portable way to declare and reproduce Python dependencies across development, testing, and production environments. Combined with disciplined versioning practices, it prevents unexpected breakages and keeps environments consistent across the team and across deployments.
-
-Before relying on a `requirements.txt` file in production, always test installation in a clean virtual environment, review version constraints, check for conflicts and vulnerabilities, and keep the file under version control.
-
-Regularly reviewing and updating dependencies helps keep the project secure and maintainable over time.
+A requirements.txt file ensures consistent and reproducible Python dependencies across environments when paired with proper versioning. Before production deployment, always test the installation in a clean virtual environment, review constraints, check for vulnerabilities, and track the file in version control. Regularly updating dependencies is also essential to maintain long-term security.
 
 ---
 
