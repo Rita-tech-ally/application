@@ -27,21 +27,15 @@
 
 ## 1. Introduction
 
-Ansible Role is a structured and reusable way to organize Ansible automation code. It helps divide a large Ansible project into smaller, manageable, and reusable components.
+An Ansible Role organizes complex automation code by splitting single, large playbooks into structured, reusable directories. This makes your code easier to read, maintain, and share.
 
-Instead of keeping all tasks, variables, handlers, templates, and files in a single playbook, an Ansible Role separates them into predefined directories. This makes automation code easier to understand, maintain, test, and reuse.
+Primary Uses:
 
-Ansible Roles are commonly used for tasks such as:
+Setup: Installing software, creating users, and configuring infrastructure.
 
-* Installing and configuring software.
-* Managing configuration files.
-* Creating users and directories.
-* Managing services.
-* Deploying applications.
-* Configuring monitoring tools.
-* Automating server and infrastructure configuration.
+Management: Controlling services, configuration files, and monitoring tools.
 
----
+Deployment: Rolling out applications.
 
 ## 2. What is an Ansible Role
 
@@ -83,7 +77,6 @@ ansible-galaxy init role
 | Feature                      | Description                                                                     |
 | ---------------------------- | ------------------------------------------------------------------------------- |
 | **Reusable**                 | Roles can be reused across multiple playbooks and servers.                      |
-| **Modular**                  | Automation is divided into logical components.                                  |
 | **Standard Structure**       | Roles follow a predefined directory structure.                                  |
 | **Variable Support**         | Variables can be managed using `defaults` and `vars`.                           |
 | **Template Support**         | Jinja2 templates can dynamically generate configuration files.                  |
