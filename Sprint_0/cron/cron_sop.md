@@ -29,8 +29,7 @@
 
 Many Linux administration tasks need to be executed automatically at specific times or at regular intervals. Examples include backups, log cleanup, system monitoring, report generation, database maintenance, and script execution.
 
-**Cron** is a time-based job scheduler available in Linux and Unix-like operating systems. It allows administrators and users to schedule commands and scripts to run automatically at predefined times.
-
+**Cron** A Cron job is a schedule task that allows you to run scripts or commands at a specified intervals. 
 Cron can be used to:
 
 * Schedule commands and scripts.
