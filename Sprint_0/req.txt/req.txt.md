@@ -221,9 +221,9 @@ Run `pip-audit` periodically, subscribe to Dependabot or Renovate alerts, and re
 
 ## 8. Contact Information
 
-| Name | Email Address |
-| ---- | -------------- |
-| Ritu |                |
+| Name |         Email Address             |
+| ---- | ----------------------------------|
+| Ritu | ritu.dogra.snaatak@mygurukulam.co |
 
 ---
 
