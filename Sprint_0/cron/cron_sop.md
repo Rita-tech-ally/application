@@ -26,16 +26,15 @@
 # 1. Introduction
 Cron is a time-based job scheduler in Unix-like operating systems that automates repetitive tasks and administrative commands at specified intervals.
 
-**Cron:-** A Cron job is a schedule task that allows you to run scripts or commands at a specified intervals. 
+**Cron Job:** A scheduled task that allows you to run scripts or commands automatically at specific intervals.
 
-Cron can be used to:
+Common Use Cases:
 
-Automate system maintenance and backups
+Automating system maintenance and backups.
 
-Run periodic scripts, logs cleanup, and health checks
+Running periodic scripts, log cleanup, and system health checks.
 
-Generate scheduled reports
-
+Generating and dispatching scheduled reports.
 ---
 
 # 2. Prerequisites
