@@ -137,7 +137,6 @@ crontab -r
 ```
 <img width="1311" height="314" alt="Screenshot from 2026-08-27 13-41-06" src="https://github.com/user-attachments/assets/6c83520e-1938-45a5-ba2c-2ead8efcbe50" />
 
-> **Note:** `crontab -r` removes all cron jobs for the current user. Use it carefully.
 
 ---
 
