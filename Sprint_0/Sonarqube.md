@@ -30,11 +30,7 @@
 
 # 1. Introduction
 
-Modern software development requires applications to be **secure, reliable, maintainable, and free from common coding issues**. As codebases grow, manually identifying bugs, vulnerabilities, code smells, and duplicated code becomes difficult.
-
-**SonarQube** is a code quality and security platform that analyzes source code and provides reports about issues that can affect software quality and maintainability.
-
-SonarQube can be integrated into development and **CI/CD workflows** to automatically analyze code and identify quality issues before applications are deployed.
+Modern software development requires applications to be secure, reliable, maintainable, and free from common coding issues. As codebases grow, manually identifying bugs, vulnerabilities, code smells, and duplicated code becomes difficult.
 
 ---
 
