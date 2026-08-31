@@ -121,11 +121,15 @@ A typical SonarQube workflow is:
 
 * **Step 1 — Developer Writes Code:** Developers create or modify application source code.
 * **Step 2 — Code is Committed:** The developer pushes the code to the organization's source-code repository.
-* **Step 3 — CI/CD Pipeline Starts:** A CI/CD tool such as Jenkins, GitHub Actions, GitLab CI/CD, or another supported system starts the build process.
-* **Step 4 — SonarScanner Performs Analysis:** SonarScanner analyzes the project's source code according to the configured rules and sends the analysis data to SonarQube.
+* **Step 3 — CI/CD Pipeline Starts:** A CI/CD tool such as Jenkins, GitHub Actions, GitLab CI/CD, or another supported system starts 
+              the build process.
+* **Step 4 — SonarScanner Performs Analysis:** SonarScanner analyzes the project's source code according to the configured rules 
+              and sends the analysis data to SonarQube.
 * **Step 5 — SonarQube Processes the Analysis:** SonarQube evaluates the code and generates metrics and issues.
-* **Step 6 — Quality Gate is Evaluated:** The project's Quality Gate determines whether the analyzed code satisfies the configured quality requirements.
-* **Step 7 — Action is Taken:** If the Quality Gate passes, the pipeline continues. If it fails, developers review and fix the reported issues before continuing.
+* **Step 6 — Quality Gate is Evaluated:** The project's Quality Gate determines whether the analyzed code satisfies the configured 
+             quality requirements.
+* **Step 7 — Action is Taken:** If the Quality Gate passes, the pipeline continues. If it fails, developers review and fix the reported 
+              issues before continuing.
 
 ---
 
