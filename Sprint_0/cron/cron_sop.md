@@ -204,7 +204,7 @@ Both `0` and `7` generally represent Sunday.
 
 ## 4.2 Common Examples
 
-### Run every minute
+### * Run every minute
 
 ```bash
 * * * * * /path/to/script.sh
@@ -213,7 +213,7 @@ Both `0` and `7` generally represent Sunday.
 <img width="865" height="88" alt="Screenshot from 2026-08-27 14-28-06" src="https://github.com/user-attachments/assets/453ffbe1-b2db-451b-8ffb-d49685d768c3" />
 
 ----
-### Run every 5 minutes
+### * Run every 5 minutes
 
 ```bash
 */5 * * * * /path/to/script.sh
@@ -222,7 +222,7 @@ Both `0` and `7` generally represent Sunday.
 
 ----
 
-### Run the script 30 seconds after every minute 
+### * Run the script 30 seconds after every minute 
 
 ```bash
 * * * * * sleep 30; /path/to/script.sh
@@ -234,7 +234,7 @@ command each minute. Therefore, this runs the script at approximately 30 seconds
 
 ----
 
-### Run every Monday to Friday at 1:23 PM
+### * Run every Monday to Friday at 1:23 PM
 
 ```bash
 23 13 * * 1-5 /path/to/backup.sh
