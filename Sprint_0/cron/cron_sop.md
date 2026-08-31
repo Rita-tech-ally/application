@@ -1,8 +1,6 @@
+   <img width="1000" height="420" alt="image" src="https://github.com/user-attachments/assets/e0ca5795-b2e2-40f7-9df0-a52a1a85d9b1" />
+
 # SOP for Cron Jobs
-
-   <img width="200" height="200" alt="image" src="https://github.com/user-attachments/assets/36ed5bab-e166-4210-bc9c-0efdb7d248aa" />
-
-
 ## Document Information
 
 
@@ -13,38 +11,30 @@
 
 # Table of Contents
 
-1. [Purpose](#1-purpose)
+1. [Introduction](#1-introduction)
 2. [Prerequisites](#2-prerequisites)
 3. [Cron Configuration Structure](#3-cron-configuration-structure)
 4. [Cron Job Syntax and Key Parameters](#4-cron-job-syntax-and-key-parameters)
 5. [Configuration Steps](#5-configuration-steps)
 6. [Testing Cron Jobs](#6-testing-cron-jobs)
-7. [Automation and Scheduling](#7-automation-and-scheduling)
-8. [Monitoring and Troubleshooting](#8-monitoring-and-troubleshooting)
-9. [Conclusion](#9-conclusion)
-10. [FAQs](#10-faqs)
-11. [Contact Information](#11-contact-information)
-12. [References](#12-references)
+7. [Check Cron Logs](#7-check-cron-logs)
+8. [Conclusion](#8-conclusion)
+9. [FAQs](#9-faqs)
+10. [Contact Information](#10-contact-information)
+11. [References](#11-references)
 
----
+# 1. Introduction
+Cron is a time-based job scheduler in Unix-like operating systems that automates repetitive tasks and administrative commands at specified intervals.
 
-# 1. Purpose
+**Cron:-** A Cron job is a schedule task that allows you to run scripts or commands at a specified intervals. 
 
-Many Linux administration tasks need to be executed automatically at specific times or at regular intervals. Examples include backups, log cleanup, system monitoring, report generation, database maintenance, and script execution.
-
-**Cron** A Cron job is a schedule task that allows you to run scripts or commands at a specified intervals. 
 Cron can be used to:
 
-* Schedule commands and scripts.
-* Run tasks periodically.
-* Automate system maintenance.
-* Execute backup scripts.
-* Perform log cleanup.
-* Generate scheduled reports.
-* Run monitoring or health-check scripts.
-* Automate repetitive administrative tasks.
+Automate system maintenance and backups
 
-This SOP explains how to configure and manage **Cron Jobs**, including cron syntax, scheduling, configuration, testing, automation, monitoring, and troubleshooting.
+Run periodic scripts, logs cleanup, and health checks
+
+Generate scheduled reports
 
 ---
 
@@ -122,6 +112,7 @@ and:
 /etc/cron.weekly/
 /etc/cron.monthly/
 ```
+---
 
 ## 3.1 User Crontab
 
@@ -197,6 +188,8 @@ The five fields are:
 
 Both `0` and `7` generally represent Sunday.
 
+----
+
 ## 4.1 Common Cron Scheduling Parameters
 
 | Parameter    | Description                     | Example     |
@@ -221,12 +214,15 @@ Both `0` and `7` generally represent Sunday.
 
 <img width="865" height="88" alt="Screenshot from 2026-08-27 14-28-06" src="https://github.com/user-attachments/assets/453ffbe1-b2db-451b-8ffb-d49685d768c3" />
 
+----
 ### Run every 5 minutes
 
 ```bash
 */5 * * * * /path/to/script.sh
 ```
 <img width="861" height="133" alt="Screenshot from 2026-08-27 14-32-58" src="https://github.com/user-attachments/assets/78247c4c-ddbd-4ea1-bb00-b7bbf4147890" />
+
+----
 
 ### Run the script 30 seconds after every minute 
 
@@ -238,12 +234,16 @@ Both `0` and `7` generally represent Sunday.
 Note: Cron does not have a seconds field. The sleep 30 command delays execution by 30 seconds after Cron starts the
 command each minute. Therefore, this runs the script at approximately 30 seconds past each minute, not every 30 seconds.
 
+----
+
 ### Run every Monday to Friday at 1:23 PM
 
 ```bash
 23 13 * * 1-5 /path/to/backup.sh
 ```
 <img width="862" height="153" alt="Screenshot from 2026-08-27 14-25-25" src="https://github.com/user-attachments/assets/7b3d49b4-17ff-4b27-a0ee-593127e14693" />
+
+----
 
 # 5. Configuration Steps
 
@@ -373,78 +373,7 @@ After successful testing, change the cron schedule to the required production sc
 
 ---
 
-## 6.3 Verify Cron Service
-
-Ubuntu/Debian:
-
-```bash
-systemctl status cron
-```
-
-RHEL/CentOS/Amazon Linux:
-
-```bash
-systemctl status crond
-```
-
----
-
-# 7. Automation and Scheduling
-
-Cron is designed to execute commands and scripts automatically according to the configured schedule.
-
-Cron can be used for several automation tasks, including:
-
-* Database backups.
-* Application maintenance.
-* Log cleanup.
-* Temporary file cleanup.
-* System health checks.
-* Report generation.
-* Application scripts.
-* Data synchronization.
-* Monitoring tasks.
-
-## 7.1 Example: Automated Backup
-
-A backup script can be scheduled every day at 1:00 AM:
-
-```text
-0 1 * * * /home/ritu/backup.sh
-```
-<img width="559" height="87" alt="Screenshot from 2026-08-26 23-49-25" src="https://github.com/user-attachments/assets/8e874c2c-3e4b-41f9-94f6-8a4301d59f5d" />
-
-
-## 7.2 Redirect Output to a Log File
-
-Cron jobs can redirect standard output and errors to a log file:
-
-```text
-0 2 * * * /home/ritu/backup.sh >> /home/ritu/cron.log 2>&1
-```
-<img width="556" height="109" alt="Screenshot from 2026-08-26 23-50-01" src="https://github.com/user-attachments/assets/83544106-8372-4dc1-b9ee-94d6a8f0c09d" />
-
-Here:
-
-* `>>` appends standard output to the log file.
-* `2>&1` redirects error output to the same log file.
-
----
-
-# 8. Monitoring and Troubleshooting
-
-## 8.1 Check Configured Cron Jobs
-
-Display the current user's cron jobs:
-
-```bash
-crontab -l
-```
-<img width="556" height="109" alt="Screenshot from 2026-08-26 23-50-01" src="https://github.com/user-attachments/assets/2caffd5b-c763-4635-aaf2-8dcbf356adc1" />
-
----
-
-## 8.2 Check Cron Logs
+## 7 Check Cron Logs
 
 On Ubuntu/Debian systems, cron activity can commonly be checked using:
 
@@ -468,28 +397,13 @@ journalctl -u crond
 
 ---
 
-## 8.3 Common Issues
-
-| Issue                                       | Cause                                                       | Solution                                                                      |
-| ------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| Cron job is not running                     | Cron service may not be running                             | Check `systemctl status cron` or `systemctl status crond`.                    |
-| Incorrect schedule                          | Cron expression is incorrect                                | Verify the five cron fields and test with a frequent schedule.                |
-| Script does not execute                     | Script does not have execute permission                     | Use `chmod +x /path/to/script.sh`.                                            |
-| Command works manually but not through Cron | Cron has a limited environment/PATH                         | Use absolute paths for commands and files.                                    |
-| No output is generated                      | Output is not redirected                                    | Redirect output and errors to a log file.                                     |
-| Permission denied                           | User does not have required permissions                     | Verify ownership, permissions, and whether the task requires root privileges. |
-| Environment variables are missing           | Cron does not load the normal interactive shell environment | Define required variables in the crontab or use absolute paths.               |
-| Job runs at the wrong time                  | Time zone or system time configuration issue                | Verify system date, time, and time zone using `date` and `timedatectl`.       |
-
----
-
-# 9. Conclusion
+# 8. Conclusion
 
 Cron is a reliable Linux utility that automates repetitive tasks like backups, log cleanup, and system maintenance by scheduling commands at specific intervals. Before deploying jobs to production, always test commands, verify schedules, and set up proper logging. Regular monitoring is essential to ensure successful execution and quickly catch any failures.
 
 ---
 
-# 10. FAQs
+# 9. FAQs
 
 * **What is Cron?**
 
@@ -497,17 +411,7 @@ Cron is a reliable Linux utility that automates repetitive tasks like backups, l
 
 * **How can I create a Cron Job?**
 
-  * Use the following command:
-
-```bash
-crontab -e
-```
-
-* Then add the required schedule and command.
-
-* **How can I list Cron Jobs?**
-
-  * Use:
+  * Use the following command: 
 
 ```bash
 crontab -l
@@ -535,7 +439,7 @@ Month
 Day of Week
 ```
 
-# 11. Contact Information
+# 10. Contact Information
 
 | Name |         Email Address             |
 | ---- | ----------------------------------|
@@ -543,7 +447,7 @@ Day of Week
 
 ---
 
-# 12. References
+# 11. References
 
 | Links                                                | Description                                     |
 | ---------------------------------------------------- | ----------------------------------------------- |
