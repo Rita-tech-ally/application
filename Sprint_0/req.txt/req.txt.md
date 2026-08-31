@@ -1,5 +1,7 @@
 # Documentation for requirements.txt
 
+<img width="738" height="216" alt="image" src="https://github.com/user-attachments/assets/335edf5b-2f08-4bee-b895-4aaef22c52d6" />
+
 ***Documentation— Python Dependency Management**
 
 ## Document Information
