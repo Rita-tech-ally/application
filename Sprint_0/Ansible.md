@@ -70,7 +70,9 @@ The magic of Roles lies in their specific directory structure. Ansible looks for
 
 To create the skeleton of a role automatically, use the ansible-galaxy command:
 
-ansible-galaxy init my_webserver_role
+ansible-galaxy init role
+
+
 <img width="214" height="418" alt="image" src="https://github.com/user-attachments/assets/69d3f3ce-900f-4fdc-8b23-35f99887927b" />
 
 ## 4. Features of Ansible Roles
