@@ -189,6 +189,7 @@ A typical SonarQube workflow is:
                                      | Re-analysis|
 
 ---
+```
 
 ## Workflow Steps
 
