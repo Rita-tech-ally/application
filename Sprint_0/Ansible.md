@@ -54,86 +54,24 @@ A role can contain:
 * **Files** – Store static files that need to be copied to managed servers.
 * **Meta** – Define role dependencies and metadata.
 
-A typical Ansible Role structure looks like:
+---
+## Why Use Roles?
+* **Modularity**: Break large, complex playbooks into small, manageable chunks.
+* **Reusability**: Write a "MySQL" role once, and use it across 10 different projects.
+* **Structure**: Enforces a standard layout that any Ansible developer can instantly understand.
+* **Sharing** : Roles can be shared via Ansible Galaxy (the public repository for Ansible roles).
 
-```text
-ansible-role/
-├── defaults/
-│   └── main.yml
-├── files/
-├── handlers/
-│   └── main.yml
-├── meta/
-│   └── main.yml
-├── tasks/
-│   └── main.yml
-├── templates/
-├── vars/
-│   └── main.yml
-└── README.md
-```
-
-This predefined structure provides a consistent way to organize automation code.
+<img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/e44e477f-c768-4c6b-bb9f-60b4e3375c8a" />
 
 ---
 
-## 3. Why Ansible Roles are Used
+## Ansible Role
+The magic of Roles lies in their specific directory structure. Ansible looks for a main.yml file in each of these standard directories to know what to do.
 
-As an Ansible project grows, managing everything inside a single playbook can become difficult. Roles solve this problem by separating automation into logical and reusable components.
+To create the skeleton of a role automatically, use the ansible-galaxy command:
 
-### 3.1 Reusability
-
-A role can be reused across multiple playbooks and environments.
-
-For example, a role created for installing and configuring Nginx can be reused for multiple servers without writing the same tasks again.
-
-### 3.2 Maintainability
-
-Roles divide automation into separate directories based on their purpose. This makes it easier to locate and update a particular part of the configuration.
-
-For example:
-
-* Configuration files → `templates/`
-* Installation/configuration tasks → `tasks/`
-* Service restart → `handlers/`
-* Default values → `defaults/`
-
-### 3.3 Modularity
-
-Each role can represent one specific responsibility.
-
-For example:
-
-```text
-roles/
-├── nginx/
-├── mysql/
-├── docker/
-└── monitoring/
-```
-
-Each role can independently manage a specific component.
-
-### 3.4 Consistency
-
-Roles help maintain a standard structure across Ansible projects. Team members can easily understand where tasks, variables, templates, and handlers are located.
-
-### 3.5 Easy Collaboration
-
-Since each component is separated into a role, multiple team members can work on different roles without modifying one large playbook.
-
-### 3.6 Environment Management
-
-The same role can be used across different environments such as:
-
-* Development
-* Testing
-* Staging
-* Production
-
-Variables can be changed according to the environment without changing the core role logic.
-
----
+ansible-galaxy init my_webserver_role
+<img width="214" height="418" alt="image" src="https://github.com/user-attachments/assets/69d3f3ce-900f-4fdc-8b23-35f99887927b" />
 
 ## 4. Features of Ansible Roles
 
@@ -247,18 +185,6 @@ Handlers are used for actions that should run when they are notified by a task, 
 ### What is the purpose of the `templates` directory?
 
 The `templates` directory stores Jinja2 template files used to generate dynamic configuration files based on variables.
-
-### What is the purpose of the `files` directory?
-
-The `files` directory stores static files that need to be copied to managed nodes.
-
-### What is `meta/main.yml` used for?
-
-`meta/main.yml` contains role metadata and can be used to define dependencies on other Ansible Roles.
-
-### Can the same role be used for multiple environments?
-
-Yes. The same role can be reused across Development, Testing, Staging, and Production environments by providing environment-specific variables.
 
 ---
 
