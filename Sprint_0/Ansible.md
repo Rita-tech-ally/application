@@ -42,14 +42,15 @@ An **Ansible Role** is a standardized directory structure used to organize relat
 
 A role can contain:
 
-* **Tasks** – Define the actions Ansible should perform.
-* **Handlers** – Perform actions when notified by tasks, such as restarting a service.
-* **Defaults** – Store default variable values.
-* **Vars** – Store role-specific variables.
-* **Templates** – Store Jinja2 templates for dynamic configuration files.
-* **Files** – Store static files that need to be copied to managed servers.
-* **Meta** – Define role dependencies and metadata.
-
+| S.No. | Role Component | Description |
+| --- | --- | --- |
+| **1** | **Tasks** | Define the actions Ansible should perform. |
+| **2** | **Handlers** | Perform actions when notified by tasks, such as restarting a service. |
+| **3** | **Defaults** | Store default variable values. |
+| **4** | **Vars** | Store role-specific variables. |
+| **5** | **Templates** | Store Jinja2 templates for dynamic configuration files. |
+| **6** | **Files** | Store static files that need to be copied to managed servers. |
+| **7** | **Meta** | Define role dependencies and metadata. |
 ---
 ## 3. Why Ansible Roles are Used
 * **Modularity**: Break large, complex playbooks into small, manageable chunks.
