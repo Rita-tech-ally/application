@@ -1,4 +1,9 @@
+
+  <img width="738" height="225" alt="image" src="https://github.com/user-attachments/assets/10f793ae-0178-49dc-8e6b-08064a58fbef" />
+
+  
 # SonarQube Documentation
+
 
 ## Document Information
 
