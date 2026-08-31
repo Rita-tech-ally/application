@@ -61,37 +61,21 @@ SonarQube supports analysis of multiple programming languages and can be integra
 
 ---
 
-# 3. Why SonarQube is Used
+# Why Use SonarQube?
+ * **Detects bugs and vulnerabilities**
+SonarQube scans your code for security risks, memory leaks, and potential runtime errors (many of which might go unnoticed during development) before they cause real issues.
 
-SonarQube is used to identify **code-quality and security problems early in the software development lifecycle**.
+* **Improves code maintainability**
+By identifying code smells, SonarQube helps developers write cleaner and more efficient code, reducing technical debt.
 
-## 3.1 Detect Bugs
+* **Enforces coding standards**
+It ensures that developers follow best practices by applying configurable rules to the codebase, such as indentation, line breaks, typing conventions, and other formatting guidelines.
 
-SonarQube can identify coding patterns that may result in incorrect application behavior.
+* **Integrates with IDEs**
+SonarQube provides real-time feedback while coding, helping you fix issues before committing your changes. It is compatible with many languages, but if you're working with TypeScript, I recommend using SonarLint + ESLint + Prettier a powerful combination of tools that will help you write clean and efficient code.
 
-## 3.2 Identify Security Issues
-
-It helps developers identify vulnerabilities and security-related coding problems.
-
-## 3.3 Detect Code Smells
-
-Code smells indicate code that may be difficult to understand, maintain, or modify.
-
-## 3.4 Improve Code Maintainability
-
-Regular code analysis helps teams maintain cleaner and more maintainable codebases.
-
-## 3.5 Detect Duplicate Code
-
-SonarQube can identify duplicated code so developers can reduce unnecessary repetition.
-
-## 3.6 Integrate with CI/CD
-
-SonarQube can be integrated into CI/CD pipelines so that source code is analyzed automatically during builds.
-
-## 3.7 Enforce Quality Standards
-
-Quality Gates allow organizations to define minimum quality and security requirements for projects.
+* **Works in CI/CD pipelines**
+You can automate code quality checks in your build pipeline, preventing bad code from being merged into production.
 
 ---
 
@@ -129,67 +113,8 @@ Despite its benefits, SonarQube has some limitations:
 
 A typical SonarQube workflow is:
 
-```text
-+----------------------+
-|      Developer       |
-+----------+-----------+
-           |
-           v
-+----------------------+
-| Write / Modify Code  |
-+----------+-----------+
-           |
-           v
-+----------------------+
-|     Commit Code      |
-+----------+-----------+
-           |
-           v
-+----------------------+
-|   CI/CD Pipeline     |
-+----------+-----------+
-           |
-           v
-+----------------------+
-|     SonarScanner     |
-+----------+-----------+
-           |
-           v
-+----------------------+
-|  SonarQube Server    |
-+----------+-----------+
-           |
-           v
-+----------------------+
-|    Code Analysis     |
-+----------+-----------+
-           |
-           +-------------------+
-           |                   |
-           v                   v
-+------------------+   +------------------+
-| Issues / Metrics |   |  Quality Gate    |
-+------------------+   +--------+---------+
-                               |
-                    +----------+----------+
-                    |                     |
-                    v                     v
-                 +------+              +------+
-                 | Pass |              | Fail |
-                 +--+---+              +--+---+
-                    |                     |
-                    v                     v
-              +-----------+         +-------------+
-              | Continue  |         | Fix Issues  |
-              | Pipeline  |         +------+------+
-              +-----------+                |
-                                           |
-                                           v
-                                     +-----------+
-                                     | Re-analysis|
+<img width="1225" height="1284" alt="image" src="https://github.com/user-attachments/assets/a16b690f-2546-44fc-a083-86d705a7eb6e" />
 
----
-```
 
 ## Workflow Steps
 
@@ -210,36 +135,21 @@ A typical SonarQube workflow is:
 * **7.3 Review New Code:** Focus on issues introduced by new or changed code rather than attempting to fix an entire legacy codebase at once.
 * **7.4 Maintain Quality Profiles:** Review and maintain Quality Profiles according to project requirements and supported languages.
 * **7.5 Avoid Ignoring Issues Without Justification:** Issues should only be marked as ignored or accepted when there is a valid technical reason.
-* **7.6 Fix Critical Issues First:** Prioritize security vulnerabilities, reliability issues, and high-impact maintainability problems.
-* **7.7 Keep SonarQube Updated:** Regularly review SonarQube releases and update the platform and related components according to organizational change-management procedures.
-* **7.8 Secure SonarQube Access:** Use appropriate authentication, authorization, HTTPS, and access controls.
-* **7.9 Monitor the SonarQube Server:** Monitor server health, storage, database availability, and analysis performance.
-* **7.10 Integrate Security into Development:** Use SonarQube as one component of a broader application-security process rather than relying on it as the only security control.
-
+.
 ---
 
 ## 8. Conclusion
 
-SonarQube provides an effective way to continuously inspect source code for quality and security issues. It helps organizations identify:
-
-* Bugs
-* Vulnerabilities
-* Code smells
-* Duplicated code
-* Maintainability problems
-* Reliability issues
-
-By integrating SonarQube with CI/CD pipelines and implementing appropriate Quality Gates and Quality Profiles, organizations can detect issues earlier and maintain consistent software-quality standards.
-
-SonarQube should be used as part of a broader software-development and security process that includes testing, code review, dependency management, secure development practices, and continuous code-quality monitoring.
+SonarQube continuously checks source code to identify bugs, vulnerabilities, code smells, duplicate code, and maintainability issues.
+It integrates with CI/CD pipelines using Quality Gates and Quality Profiles to maintain consistent code quality and security standards.
 
 ---
 
 ## 9. Contact Information
 
-| Name | Email Address |
-|---|---|
-| Ritu | — |
+| Name |         Email Address             |
+|-------|-----------------------------------
+| Ritu | ritu.dogra.snaatak@mygurukulam.co— |
 
 ---
 
