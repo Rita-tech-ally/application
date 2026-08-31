@@ -31,18 +31,16 @@
 
 ## 1. Purpose
 
-Python projects rely on external libraries, and different environments (development, testing, staging, production) must install the exact same set of dependencies to behave consistently. The `requirements.txt` file is the de-facto standard mechanism for declaring, sharing, and reproducing the Python packages a project needs.
+Purpose of requirements.txt
+To act as the standard blueprint for a Python project's dependencies, ensuring identical setups across all environments. Specifically, it is used to:
 
-`requirements.txt` can be used to:
+**Declare & Share**: List exact required packages for other developers and CI/CD pipelines.
 
-* Declare the exact packages a project depends on.
-* Reproduce an identical environment across machines and environments.
-* Share dependency information with other developers and CI/CD pipelines.
-* Pin package versions to avoid unexpected breaking changes.
-* Separate dependencies for development, testing, and production.
-* Automate environment setup during deployment and containerization.
+**Reproduce Environments**: Guarantee consistency across Development, Testing, and Production.
 
-This SOP explains why `requirements.txt` is used, common use cases, file structure and syntax, dependency versioning best practices, configuration steps, testing, automation, and troubleshooting.
+**Prevent Breaks**: Pin specific package versions to avoid unexpected errors from updates.
+
+**Automate Deployments**: Streamline containerization and automated environment setup.
 
 ---
 
