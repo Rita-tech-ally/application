@@ -52,6 +52,7 @@ Update the package information before installing jq.
 ```bash
 sudo apt update
 ```
+<img width="957" height="58" alt="Screenshot from 2026-09-01 19-36-55" src="https://github.com/user-attachments/assets/8036ced4-5f64-4f11-b2b1-1296b59d365d" />
 
 ---
 
@@ -62,6 +63,7 @@ Install jq using the `apt` package manager.
 ```bash
 sudo apt install jq -y
 ```
+<img width="957" height="169" alt="Screenshot from 2026-09-01 19-38-03" src="https://github.com/user-attachments/assets/f1afbc10-8c5f-43c0-af4b-b5cc506d0c87" />
 
 ---
 
@@ -72,11 +74,12 @@ Check whether jq has been installed successfully.
 ```bash
 jq --version
 ```
+<img width="957" height="52" alt="Screenshot from 2026-09-01 19-38-54" src="https://github.com/user-attachments/assets/4f058bc9-f81c-45b1-8242-769ee80ef7b4" />
 
 Expected output will display the installed jq version, for example:
 
 ```text
-jq-1.6
+jq-1.7
 ```
 
 ---
@@ -94,6 +97,7 @@ A successful installation normally returns a path similar to:
 ```text
 /usr/bin/jq
 ```
+<img width="957" height="60" alt="Screenshot from 2026-09-01 19-39-27" src="https://github.com/user-attachments/assets/6aa3ae77-195d-4b2b-bbd3-a50a94f97029" />
 
 ---
 
