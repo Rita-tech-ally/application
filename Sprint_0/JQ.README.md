@@ -17,13 +17,15 @@
 
 # Table of Contents
 
+# Table of Contents
+
 1. [Purpose](#1-purpose)
 2. [Prerequisites](#2-prerequisites)
 3. [Step-by-Step Installation](#3-step-by-step-installation)
 4. [Conclusion](#4-conclusion)
-5. [References](#5-references)
-6. [Contact Information](#6-contact-information)
-
+5. [FAQ](#5-faq)
+6. [References](#6-references)
+7. [Contact Information](#7-contact-information)
 ---
 
 # 1. Purpose
@@ -106,8 +108,52 @@ A successful installation normally returns a path similar to:
 jq can be installed easily on Linux using the system package manager. After installation, `jq --version` and `which jq` can be used to verify the installation and locate the executable.
 
 ---
+# 5. FAQ
 
-# 5. References
+### 1. What is jq?
+
+`jq` is a lightweight command-line tool used to **parse, filter, and process JSON data**.
+
+### 2. Why is jq used?
+
+jq is commonly used to extract specific information from JSON output, especially while working with **APIs, AWS CLI, and automation scripts**.
+
+### 3. How do I install jq on Ubuntu?
+
+Use the following commands:
+
+```bash
+sudo apt update
+sudo apt install jq -y
+```
+
+### 4. How can I check whether jq is installed?
+
+Run:
+
+```bash
+jq --version
+```
+
+If jq is installed, it will display the installed version.
+
+### 6. How can I find the location of jq?
+
+Run:
+
+```bash
+which jq
+```
+
+Usually, the output is:
+
+```text
+/usr/bin/jq
+```
+
+---
+
+# 6. References
 
 | Resource                  | Link                         |
 | ------------------------- | ---------------------------- |
@@ -116,10 +162,10 @@ jq can be installed easily on Linux using the system package manager. After inst
 
 ---
 
-# 6. Contact Information
+# 7. Contact Information
 
 | Name  | Email ID                                                                        |
 | ----- | ------------------------------------------------------------------------------- |
-| Mehak | [mehak.gupta.snaatak@mygurukulam.co](mailto:mehak.gupta.snaatak@mygurukulam.co) |
+| Ritu | [ritu.dogra.snaatak@mygurukulam.co](mailto:ritu.dogra.snaatak@mygurukulam.co) |
 
 ---
