@@ -73,12 +73,13 @@ Typical role structure:
 
 ---
 
+
 # 4. CI Workflow
 
 The CI workflow automatically validates Ansible changes before they are merged into the main branch.
 
-### Workflow
-<img width="682" height="1024" alt="image" src="https://github.com/user-attachments/assets/c865bb59-91b5-45c9-8452-cd6c3f1b3d32" />
+<img width="563" height="1024" alt="image" src="https://github.com/user-attachments/assets/488501c6-c509-415c-98f9-87c87ca38e8f" />
+
 
 ----
 
