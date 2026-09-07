@@ -97,8 +97,10 @@ Environment Consistency: Har library ka exact version lock karna taaki code aapk
 | **Reproducibility** | **Same Environment**        | Lock file ki wajah se different machines ya future mein **same dependency versions** ke saath environment recreate kiya ja sakta hai.                            |
 | **Tool 1**          | **pip-tools**               | `requirements.in` se locked `requirements.txt` generate karta hai.                                                                                               |
 | **Tool 2**          | **Poetry**                  | Dependencies ko manage karta hai aur `poetry.lock` file generate karta hai.                                                                                      |
-| **Tool 3**          | **Pipenv**                  | Dependencies ko manage karta hai aur `Pipfile.lock` generate karta hai.                                                                                          |
-
+| **Tool 3**          | **Pipenv**                  | Dependencies ko manage karta hai aur `Pipfile.lock` generate karta hai.                    
+|
+pip ("Pip Installs Packages")
+PyPI (Python Package Index)
 ---
 
 # JQ
