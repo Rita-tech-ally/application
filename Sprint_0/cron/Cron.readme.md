@@ -126,3 +126,69 @@ jq is like sed for JSON data - you can use it to slice and filter and map and tr
 **Executable Binary File:** Yeh ek compiled program hai. Yaani yeh aisi file hai jise computer seedha 'run' ya 'execute' karta hai.
 
 **Short mein:** Jab bhi aap apne terminal mein jq command type karte hain, toh aapka Linux system chupchaap isi /usr/bin/jq file ke paas jata hai aur us program ko aapke liye chala deta hai.
+
+
+**linux-amd64** ka matlab hai ki yeh 64-bit Linux OS (jaise Ubuntu ya CentOS) ke liye bani hui ek "ready-to-use" (pre-compiled) file hai.
+
+#### Download hone ke baad kya karna hota hai?
+Sirf is command ko chalane se jq install nahi hoga, wo bas ek normal file ki tarah aapke folder mein download ho jayega. Ise ek proper "command" banane ke liye aapko iske baad yeh 2 steps aur karne padte hain:
+
+#### Step 1: Ise 'Executable' (chalne layaq) banayein
+Download ki hui file par abhi run karne ki permission nahi hoti. Ise permission dene ke liye yeh command chalani padti hai:
+
+#### Bash
+chmod +x jq-linux-amd64
+Step 2: Ise system ke main folder mein move karein (naam badal kar)
+Taaki aap apne PC mein kahin se bhi sirf jq likh kar is tool ko chala sakein, ise /usr/local/bin/ folder mein move karna padta hai:
+
+#### Bash
+sudo mv jq-linux-amd64 /usr/local/bin/jq
+Uske baad aap terminal mein seedha jq --version likh kar check kar sakte hain ki tool sahi se setup ho gaya hai.
+
+# hash -r command Linux terminal (Bash shell) ki "Memory (Cache) ko clear/reset" karne ke liye use hoti hai.
+
+Ise aur achhe se samajhne ke liye dekhte hain ki yeh kis problem ko solve karti hai:
+
+**Background:** Terminal ki Memory (Hash Table)
+Jab aap terminal mein koi command (jaise python, jq, ya nano) pehli baar type karte hain, toh Linux aapke system (aam taur par $PATH) mein usko dhundhta hai.
+Jab wo mil jati hai, toh terminal agli baar apna time bachane ke liye us file ke location (rasta) ko yaad kar leta hai aur ek "Hash Table" (cache) mein save kar leta hai.
+
+***Problem Kya Hoti Hai?***
+Maan lijiye aapne system mein pehle se majood koi program (jaise jq) kisi nayi jagah par move kar diya (jaise pichle example mein humne /usr/local/bin/ mein kiya tha).
+
+Ab agar aap terminal mein jq type karenge, toh terminal apni purani memory ke hisaab se use purani jagah par dhundhega, aur aapko ajeeb sa error dega:bash: /purana/rasta/jq: No such file or directory (Jabki file apne system mein nayi jagah par daal di hai).
+
+**hash -r Kya Karta Hai?**
+hash: Yeh command terminal ki uss memory (cache) ko dikhati hai jahan commands ke raste save hain.
+
+-r (Reset / Remove): Yeh us poori memory (cache) ko delete kar deta hai.
+
+**Nateeja (Result):**
+Jab aap hash -r chalate hain, toh terminal sab kuch bhool jata hai. Ab agli baar jab aap jq (ya koi aur command) type karenge, toh terminal bina purani memory use kiye, naye sire se usko sahi jagah par dhundhega aur bina error ke run kar dega.
+
+**Short Summary:** Agar aap kisi command/program ko ek folder se dusre folder mein move/update karte hain, aur terminal usko recognize nahi kar raha hai ya purana version dikha raha hai, toh hash -r chalane se problem solve ho jati hai.
+
+. Normal Download (sudo apt install jq)Jab aap apt (Package Manager) ka use karte hain, toh aap system ko ek VIP service ka order dete hain. apt sirf file download nahi karta, wo background mein yeh saare kaam automatically (khud se) kar deta hai:
+
+Wo sahi version dhundhta hai.File ko download karta hai.Usko automatically execute permission (chmod +x) de deta hai.File ko khud utha kar sahi folder (/usr/bin/jq) mein daal deta hai.Aapko kuch bhi manual nahi karna padta, sab kuch ek command mein ho jata hai. (Yeh bilkul Zomato se paka-pakaya khana order karne jaisa hai).
+
+2. Specific Version (wget wala tareeqa)Jab aapko koi specific version (jaise 1.8) chahiye hota hai jo apt ke paas nahi hai, toh aap wget use karte hain. Lekin wget package manager nahi hai, yeh sirf ek downloader tool hai.Permission kyun deni padi (chmod)? Linux security ke mamle mein bahut strict hai.
+
+Internet se download ki hui kisi bhi raw file ko Linux sirf ek "Text/Data file" maanta hai, virus/malware se bachne ke liye wo usko run karne se rokta hai. Isliye aapko OS ko batana pada ki "Yeh safe hai, ise software ki tarah run karne ki permission do (chmod +x)."Move kyun karna pada (mv)? wget ne file wahin download kardi jahan aap terminal mein khade the (jaise /home/ritu/). Agar aap usko move nahi karte, toh terminal ko kaise pata chalta ki jq kahan rakha hai? Usko system ke main software folder (/usr/local/bin/) mein daalna zaroori tha taaki aap kisi bhi folder se sirf jq type karein aur wo chal jaye. 
+
+(Yeh kacha saaman kharid kar khud khana banane jaisa hai).
+
+
+Quick Comparison (Aapke SOP ke hisaab se)FeatureMethod 1: apt install jq (Normal)
+
+Method 2: wget (Specific Version)Downloadapt khud internet se uthata hai.Aapko wget aur URL dena padta hai.PermissionsAutomatically set ho jati hain.Manually chmod +x karna padta hai.LocationKhud /usr/bin/jq mein set hota hai.Manually /usr/local/bin/jq mein move (mv) karna padta hai.Best ForJab koi bhi stable version chalega.Jab exact wahi version chahiye jo latest GitHub par hai.
+
+| Step | Command | Iska Use Kyun Kiya? (Reason) |
+|---|---|---|
+| 1️⃣ **Download** | `wget .../jq-linux-amd64` | `jq` ek **single ready-made binary file** hai. `wget` ka use karke internet se `jq` ki file download karke current folder mein save ki. |
+| 2️⃣ **Permission** | `chmod +x jq-linux-amd64` | Download hone ke baad file ko **execute/run karne ki permission** deni hoti hai. `+x` Linux ko batata hai ki is file ko executable program ki tarah run kiya ja sakta hai. |
+| 3️⃣ **Move & Rename** | `sudo mv jq-linux-amd64 /usr/local/bin/jq` | File ko `/usr/local/bin/` mein move karke `jq` naam diya. Isse har baar `./jq-linux-amd64` nahi likhna padega. Ab terminal mein **kahin se bhi `jq`** command chala sakte hain. |
+| 4️⃣ **Reset Cache** | `hash -r` | Shell kabhi-kabhi commands ki **purani location cache** karke rakhta hai. `hash -r` cache ko refresh karta hai, taaki shell naye `jq` command ko turant identify kar sake. |
+
+
+
