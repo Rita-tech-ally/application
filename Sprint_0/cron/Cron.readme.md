@@ -190,5 +190,12 @@ Method 2: wget (Specific Version)Downloadapt khud internet se uthata hai.Aapko w
 | 3️⃣ **Move & Rename** | `sudo mv jq-linux-amd64 /usr/local/bin/jq` | File ko `/usr/local/bin/` mein move karke `jq` naam diya. Isse har baar `./jq-linux-amd64` nahi likhna padega. Ab terminal mein **kahin se bhi `jq`** command chala sakte hain. |
 | 4️⃣ **Reset Cache** | `hash -r` | Shell kabhi-kabhi commands ki **purani location cache** karke rakhta hai. `hash -r` cache ko refresh karta hai, taaki shell naye `jq` command ko turant identify kar sake. |
 
+When you install a new command-line tool, your shell (like Bash or Zsh) doesn't constantly scan your entire hard drive to find it. Instead, for performance reasons, it remembers the locations of commands it has already run in a temporary lookup table called a hash table or command cache.
+
+**If your shell** had previously tried to run jq (or if it simply hasn't indexed /usr/local/bin/ recently), running hash -r forces the shell to clear that memory and rescan your PATH directories. This ensures that when you immediately type jq, the shell instantly knows to look in /usr/local/bin/jq rather than giving you a "command not found" error.
+
+**Sari ki sari nahi,** sirf executable: Is folder me wahi files rakhi jati hain jinhe execute karne ki permission hoti hai (jaise abhi aapne jq ko chmod +x karke executable banaya tha). Agar koi aisi file padi hai jo executable nahi hai, toh wo command ki tarah run nahi hogi.
+
+**Sirf is system ki nahi,** aapke dwara dali gayi: Isme OS ki apni core files nahi hoti—wo /bin ya /usr/bin me hoti hain. /usr/local/bin me wo tools hote hain jo aapne, ya kisi aur user ne, bahar se download karke ya compile karke manually install kiye hain.
 
 
