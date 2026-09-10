@@ -16,22 +16,21 @@
 
 # 1. Introduction
 
-Environment Branches are Git branches used to manage code for different deployment environments such as **Development, QA, Staging, and Production**.
+This document explains the purpose and usage of Environment Branches for managing application code across different deployment environments. It covers the purpose, types of Environment Branches, workflow diagram, workflow steps, advantages, disadvantages, best practices, and references.
 
-They provide a controlled way to move code from development to production while allowing testing and validation at each stage.
 
 ---
 
-# 2. Why Environment Branches
+# 2. Why Environment Branches?
 
-Environment branches are used to:
-
-* Separate code for different environments.
-* Test changes before production deployment.
-* Control the production release process.
-* Reduce the risk of deploying unstable code.
-* Provide a clear promotion path from development to production.
-* Support collaboration between development and operations teams.
+| **Purpose**             | **Description**                                                  |
+| ----------------------- | ---------------------------------------------------------------- |
+| **Environment Separation**  | Keeps code separate for different environments.                  |
+| **Pre-Production Testing**  | Allows changes to be tested before production deployment.        |
+| **Release Control**         | Provides better control over the production release process.     |
+| **Reduced Deployment Risk** | Reduces the risk of deploying unstable code.                     |
+| **Clear Promotion Path**    | Provides a clear path from development to production.            |
+| **Team Collaboration**      | Supports collaboration between development and operations teams. |
 
 ---
 
@@ -39,10 +38,10 @@ Environment branches are used to:
 
 | **Branch** | **Environment** | **Purpose**                                 |
 | ---------- | --------------- | ------------------------------------------- |
-| `develop`  | Development     | Used for active development and integration |
-| `qa`       | QA              | Used for testing and bug validation         |
-| `staging`  | Staging         | Used for pre-production validation          |
-| `main`     | Production      | Contains production-ready code              |
+| **develop**  | Development     | Used for active development and integration |
+| **qa**       | QA              | Used for testing and bug validation         |
+| **staging**  | Staging         | Used for pre-production validation          |
+| **main**     | Production      | Contains production-ready code              |
 
 > Branch names may vary depending on the organization's Git workflow.
 
@@ -57,81 +56,82 @@ Environment branches are used to:
 
 ### Workflow Steps
 
-1. Developers create a **feature branch** for a new change.
-2. The feature branch is merged into the **develop branch**.
-3. Changes are deployed to the **Development environment**.
-4. After validation, changes move to the **QA branch**.
-5. QA testing is performed in the **QA environment**.
-6. Approved changes move to the **staging branch**.
-7. Final pre-production testing is performed in **Staging**.
-8. After approval, changes are merged into the **main branch**.
-9. The application is deployed to **Production**.
+| **Step** | **Branch / Environment** | **Action**                            |
+| -------- | ------------------------ | ------------------------------------- |
+| **1**        | Feature Branch           | Create a branch for the new change.   |
+| **2**        | Develop Branch           | Merge the feature branch.             |
+| **3**        | Development              | Deploy and validate the changes.      |
+| **4**        | QA Branch                | Promote the validated changes.        |
+| **5**        | QA Environment           | Perform testing and validation.       |
+| **6**        | Staging Branch           | Promote the approved changes.         |
+| **7**        | Staging Environment      | Perform final pre-production testing. |
+| **8**        | Main Branch              | Merge the approved changes.           |
+| **9**        | Production               | Deploy the application.               |
 
 ---
 
 # 5. Advantages
 
-* Clear separation between environments.
-* Controlled production deployments.
-* Easier testing and validation.
-* Reduces accidental production changes.
-* Provides better release visibility.
-* Supports approval-based deployments.
-* Helps teams work in parallel.
+| **Advantage**           | **Description**                                           |
+| ----------------------- | --------------------------------------------------------- |
+| **Environment Separation**  | Keeps each environment isolated.                          |
+| **Controlled Deployments**  | Provides controlled production releases.                  |
+| **Easier Testing**          | Allows changes to be tested before production.            |
+| **Reduced Risk**            | Reduces accidental production changes.                    |
+| **Better Visibility**       | Provides clear release tracking.                          |
+| **Approval-Based Releases** | Supports review and approval before deployment.           |
+| **Parallel Development**    | Allows teams to work on different changes simultaneously. |
 
 ---
 
 # 6. Disadvantages
 
-* More branches require additional management.
-* Branches can become out of sync.
-* Merge conflicts may occur.
-* Requires proper branch protection.
-* Incorrect promotion can cause deployment issues.
-* Maintaining multiple environments can increase operational complexity.
+| **Disadvantage**       | **Description**                                                     |
+| ---------------------- | ------------------------------------------------------------------- |
+| **Branch Management**      | Multiple branches require additional management.                    |
+| **Branch Synchronization** | Branches can become out of sync.                                    |
+| **Merge Conflicts**        | Changes from different branches may cause conflicts.                |
+| **Branch Protection**      | Important branches require proper protection rules.                 |
+| **Promotion Errors**       | Incorrect branch promotion can cause deployment issues.             |
+| **Operational Complexity** | Maintaining multiple environments increases operational complexity. |
+
 
 ---
 
 # 7. Best Practices
 
-* Use clear and consistent branch names.
-* Protect `main` and other important branches.
-* Use Pull Requests for merging changes.
-* Perform code review before merging.
-* Run CI checks before deployment.
-* Automate deployments using CI/CD pipelines.
+| **Best Practice**   | **Description**                              |
+| ------------------- | -------------------------------------------- |
+| **Clear Branch Naming** | Use clear and consistent branch names.       |
+| **Branch Protection**   | Protect `main` and other important branches. |
+| **Pull Requests**       | Use Pull Requests for merging changes.       |
+| **Code Review**         | Perform code reviews before merging.         |
+| **CI Checks**           | Run CI checks before deployment.             |
+| **CI/CD Automation**    | Automate deployments using CI/CD pipelines.  |
+
 
 ---
 
 # 8. Conclusion
 
-Environment Branches provide a structured approach for managing application code across different deployment environments.
-
-A controlled flow such as:
-
-**Feature → Development → QA → Staging → Production**
-
-helps teams test changes progressively and reduces the risk of deploying unverified code to production.
-
-When combined with **Pull Requests, branch protection, CI/CD automation, and code reviews**, environment branches provide a reliable and controlled release process.
+Environment Branches provide a controlled flow from (Feature → Development → QA → Staging → Production)  helping teams test changes progressively and reduce production risks. Combined with (Pull Requests, code reviews, branch protection, and CI/CD) they support a reliable release process.
 
 ---
 
 # 9. Contact Information
 
-For any questions, issues, or suggestions related to this documentation, contact the respective project or DevOps team.
+| Name |            Email Address         |
+| ---- | ---------------------------------|
+| Ritu | ritu.dogra.snaatak@mygurukulam.co|
 
-| **Role**            | **Contact**  |
-| ------------------- | ------------ |
-| Documentation Owner | DevOps Team  |
-| Technical Support   | DevOps Team  |
-| Project Support     | Project Team |
 
 ---
 
 # 10. References
 
-* [Git Documentation](https://git-scm.com/doc)
-* [GitHub Documentation](https://docs.github.com/)
-* [GitHub Flow](https://docs.github.com/en/get-started/using-github/github-flow)
-* [Git Branching Documentation](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)
+| **Reference**                                                                                      | **Description**                                                        |
+| -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [Git Documentation](https://git-scm.com/doc)                                                       | Official Git documentation and user guide.                             |
+| [GitHub Documentation](https://docs.github.com/)                                                   | Official GitHub documentation and guides.                              |
+| [GitHub Flow](https://docs.github.com/en/get-started/using-github/github-flow)                     | Documentation for the GitHub Flow branching workflow.                  |
+| [Git Branching Documentation](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell) | Official documentation explaining Git branches and branching concepts. |
