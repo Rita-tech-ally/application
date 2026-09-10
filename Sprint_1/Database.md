@@ -157,3 +157,20 @@ CREATE TABLE orders (
 | Counter table | Likes, views, counting |
 | Materialized View | Alag key se same data query karna |
 | Static column | Partition-level shared data |
+
+| **Command**                            | **Purpose**                       |
+| -------------------------------------- | --------------------------------- |
+| `scylla --version`                     | Show ScyllaDB version             |
+| `scylla_setup`                         | Configure the system and ScyllaDB |
+| `cqlsh`                                | Open the CQL shell                |
+| `nodetool status`                      | Show cluster status               |
+| `nodetool info`                        | Show node information             |
+| `nodetool describecluster`             | Show cluster information          |
+| `nodetool compactionstats`             | Show compaction status            |
+| `nodetool tablestats`                  | Show table statistics             |
+| `sudo systemctl status scylla-server`  | Check ScyllaDB service            |
+| `sudo systemctl restart scylla-server` | Restart ScyllaDB service          |
+| `journalctl -u scylla-server`          | View ScyllaDB service logs        |
+| `ss -lntp`                             | Check listening ports             |
+
+---
