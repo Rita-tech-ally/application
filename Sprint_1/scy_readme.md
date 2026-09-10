@@ -146,11 +146,25 @@ ScyllaDB is a distributed NoSQL wide-column database compatible with Cassandra a
 
 ## 5.1 Step-by-step Installation Instructions
 
-The exact installation procedure depends on the Linux distribution and ScyllaDB release being used.
-
 ### Step 1: Install ScyllaDB
 
-Install ScyllaDB using the official ScyllaDB package repository and installation procedure appropriate for the operating system.
+Add the ScyllaDB repository:
+
+```bash
+curl -sSf https://repositories.scylladb.com/scylla/repo/$(lsb_release -sc)/scylladb-2026.1.list | sudo tee /etc/apt/sources.list.d/scylla.list
+```
+
+Update the package index:
+
+```bash
+sudo apt update
+```
+
+Install ScyllaDB:
+
+```bash
+sudo apt install scylla -y
+```
 
 ### Step 2: Verify Installation
 
@@ -158,15 +172,11 @@ Install ScyllaDB using the official ScyllaDB package repository and installation
 scylla --version
 ```
 
-This verifies that ScyllaDB is installed and displays the installed version.
-
 ### Step 3: Run Initial Setup
 
 ```bash
 sudo scylla_setup
 ```
-
-The `scylla_setup` utility is used to configure system, storage, and ScyllaDB settings.
 
 ### Step 4: Start ScyllaDB
 
@@ -180,15 +190,13 @@ sudo systemctl start scylla-server
 sudo systemctl enable scylla-server
 ```
 
-This ensures that ScyllaDB starts automatically after system reboot.
-
 ### Step 6: Verify Service Status
 
 ```bash
 sudo systemctl status scylla-server
 ```
 
-The service should show an active/running state.
+The service should show `active (running)`.
 
 ### Step 7: Check Cluster Status
 
@@ -196,13 +204,7 @@ The service should show an active/running state.
 nodetool status
 ```
 
-A healthy node normally appears as:
-
-```text
-UN
-```
-
-where:
+A healthy node normally shows `UN`:
 
 * `U` = Up
 * `N` = Normal
@@ -213,9 +215,7 @@ where:
 cqlsh
 ```
 
-This opens the ScyllaDB CQL shell and can be used to test database connectivity.
-
----
+This verifies connectivity to the ScyllaDB CQL interface.
 
 # 6. Configuration
 
