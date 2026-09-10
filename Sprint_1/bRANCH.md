@@ -1,18 +1,16 @@
-# Environment Branches Documentation
 
 ## Table of Contents
 
 1. [Introduction](#1-introduction)
 2. [Why Environment Branches](#2-why-environment-branches)
 3. [Types of Environment Branches](#3-types-of-environment-branches)
-4. [Environment Branch Flow](#4-environment-branch-flow)
-5. [Workflow Diagram](#5-workflow-diagram)
-6. [Advantages](#6-advantages)
-7. [Disadvantages](#7-disadvantages)
-8. [Best Practices](#8-best-practices)
-9. [Conclusion](#9-conclusion)
-10. [Contact Information](#10-contact-information)
-11. [References](#11-references)
+4. [Workflow Diagram](#4-workflow-diagram)
+5. [Advantages](#5-advantages)
+6. [Disadvantages](#6-disadvantages)
+7. [Best Practices](#7-best-practices)
+8. [Conclusion](#8-conclusion)
+9. [Contact Information](#9-contact-information)
+10. [References](#10-references)
 
 ---
 
@@ -50,32 +48,12 @@ Environment branches are used to:
 
 ---
 
-# 4. Environment Branch Flow
 
+# 4. Workflow Diagram
 
-The typical flow is:
-
-```text
-
-```
-
-Changes are promoted from one environment to the next after successful testing and approval.
+<img width="828" height="1024" alt="image" src="https://github.com/user-attachments/assets/79b74663-c86c-4335-bcc0-5095dfc2efb9" />
 
 ---
-
-# 5. Workflow Diagram
-
-```mermaid
-flowchart LR
-    A[Feature Branch] --> B[Develop Branch]
-    B --> C[Development Environment]
-    C --> D[QA Branch]
-    D --> E[QA Environment]
-    E --> F[Staging Branch]
-    F --> G[Staging Environment]
-    G --> H[Main Branch]
-    H --> I[Production Environment]
-```
 
 ### Workflow Steps
 
@@ -91,7 +69,7 @@ flowchart LR
 
 ---
 
-# 6. Advantages
+# 5. Advantages
 
 * Clear separation between environments.
 * Controlled production deployments.
@@ -103,7 +81,7 @@ flowchart LR
 
 ---
 
-# 7. Disadvantages
+# 6. Disadvantages
 
 * More branches require additional management.
 * Branches can become out of sync.
@@ -114,7 +92,7 @@ flowchart LR
 
 ---
 
-# 8. Best Practices
+# 7. Best Practices
 
 * Use clear and consistent branch names.
 * Protect `main` and other important branches.
@@ -125,7 +103,7 @@ flowchart LR
 
 ---
 
-# 9. Conclusion
+# 8. Conclusion
 
 Environment Branches provide a structured approach for managing application code across different deployment environments.
 
@@ -139,7 +117,7 @@ When combined with **Pull Requests, branch protection, CI/CD automation, and cod
 
 ---
 
-# 10. Contact Information
+# 9. Contact Information
 
 For any questions, issues, or suggestions related to this documentation, contact the respective project or DevOps team.
 
@@ -151,7 +129,7 @@ For any questions, issues, or suggestions related to this documentation, contact
 
 ---
 
-# 11. References
+# 10. References
 
 * [Git Documentation](https://git-scm.com/doc)
 * [GitHub Documentation](https://docs.github.com/)
