@@ -13,52 +13,33 @@
 | Ritu | 09/08/2026 | 1.1 | Liyakhat | Aman Raj | Sandeep Rawat/Ravindra |
 ---
 
+## Table of Contents
 
-# Table of Contents
-1. [Purpose](#1-purpose)
-3. [Key Features](#3-key-features)
-4. [Getting Started](#4-getting-started)
+* [1. Purpose](#1-purpose)
+* [2. Key Features](#2-key-features)
+* [3. Prerequisites](#3-prerequisites)
+* [4. Dependencies](#4-dependencies)
+* [5. How to Setup/Install ScyllaDB](#5-how-to-setupinstall-scylladb)
+* [6. Configuration](#6-configuration)
+* [7. Basic CQL Operations](#7-basic-cql-operations)
+* [8. Maintenance](#8-maintenance)
+* [9. Monitoring](#9-monitoring)
+* [10. Disaster Recovery](#10-disaster-recovery)
+* [11. High Availability](#11-high-availability)
+* [12. Troubleshooting](#12-troubleshooting)
+* [13. FAQs](#13-faqs)
+* [14. Contact Information](#14-contact-information)
+* [15. References](#15-references)
 
-   * [Prerequisites](#41-prerequisites)
-   * [Software Overview](#42-software-overview)
-   * [System Requirements](#43-system-requirements)
-   * [Important Ports](#44-important-ports)
-5. [Dependencies](#5-dependencies)
-
-   * [Runtime Dependencies](#51-runtime-dependencies)
-   * [Other Dependencies](#52-other-dependencies)
-6. [How to Setup/Install ScyllaDB](#6-how-to-setupinstall-scylladb)
-
-   * [Step-by-step Installation Instructions](#61-step-by-step-installation-instructions)
-7. [Configuration](#7-configuration)
-
-   * [Important Configuration Parameters](#71-important-configuration-parameters)
-   * [Datacenter and Rack Configuration](#72-datacenter-and-rack-configuration)
-8. [Basic CQL Operations](#8-basic-cql-operations)
-9. [Maintenance](#9-maintenance)
-10. [Monitoring](#10-monitoring)
-11. [Backup](#11-backup)
-12. [Disaster Recovery](#12-disaster-recovery)
-13. [High Availability](#13-high-availability)
-14. [Consistency and Replication](#14-consistency-and-replication)
-15. [Security](#15-security)
-16. [Troubleshooting](#16-troubleshooting)
-17. [Common Commands](#17-common-commands)
-18. [Production Architecture](#18-production-architecture)
-19. [FAQs](#19-faqs)
-20. [Contact Information](#20-contact-information)
-21. [References](#21-references)
 
 ---
 
-
-
-# 2. Purpose
+# 1. Purpose
 The purpose of this documentation is to provide a single reference for ScyllaDB installation, configuration, operations, monitoring, troubleshooting.
 
 ---
 
-# 3. Key Features
+# 2. Key Features
 
 | **Feature**              | **Description**                                                                                |
 | ------------------------ | ---------------------------------------------------------------------------------------------- |
@@ -78,11 +59,8 @@ The purpose of this documentation is to provide a single reference for ScyllaDB 
 
 ---
 
-# 4. Getting Started
 
-This section describes the prerequisites, software overview, system requirements, and important ports required before installing and operating ScyllaDB.
-
-## 4 Prerequisites
+# 3. Prerequisites
 
 | Requirement          | Verification                        |
 | -------------------- | ----------------------------------- |
@@ -94,7 +72,7 @@ This section describes the prerequisites, software overview, system requirements
 | Sudo Access          | `sudo -v`                           |
 | Required Tools       | `curl --version` / `wget --version` |
 
-### 4.1 Software Overview
+### 3.1 Software Overview
 
 ScyllaDB is a distributed NoSQL wide-column database compatible with Cassandra applications. It uses **CQL** as its primary query language and also supports the **Alternator API**.
 
@@ -108,7 +86,7 @@ ScyllaDB is a distributed NoSQL wide-column database compatible with Cassandra a
 | `scylla_setup`                | Initial setup and configuration   |
 
 
-## 4.3 System Requirements
+## 3.2 System Requirements
 
 | **Resource**             | **Recommendation / Requirement**                            |
 | ------------------------ | ----------------------------------------------------------- |
@@ -125,7 +103,7 @@ ScyllaDB is a distributed NoSQL wide-column database compatible with Cassandra a
 
 ---
 
-## 4.4 Important Ports
+## 3.3 Important Ports
 
 | **Port** | **Protocol** | **Purpose**                |
 | -------: | ------------ | -------------------------- |
@@ -137,9 +115,9 @@ ScyllaDB is a distributed NoSQL wide-column database compatible with Cassandra a
 
 > Restrict ScyllaDB ports using firewall rules and security groups. Do not expose internal ports to the public internet.
 
-# 5. Dependencies
+# 4. Dependencies
 
-## 5.1 Runtime Dependencies
+## 4.1 Runtime Dependencies
 
 | **Dependency** | **Purpose**                               |
 | -------------- | ----------------------------------------- |
@@ -151,7 +129,7 @@ ScyllaDB is a distributed NoSQL wide-column database compatible with Cassandra a
 
 ---
 
-## 5.2 Other Dependencies
+## 4.2 Other Dependencies
 
 | **Dependency / Tool** | **Purpose**                                         |
 | --------------------- | --------------------------------------------------- |
@@ -164,9 +142,9 @@ ScyllaDB is a distributed NoSQL wide-column database compatible with Cassandra a
 
 ---
 
-# 6. How to Setup/Install ScyllaDB
+# 5. How to Setup/Install ScyllaDB
 
-## 6.1 Step-by-step Installation Instructions
+## 5.1 Step-by-step Installation Instructions
 
 The exact installation procedure depends on the Linux distribution and ScyllaDB release being used.
 
@@ -239,7 +217,7 @@ This opens the ScyllaDB CQL shell and can be used to test database connectivity.
 
 ---
 
-# 7. Configuration
+# 6. Configuration
 
 ScyllaDB configuration is primarily managed through configuration files under `/etc/scylla/` and `/etc/scylla.d/`.
 
@@ -278,7 +256,7 @@ rpc_address: 0.0.0.0
 ---
 
 
-# 8. Basic CQL Operations
+# 7. Basic CQL Operations
 
 ScyllaDB uses CQL (Cassandra Query Language) for database operations.
 
@@ -294,62 +272,7 @@ Common CQL operations include:
 | `DELETE`          | Delete data                         |
 | `DESCRIBE`        | Inspect schema information          |
 
-## 8.1 Create Keyspace
-
-```sql
-CREATE KEYSPACE ecommerce
-WITH replication = {
-    'class': 'NetworkTopologyStrategy',
-    'dc1': 3
-};
-```
-
-## 8.2 Create Table
-
-```sql
-USE ecommerce;
-
-CREATE TABLE orders (
-    customer_id uuid,
-    order_id uuid,
-    order_date timestamp,
-    amount decimal,
-    status text,
-    PRIMARY KEY (customer_id, order_id)
-);
-```
-
-## 8.3 Insert Data
-
-```sql
-INSERT INTO orders (
-    customer_id,
-    order_id,
-    order_date,
-    amount,
-    status
-)
-VALUES (
-    123e4567-e89b-12d3-a456-426614174000,
-    987e6543-e21b-34d3-b654-426614174111,
-    '2026-09-08',
-    2499.00,
-    'CONFIRMED'
-);
-```
-
-## 8.4 Query Data
-
-```sql
-SELECT *
-FROM orders
-WHERE customer_id =
-123e4567-e89b-12d3-a456-426614174000;
-```
-
----
-
-# 9. Maintenance
+# 8. Maintenance
 
 Regular maintenance helps maintain ScyllaDB cluster performance, availability, and reliability.
 
@@ -372,7 +295,7 @@ Regular maintenance helps maintain ScyllaDB cluster performance, availability, a
 
 ---
 
-# 10. Monitoring
+# 9. Monitoring
 
 Monitoring helps identify performance problems, resource exhaustion, node failures, and service availability issues.
 
@@ -398,17 +321,7 @@ Monitoring helps identify performance problems, resource exhaustion, node failur
 ---
 
 
-| **Platform** | **Storage Service** |
-| ------------ | ------------------- |
-| AWS          | Amazon S3           |
-| Google Cloud | Cloud Storage       |
-| Azure        | Blob Storage        |
-
-> Backup frequency should be selected according to application RPO and RTO requirements.
-
----
-
-# 11. Disaster Recovery
+# 10. Disaster Recovery
 
 Disaster Recovery (DR) consists of processes, strategies, and tools used to recover ScyllaDB services and data after unexpected failures or disasters.
 
@@ -424,7 +337,7 @@ Disaster Recovery (DR) consists of processes, strategies, and tools used to reco
 
 
 
-# 12. High Availability
+# 11. High Availability
 
 High Availability (HA) ensures that ScyllaDB remains accessible with minimal downtime even when individual infrastructure components fail.
 
@@ -442,7 +355,7 @@ High Availability (HA) ensures that ScyllaDB remains accessible with minimal dow
 
 ---
 
-# 13. Troubleshooting
+# 12. Troubleshooting
 
 Troubleshooting should begin by checking the service status, logs, cluster status, network connectivity, configuration, and available system resources.
 
@@ -460,14 +373,7 @@ Troubleshooting should begin by checking the service status, logs, cluster statu
 ---
 
 
-
-
-
-# 19. FAQs
-
-### Is ScyllaDB a SQL database?
-
-No. ScyllaDB is a NoSQL wide-column database that uses CQL (Cassandra Query Language).
+# 13. FAQs
 
 ### Is ScyllaDB Cassandra compatible?
 
@@ -482,25 +388,9 @@ Yes. ScyllaDB provides the Alternator API, which provides DynamoDB-compatible ac
 
 Yes. ScyllaDB supports multi-datacenter deployments and topology-aware replication.
 
-
-###  Does ScyllaDB support ARM/Graviton?
-
-Yes. ScyllaDB supports AArch64 architectures, including supported AWS Graviton deployments.
-
-###  Does ScyllaDB support vector search?
-
-Yes. ScyllaDB provides vector search capabilities.
-
-###  Does ScyllaDB support Change Data Capture?
-
-Yes. ScyllaDB supports Change Data Capture (CDC).
-
-
-
-
 ---
 
-# 20. Contact Information
+# 14. Contact Information
 
 | Name |         Email Address             |
 | ---- | ----------------------------------|
@@ -508,7 +398,7 @@ Yes. ScyllaDB supports Change Data Capture (CDC).
 
 ---
 
-# 21. References
+# 15. References
 
 | **Reference**                                                                                                           | **Purpose**                         |
 | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
