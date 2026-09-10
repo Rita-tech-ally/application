@@ -11,6 +11,7 @@
 | Author | Created On | Version | L0 Reviewer | L1 Reviewer | L2 Reviewer |
 | --- | --- | --- | --- | --- | --- |
 | Ritu | 09/08/2026 | 1.1 | Liyakhat | Aman Raj | Sandeep Rawat/Ravindra |
+
 ---
 
 ## Table of Contents
@@ -114,6 +115,7 @@ ScyllaDB is a distributed NoSQL wide-column database compatible with Cassandra a
 |    10000 | TCP          | REST/management access     |
 
 > Restrict ScyllaDB ports using firewall rules and security groups. Do not expose internal ports to the public internet.
+---
 
 # 4. Dependencies
 
@@ -335,7 +337,7 @@ Disaster Recovery (DR) consists of processes, strategies, and tools used to reco
 | Datacenter Failure        | Multi-DC deployment               |
 | Region Failure            | Cross-region strategy and backups |
 
-
+---
 
 # 11. High Availability
 
@@ -411,9 +413,3 @@ Yes. ScyllaDB supports multi-datacenter deployments and topology-aware replicati
 | [OT-MICROSERVICES Software Template](https://github.com/OT-MICROSERVICES/documentation-template/wiki/Software-Template) | Reference documentation template    |
 
 ---
-
-## Document Status
-
-**Version:** 1.0
-**Status:** Draft / Under Review
-**Last Updated:** 07-09-2026
