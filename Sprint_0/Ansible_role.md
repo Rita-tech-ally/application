@@ -130,3 +130,70 @@ Short definition:
 
 
 ----
+
+# Ansibkle linting
+
+| Best Practice                       | Simple Meaning                                                               |
+| ----------------------------------- | ---------------------------------------------------------------------------- |
+| **Use Roles**                       | Related tasks, variables, templates etc. ko proper role structure mein rakho |
+| **Use Meaningful Names**            | Har task ko clear `name` do                                                  |
+| **Use FQCN**                        | `ansible.builtin.apt` jaise fully qualified module names use karo            |
+| **Keep Code Idempotent**            | Role baar-baar run karne par unnecessary changes nahi hone chahiye           |
+| **Use Variables**                   | Values ko directly hard-code karne ke bajay variables use karo               |
+| **Use Handlers**                    | Service restart jaise actions ko handlers ke through manage karo             |
+| **Avoid Unnecessary Shell/Command** | Jahan Ansible module available ho, wahi use karo                             |
+| **Use Templates**                   | Dynamic configuration ke liye Jinja2 templates use karo                      |
+| **Use Vault for Secrets**           | Passwords, tokens, keys jaise sensitive data ko securely store karo          |
+| **Keep Tasks Small**                | Ek task ko ek clear responsibility do                                        |
+| **Use Tags Carefully**              | Specific tasks ko selectively run karne ke liye tags use karo                |
+| **Test Your Roles**                 | Linting, Molecule aur functional tests se role verify karo                   |
+
+**Interview mein kaise bolna hai?**
+Short answer
+
+**Ansible Lint** is a static analysis tool used to check Ansible Playbooks and Roles for syntax-related issues, common mistakes, deprecated practices, and Ansible best practices. It helps improve code quality, consistency, readability, and maintainability.
+
+**Agar interviewer pooche:** "Does Ansible Lint execute the playbook?"
+
+Answer:
+
+No. Ansible Lint primarily performs static analysis of the Ansible code. It does not normally execute the playbook to apply configuration changes.
+
+Agar pooche: "Why do we use Ansible Lint?"
+
+**We use Ansible Lint** to catch coding issues and enforce Ansible best practices before the code is deployed.
+
+Ek line mein yaad rakho:
+
+**Ansible Lint** is like a teacher who checks your Ansible code before you actually run it.
+
+**Haan, Ansible Linting** mein indentation se related YAML formatting/structure issues check ho sakte hain, lekin ek important distinction hai:
+
+**YAML parser/syntax indentation** ko strictly check karta hai, kyunki YAML mein indentation structure define karti hai.
+Ansible Lint bhi YAML/Ansible code ko validate karte waqt aise structural issues ko report kar sakta hai.
+Lekin Ansible Lint ka purpose sirf indentation check karna nahi hai. Ye best practices, module usage, naming, deprecated patterns, risky code, etc. bhi check karta hai.
+
+Example:
+
+- name: Install nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+
+Yahan indentation structure batati hai:
+
+- name
+  └── apt
+      ├── name
+      └── state
+
+Agar indentation galat ho:
+
+- name: Install nginx
+  ansible.builtin.apt:
+  name: nginx
+  state: present
+**ansible-lint** cmd
+**ansible-lint playbook.yml**
+**ansible-playbook playbook.yml --syntax-check**
+**ansible-playbook playbook.yml --check** dry run
