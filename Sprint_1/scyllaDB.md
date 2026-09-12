@@ -13,26 +13,26 @@
 | Ritu | 09/08/2026 | 1.1 | Liyakhat | Aman Raj | Sandeep Rawat/Ravindra |
 
 ---
-
 # Table of Contents
 
 1. [Purpose](#1-purpose)
 2. [Key Features](#2-key-features)
 3. [Getting Started](#3-getting-started)
-4. [How to Setup/Install ScyllaDB](#3-how-to-setupinstall-scylladb)
-5. [Configuration](#4-configuration)
-6. [Basic CQL Operations](#4-basic-cql-operations)
-7. [Maintenance](#5-maintenance)
-8. [Monitoring](#6-monitoring)
-9. [Disaster Recovery](#7-disaster-recovery)
-10. [High Availability](#8-high-availability)
-11. [Conclusion](#9-conclusion)
-12. [FAQs](#10-faqs)
-13. [Contact Information](#11-contact-information)
-14. [References](#12-references)
+4. [Dependencies](#4-dependencies)
+5. [How to Setup/Install ScyllaDB](#5-how-to-setupinstall-scylladb)
+6. [Basic CQL Operations](#6-basic-cql-operations)
+7. [Maintenance](#7-maintenance)
+8. [Monitoring](#8-monitoring)
+9. [Disaster Recovery](#9-disaster-recovery)
+10. [High Availability](#10-high-availability)
+11. [Conclusion](#11-conclusion)
+12. [FAQs](#12-faqs)
+13. [Contact Information](#13-contact-information)
+14. [References](#14-references)
+
+
 
 ---
-
 # 1. Purpose
 
 The purpose of this document is to provide a structured guide for ScyllaDB installation, configuration, CQL operations, maintenance, monitoring, disaster recovery, and high availability on AWS EC2.
@@ -94,7 +94,6 @@ The setup is performed on AWS EC2 using Ubuntu.
 | ----------------- | ---------------------------------------------------- |
 | Platform          | AWS EC2                                              |
 | OS                | Ubuntu 24.04 LTS / Ubuntu 22.04 LTS                  |
-| Architecture      | Single-node POC or multi-node cluster                |
 | Cluster IP        | Private IP address                                   |
 | ScyllaDB Version  | ScyllaDB 5.4 / stable Open Source release            |
 | Development Setup | `--smp 1` can be used for low-resource POC instances |
@@ -114,7 +113,7 @@ The setup is performed on AWS EC2 using Ubuntu.
 
 ---
 
-# 2. Dependencies
+# 4. Dependencies
 
 The following packages are required during the installation:
 
@@ -148,20 +147,10 @@ For a multi-node ScyllaDB cluster, the following additional requirements are nee
 
 ---
 
-# 3. How to Setup/Install ScyllaDB
+# 5. How to Setup/Install ScyllaDB
 
-## 3.1 Clean Existing Repository Configuration
 
-Remove previous ScyllaDB repository configurations:
-
-```bash
-sudo rm -f /etc/apt/sources.list.d/scylla*
-sudo apt-get update
-```
-
----
-
-## 3.2 Install Required Packages
+## 5.1 Install Required Packages
 
 ```bash
 sudo apt-get install -y curl gnupg python3
@@ -169,7 +158,7 @@ sudo apt-get install -y curl gnupg python3
 
 ---
 
-## 3.3 Add ScyllaDB Repository
+## 5.2 Add ScyllaDB Repository
 
 Run the official ScyllaDB installer:
 
@@ -179,7 +168,7 @@ curl -sSf https://get.scylladb.com/server | sudo bash
 
 ---
 
-## 3.4 Configure the Repository Signing Key
+## 5.3 Configure the Repository Signing Key
 
 ```bash
 sudo gpg --homedir /tmp --no-default-keyring \
@@ -211,7 +200,7 @@ sudo apt-get update
 
 ---
 
-## 3.5 Install ScyllaDB
+## 5.4 Install ScyllaDB
 
 ```bash
 sudo apt-get install -y scylla
@@ -219,7 +208,7 @@ sudo apt-get install -y scylla
 
 ---
 
-## 3.6 Configure Development Mode
+## 5.5 Configure Development Mode
 
 For a low-resource EC2 POC environment:
 
@@ -241,7 +230,7 @@ sudo systemctl daemon-reload
 
 ---
 
-## 3.7 Start and Enable ScyllaDB
+## 5.6 Start and Enable ScyllaDB
 
 Enable the service:
 
@@ -263,7 +252,7 @@ sudo systemctl status scylla-server --no-pager
 
 ---
 
-## 3.8 Verify Cluster Status
+## 5.7 Verify Cluster Status
 
 Check the ScyllaDB cluster:
 
@@ -278,7 +267,7 @@ A healthy node should show the **UN** status:
 
 ---
 
-# 4. Configuration
+#  Configuration
 
 The main ScyllaDB configuration file is:
 
@@ -309,29 +298,14 @@ rpc_address: 0.0.0.0
 endpoint_snitch: Ec2Snitch
 ```
 
-## Configuration Parameters
-
-| **Parameter**     | **Purpose**                                                 |
-| ----------------- | ----------------------------------------------------------- |
-| `cluster_name`    | Defines the name of the ScyllaDB cluster.                   |
-| `seed_provider`   | Defines the seed node used for cluster discovery.           |
-| `listen_address`  | Defines the private IP used for node-to-node communication. |
-| `rpc_address`     | Defines the address used for client connections.            |
-| `endpoint_snitch` | Helps ScyllaDB understand the AWS infrastructure topology.  |
-
-Restart ScyllaDB after configuration changes:
-
-```bash
-sudo systemctl restart scylla-server
-```
 
 ---
 
-# 4. Basic CQL Operations
+# 6. Basic CQL Operations
 
 After installing ScyllaDB, basic CQL queries can be used to verify database connectivity, create a keyspace and table, insert data, and retrieve records.
 
-## 4.1 Connect to ScyllaDB
+## 6.1 Connect to ScyllaDB
 
 Connect to the ScyllaDB CQL shell using:
 
@@ -339,7 +313,7 @@ Connect to the ScyllaDB CQL shell using:
 cqlsh localhost 9042
 ```
 
-## 4.2 Create Keyspace
+## 6.2 Create Keyspace
 
 Create a keyspace using `NetworkTopologyStrategy`:
 
@@ -350,7 +324,7 @@ WITH replication = {'class': 'NetworkTopologyStrategy', 'datacenter1': 1};
 
 > **Note:** Replication factor `1` is suitable for the current single-node POC environment. For a multi-node production cluster, the replication factor should be configured according to the cluster design.
 
-## 4.3 Create Table
+## 6.3 Create Table
 
 Create an `audit_log` table:
 
@@ -363,7 +337,7 @@ CREATE TABLE poc_keyspace.audit_log (
 );
 ```
 
-## 4.4 Insert Test Record
+## 6.4 Insert Test Record
 
 Insert a test record into the table:
 
@@ -374,7 +348,7 @@ VALUES
 (uuid(), 'user-auth-service', 'SUCCESS', toTimestamp(now()));
 ```
 
-## 4.5 Query the Record
+## 6.5 Query the Record
 
 Retrieve the inserted record:
 
@@ -382,7 +356,7 @@ Retrieve the inserted record:
 SELECT * FROM poc_keyspace.audit_log;
 ```
 
-## 4.6 Verified Output
+## 6.6 Verified Output
 
 The query was successfully verified on the EC2 instance:
 
@@ -399,7 +373,7 @@ This confirms that **ScyllaDB is running, CQL connectivity is working, the keysp
 
 ---
 
-# 5. Maintenance
+# 7. Maintenance
 
 Regular maintenance helps keep the ScyllaDB cluster healthy and reliable.
 
@@ -415,7 +389,7 @@ Regular maintenance helps keep the ScyllaDB cluster healthy and reliable.
 
 ---
 
-# 6. Monitoring
+# 8. Monitoring
 
 Monitoring helps identify performance problems, resource exhaustion, node failures, and service availability issues.
 
@@ -435,7 +409,7 @@ Monitoring helps identify performance problems, resource exhaustion, node failur
 
 ---
 
-# 7. Disaster Recovery
+# 9. Disaster Recovery
 
 Disaster Recovery (DR) consists of processes, strategies, and tools used to recover ScyllaDB services and data after unexpected failures or disasters.
 
@@ -451,7 +425,7 @@ Disaster Recovery (DR) consists of processes, strategies, and tools used to reco
 
 ---
 
-# 8. High Availability
+# 10. High Availability
 
 High Availability (HA) ensures that ScyllaDB remains accessible with minimal downtime even when individual infrastructure components fail.
 
@@ -467,11 +441,11 @@ High Availability (HA) ensures that ScyllaDB remains accessible with minimal dow
 | Capacity           | Maintain sufficient capacity for node failures |
 
 
-# 9. Conclusion
+# 11. Conclusion
 
 ScyllaDB provides high performance, scalability, and high availability for modern applications. A properly configured ScyllaDB deployment improves database performance, reliability, and fault tolerance.
 
-# 10. FAQs
+# 12. FAQs
 
 ### Is ScyllaDB Cassandra compatible?
 
@@ -488,7 +462,7 @@ Yes. ScyllaDB supports multi-datacenter deployments and topology-aware replicati
 
 ---
 
-# 11. Contact Information
+# 13. Contact Information
 
 | Name |         Email Address             |
 | ---- | ----------------------------------|
@@ -496,7 +470,7 @@ Yes. ScyllaDB supports multi-datacenter deployments and topology-aware replicati
 
 ---
 
-# 12. References
+# 14. References
 
 | **Reference**                                                                                                           | **Purpose**                         |
 | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
