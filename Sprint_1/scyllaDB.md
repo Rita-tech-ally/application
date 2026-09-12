@@ -1,543 +1,507 @@
 # ScyllaDB Documentation
 
-<img width="128" height="128" alt="ScyllaDB Icon" src="https://github.com/user-attachments/assets/3aee4f01-f9f5-49ea-b288-a6d4004d456c" />
-
----
-# Author
-| **Author**    | **Created On** | **Version** | **Last Updated By** | **Last Edited On** | **L0 Reviewer** | **L1 Reviewer** | **L2 Reviewer** |
-| ------------- | -------------- | ----------- | ------------------- | ------------------ | --------------- | --------------- | --------------- |
-| Vashishtha Prakash | 07-09-2026     | 1         | Vashishtha Prakash       | 07-09-2026         | Sunny/Shubham   | Shreya / Nikita  | Piyush Upadhyay   |
-
+<p align="center">
+  <img width="128" height="128" alt="ScyllaDB Icon" src="https://github.com/user-attachments/assets/3aee4f01-f9f5-49ea-b288-a6d4004d456c" />
+</p>
 
 ---
 
-# 1. Introduction
+## Document Information
 
-This documentation provides a clear and structured guide for installing, configuring, managing, monitoring, and troubleshooting ScyllaDB. It helps administrators and developers understand the software requirements, features, commands, dependencies, security, high availability, backup, and disaster recovery procedures required for reliable ScyllaDB operations.
-
----
-
-# 2. Purpose
-
-ScyllaDB is designed for high-performance applications that require low-latency data access, high throughput, and horizontal scalability. It is suitable for real-time applications, IoT, time-series data, messaging, gaming, analytics, and recommendation systems. It can also support modern AI/ML workloads, including applications that require vector search and large-scale distributed data processing.
+| Author | Created On | Version | L0 Reviewer | L1 Reviewer | L2 Reviewer |
+| --- | --- | --- | --- | --- | --- |
+| Ritu | 09/08/2026 | 1.1 | Liyakhat | Aman Raj | Sandeep Rawat/Ravindra |
 
 ---
 
-# 3. Features
+# Table of Contents
 
-| **Feature** | **Description** |
-|---|---|
-| Distributed Architecture | Data is distributed across multiple nodes. |
-| High Performance | Uses the Seastar framework and shard-per-core architecture. |
-| Horizontal Scaling | Capacity can be increased by adding nodes. |
-| Cassandra Compatibility | Supports CQL and Cassandra-compatible clients. |
-| DynamoDB Compatibility | Provides the Alternator API. |
-| Replication | Replicates data across nodes and datacenters. |
-| Fault Tolerance | Supports continued operation during node failures. |
-| Configurable Consistency | Supports multiple consistency levels. |
-| Change Data Capture | Captures database changes for downstream processing. |
-| Vector Search | Supports similarity search using vector embeddings. |
-| Full-Text Search | Supports text-based search workloads. |
-| Lightweight Transactions | Supports conditional operations with stronger consistency. |
-| Backup & Restore | Provides database backup and recovery capabilities. |
-
----
-
-# 4. Software Overview
-
-ScyllaDB is a distributed NoSQL wide-column database that uses CQL as its primary query language and provides Cassandra compatibility. It also supports the DynamoDB-compatible Alternator API and runs on x86_64 and AArch64 architectures. The main ScyllaDB service is managed through `scylla-server` on Linux systems. Its primary configuration file is `/etc/scylla/scylla.yaml`, while `cqlsh` and `nodetool` are commonly used for administration. The `scylla_setup` utility is used to configure system, storage, and ScyllaDB settings during initial setup.
+1. [Purpose](#1-purpose)
+2. [Key Features](#2-key-features)
+3. [Getting Started](#3-getting-started)
+4. [How to Setup/Install ScyllaDB](#3-how-to-setupinstall-scylladb)
+5. [Configuration](#4-configuration)
+6. [Basic CQL Operations](#4-basic-cql-operations)
+7. [Maintenance](#5-maintenance)
+8. [Monitoring](#6-monitoring)
+9. [Disaster Recovery](#7-disaster-recovery)
+10. [High Availability](#8-high-availability)
+11. [Conclusion](#9-conclusion)
+12. [FAQs](#10-faqs)
+13. [Contact Information](#11-contact-information)
+14. [References](#12-references)
 
 ---
 
-# 5. Prerequisites
+# 1. Purpose
 
-| **Requirement** | **Details** |
-|---|---|
-| OS | Supported Linux distribution |
-| Architecture | x86_64 / AArch64 |
-| CPU | Modern multi-core CPU |
-| RAM | Workload dependent |
-| Storage | SSD recommended |
-| Filesystem | XFS recommended for production |
-| Network | High-bandwidth network |
-| Access | Root/sudo privileges |
-| Connectivity | Required for installation and cluster communication |
+The purpose of this document is to provide a structured guide for ScyllaDB installation, configuration, CQL operations, maintenance, monitoring, disaster recovery, and high availability on AWS EC2.
+
+It covers the required prerequisites, dependencies, system requirements, important ports, installation steps, configuration parameters, database testing, and cluster health verification.
 
 ---
 
-# 6. System Requirements
+# 2. Key Features
 
-| **Resource** | **Recommendation / Requirement** |
-|---|---|
-| CPU | Modern CPU with SSE4.2 support |
-| CPU Cores | Workload dependent; 20–60 logical cores is a typical medium/high-workload guidance range |
-| RAM | 16 GB or 2 GB per logical core, whichever is higher |
-| Medium/High Workload RAM | Approximately 64–256 GB depending on workload |
-| Storage | SSD strongly recommended |
-| Disk/RAM Ratio | Approximately 30:1 as a general sizing guideline |
-| Filesystem | XFS |
-| Network | 10 Gbps or higher for large nodes |
-
-> Exact production sizing must be based on workload, dataset size, replication, throughput, and latency requirements.
+| **Feature**              | **Description**                                                  |
+| ------------------------ | ---------------------------------------------------------------- |
+| High Performance         | Provides high throughput and low-latency database operations.    |
+| Distributed Architecture | Supports data distribution across multiple nodes.                |
+| Horizontal Scaling       | Allows additional nodes to be added as workload increases.       |
+| High Availability        | Supports multi-node clusters across availability zones.          |
+| CQL Support              | Provides Cassandra Query Language (CQL) for database operations. |
+| Fault Tolerance          | Data can be replicated across multiple nodes.                    |
+| AWS Support              | Can be deployed on AWS EC2 instances.                            |
 
 ---
 
-# 7. Ports
+# 3. Getting Started
 
-| **Port** | **Protocol** | **Purpose** | **Access** |
-|---:|---|---|---|
-| 22 | TCP | SSH administration | Admin network |
-| 7000 | TCP | Node-to-node communication | Cluster nodes |
-| 7001 | TCP | TLS node-to-node communication | Cluster nodes |
-| 9042 | TCP | CQL client connections | Application network |
-| 9142 | TCP | TLS CQL connections | Application network |
-| 10000 | TCP | REST/management access | Trusted network |
-| 7199 | TCP | JMX compatibility/management | Trusted network |
+##  Prerequisites
 
-> Do not expose internal ScyllaDB ports directly to the public internet.
+Before installing ScyllaDB, ensure the following prerequisites are available:
 
----
-
-# 8. Dependencies
-
-## 8.1 Runtime Dependencies
-
-| **Dependency** | **Purpose** |
-|---|---|
-| Linux | Operating system |
-| XFS | Production filesystem |
-| systemd | Service management |
-| TCP/IP | Client and cluster communication |
-| CQL Driver | Application connectivity |
-
-## 8.2 Administration Tools
-
-| **Tool** | **Purpose** |
-|---|---|
-| `cqlsh` | Execute CQL commands |
-| `nodetool` | Node and cluster administration |
-| `scylla_setup` | System and storage configuration |
-| ScyllaDB Manager | Cluster management |
-| Monitoring Stack | Metrics and alerting |
+| **Requirement**      | **Details / Verification**                               |
+| -------------------- | -------------------------------------------------------- |
+| AWS EC2              | EC2 instance with supported Linux distribution.          |
+| Operating System     | Ubuntu 24.04 LTS or Ubuntu 22.04 LTS.                    |
+| Network Connectivity | Nodes should be able to communicate through private IPs. |
+| Sudo Access          | Required for package installation and configuration.     |
+| Security Group       | Required ScyllaDB ports must be allowed.                 |
+| Time Synchronization | Ensure system time is synchronized.                      |
+| Private IP           | Required for cluster communication between nodes.        |
 
 ---
 
-# 9. Installation
+## Software Overview
 
-| **Step** | **Command / Action** | **Purpose / Expected Result** |
-|---|---|---|
-| Update System | `sudo apt update && sudo apt upgrade -y` | Update the operating system. |
-| Install ScyllaDB | Install ScyllaDB using the official installer/package method. | Install ScyllaDB on the system. |
-| Verify Installation | `scylla --version` | Verify the installed ScyllaDB version. |
-| Configure System | `sudo scylla_setup` | Configure system, storage, and ScyllaDB settings. |
-| Start Service | `sudo systemctl start scylla-server` | Start the ScyllaDB service. |
-| Enable Service | `sudo systemctl enable scylla-server` | Enable ScyllaDB to start automatically at boot. |
-| Check Service | `sudo systemctl status scylla-server` | Verify that the service is running. |
-| Check Cluster | `nodetool status` | Verify cluster and node health. A healthy node shows `UN` (Up and Normal). |
-| Test CQL | `cqlsh` | Test CQL connectivity and open the CQL shell. |
-
+| **Component / Command** | **Purpose**                                                       |
+| ----------------------- | ----------------------------------------------------------------- |
+| `scylla-server`         | Main ScyllaDB database service.                                   |
+| `scylla.yaml`           | Main ScyllaDB configuration file.                                 |
+| `cqlsh`                 | Command-line interface for executing CQL queries.                 |
+| `nodetool`              | Used for cluster administration and health checks.                |
+| `scylla_dev_mode_setup` | Configures ScyllaDB for development or low-resource environments. |
+| `systemctl`             | Used to start, stop, enable, and check the ScyllaDB service.      |
 
 ---
 
-# 10. Configuration
+## System Requirements
 
-| **Configuration** | **Location / Example** |
-|---|---|
-| Main Configuration | `/etc/scylla/scylla.yaml` |
-| Service Defaults | `/etc/default/scylla-server` |
-| Datacenter/Rack | `/etc/scylla/cassandra-rackdc.properties` |
-| I/O Configuration | `/etc/scylla.d/io.conf` |
+The setup is performed on AWS EC2 using Ubuntu.
 
-## 10.1 Important Configuration Parameters
+| **Requirement**   | **Environment**                                      |
+| ----------------- | ---------------------------------------------------- |
+| Platform          | AWS EC2                                              |
+| OS                | Ubuntu 24.04 LTS / Ubuntu 22.04 LTS                  |
+| Architecture      | Single-node POC or multi-node cluster                |
+| Cluster IP        | Private IP address                                   |
+| ScyllaDB Version  | ScyllaDB 5.4 / stable Open Source release            |
+| Development Setup | `--smp 1` can be used for low-resource POC instances |
 
-| **Parameter** | **Purpose** |
-|---|---|
-| `cluster_name` | Identifies the cluster |
-| `seed_provider` | Provides initial cluster contact points |
-| `listen_address` | Node-to-node communication address |
-| `rpc_address` | Client communication address |
-| `broadcast_address` | Address advertised to other nodes |
-| `endpoint_snitch` | Determines topology awareness |
-
-### Example
-
-```yaml
-cluster_name: 'Production-Scylla-Cluster'
-
-seed_provider:
-  - class_name: org.apache.cassandra.locator.SimpleSeedProvider
-    parameters:
-      - seeds: "10.0.1.10,10.0.1.11"
-
-listen_address: 10.0.1.10
-rpc_address: 0.0.0.0
-```
+> For production deployments, hardware sizing should be based on workload, data size, throughput, and ScyllaDB recommendations.
 
 ---
 
-# 11. Datacenter and Rack Configuration
+##  Important Ports
 
-| **Parameter** | **Example** |
-|---|---|
-| Datacenter | `dc1` |
-| Rack | `rack1` |
-| Configuration File | `/etc/scylla/cassandra-rackdc.properties` |
+| **Port** | **Protocol** | **Purpose**                                    |
+| -------- | ------------ | ---------------------------------------------- |
+| `9042`   | TCP          | Native CQL client and application connections. |
+| `7000`   | TCP          | Inter-node cluster communication and gossip.   |
 
-```properties
-dc=dc1
-rack=rack1
-```
-
-Datacenter and rack information is used for topology-aware replication and fault tolerance.
+> Port `7000` should be accessible only between ScyllaDB cluster nodes. Port `9042` should be restricted to trusted clients or application networks.
 
 ---
 
-# 12. Basic CQL Operations
+# 2. Dependencies
 
-| **Operation** | **Purpose** |
-|---|---|
-| `CREATE KEYSPACE` | Create a logical database namespace |
-| `CREATE TABLE` | Create a table |
-| `INSERT` | Add data |
-| `SELECT` | Read data |
-| `UPDATE` | Modify data |
-| `DELETE` | Delete data |
-| `DESCRIBE` | Inspect schema information |
+The following packages are required during the installation:
 
-## 12.1 Create Keyspace
+| **Dependency** | **Purpose**                                          |
+| -------------- | ---------------------------------------------------- |
+| `curl`         | Downloads the official ScyllaDB installation script. |
+| `gnupg`        | Handles package signing keys.                        |
+| `python3`      | Required by ScyllaDB tooling and setup components.   |
+| `apt`          | Installs and manages ScyllaDB packages.              |
+| `systemd`      | Manages the ScyllaDB service.                        |
 
-```sql
-CREATE KEYSPACE ecommerce
-WITH replication = {
-    'class': 'NetworkTopologyStrategy',
-    'dc1': 3
-};
-```
-
-## 12.2 Create Table
-
-```sql
-USE ecommerce;
-
-CREATE TABLE orders (
-    customer_id uuid,
-    order_id uuid,
-    order_date timestamp,
-    amount decimal,
-    status text,
-    PRIMARY KEY (customer_id, order_id)
-);
-```
-
-## 12.3 Insert Data
-
-```sql
-INSERT INTO orders (
-    customer_id,
-    order_id,
-    order_date,
-    amount,
-    status
-)
-VALUES (
-    123e4567-e89b-12d3-a456-426614174000,
-    987e6543-e21b-34d3-b654-426614174111,
-    '2026-09-08',
-    2499.00,
-    'CONFIRMED'
-);
-```
-
-## 12.4 Query Data
-
-```sql
-SELECT *
-FROM orders
-WHERE customer_id =
-123e4567-e89b-12d3-a456-426614174000;
-```
-
----
-
-# 13. Maintenance
-
-| **Task** | **Command / Action** |
-|---|---|
-| Check service | `systemctl status scylla-server` |
-| Start service | `systemctl start scylla-server` |
-| Stop service | `systemctl stop scylla-server` |
-| Restart service | `systemctl restart scylla-server` |
-| Enable at boot | `systemctl enable scylla-server` |
-| Check version | `scylla --version` |
-| Check cluster | `nodetool status` |
-| Check logs | `journalctl -u scylla-server` |
-| Backup | Configure ScyllaDB backup/restore |
-| Upgrade | Follow release-specific upgrade procedure |
-
-> Do not manually delete database files to solve storage problems.
-
----
-
-# 14. Monitoring
-
-
-| **Metric / Check** | **Purpose** | **Command** |
-|---|---|---|
-| Node Status | Detect failed or unhealthy nodes. | `nodetool status` |
-| CPU Usage | Detect CPU saturation. | `top` / `htop` |
-| Memory Usage | Detect memory pressure. | `free -h` / `top` |
-| Disk Usage | Prevent storage exhaustion. | `df -h` |
-| Disk I/O | Identify storage bottlenecks. | `iostat` |
-| Read Latency | Measure read performance. | ScyllaDB Monitoring |
-| Write Latency | Measure write performance. | ScyllaDB Monitoring |
-| Read Throughput | Measure read workload. | ScyllaDB Monitoring |
-| Write Throughput | Measure write workload. | ScyllaDB Monitoring |
-| Compaction | Detect compaction pressure. | `nodetool compactionstats` |
-| SSTables | Identify excessive SSTables. | `nodetool tablestats` |
-| Network Traffic | Detect network saturation. | `ss -s` / `sar -n DEV` |
-| Service Status | Verify ScyllaDB service health. | `sudo systemctl status scylla-server` |
-| CQL Port | Verify that port `9042` is listening. | `ss -lntp \| grep 9042` |
-| Service Logs | View recent ScyllaDB log entries. | `journalctl -u scylla-server -n 100` |
-| Live Logs | Monitor ScyllaDB logs in real time. | `journalctl -u scylla-server -f` |
----
-
-# 15. Backup
-
-| **Backup Component** | **Purpose** |
-|---|---|
-| Database Backup | Protect database data |
-| Object Storage | Store backups durably |
-| Separate Region | Protect against regional failure |
-| Backup Schedule | Meet RPO requirements |
-| Restore Test | Verify backup usability |
-
-Possible object-storage destinations:
-
-| **Platform** | **Storage** |
-|---|---|
-| AWS | S3 |
-| Google Cloud | Cloud Storage |
-| Azure | Blob Storage |
-
----
-
-# 16. Disaster Recovery
-
-| **Failure Scenario** | **Protection Mechanism** |
-|---|---|
-| Node Failure | Replication |
-| Disk Failure | Replicated data + backup |
-| Data Corruption | Backup and restore |
-| Accidental Deletion | Backup |
-| AZ Failure | Multi-AZ deployment |
-| Datacenter Failure | Multi-DC deployment |
-| Region Failure | Cross-region strategy and backups |
-
-## 16.1 Recommended DR Design
-
-<img width="533" height="361" alt="image" src="https://github.com/user-attachments/assets/f743bc3a-db5e-44ac-8385-5768bf5f7b08" />
-
-
----
-
-# 17. High Availability
-
-| **HA Component** | **Recommendation** |
-|---|---|
-| Cluster | Use multiple nodes |
-| Replication | Use an appropriate replication factor |
-| Availability Zones | Distribute nodes across AZs |
-| Datacenters | Use multiple DCs where required |
-| Consistency | Select according to application needs |
-| Backups | Maintain independent backups |
-| Monitoring | Configure health monitoring and alerts |
-
-### Example
-
-<img width="668" height="331" alt="image" src="https://github.com/user-attachments/assets/55949030-7254-4e2e-8809-5659cd381241" />
-
-
----
-
-# 18. Consistency and Replication
-
-| **Concept** | **Description** |
-|---|---|
-| Replication Factor | Number of data replicas |
-| Consistency Level | Required acknowledgement level |
-| `ONE` | One replica acknowledgement |
-| `QUORUM` | Majority of replicas |
-| `LOCAL_QUORUM` | Quorum within local datacenter |
-| `ALL` | All required replicas |
-| NetworkTopologyStrategy | Topology-aware replication strategy |
-
-Example:
-
-```sql
-CREATE KEYSPACE ecommerce
-WITH replication = {
-    'class': 'NetworkTopologyStrategy',
-    'dc1': 3
-};
-```
-
----
-
-# 19. Troubleshooting
-
-| **Problem** | **First Checks** | **Useful Command** |
-|---|---|---|
-| Service not starting | Service, logs, configuration | `systemctl status scylla-server` |
-| Node down | Service and network | `nodetool status` |
-| CQL unavailable | Port and RPC configuration | `ss -lntp \| grep 9042` |
-| Node cannot join | Cluster name, seeds, network | Check `scylla.yaml` |
-| High disk usage | Disk and data directories | `df -h` |
-| High CPU | Processes and workload | `top` / `htop` |
-| High latency | CPU, disk, network, queries | Monitoring metrics |
-| Cluster communication issue | Firewall and ports | `nc -zv <IP> 7000` |
-
-## 19.1 Service Failure
+Install the basic dependencies:
 
 ```bash
-sudo systemctl status scylla-server
-journalctl -u scylla-server -n 100
+sudo apt-get update
+sudo apt-get install -y curl gnupg python3
 ```
 
-Check:
+---
 
-```text
-/etc/scylla/scylla.yaml
-/etc/scylla.d/io.conf
+## Other Dependencies
+
+For a multi-node ScyllaDB cluster, the following additional requirements are needed:
+
+* AWS Security Groups must allow required cluster ports.
+* Nodes must communicate using private IP addresses.
+* Each node should have a unique private IP.
+* All nodes should use the appropriate ScyllaDB configuration.
+* The same seed node should be configured for joining nodes.
+* Nodes should be distributed across Availability Zones for better fault tolerance.
+
+---
+
+# 3. How to Setup/Install ScyllaDB
+
+## 3.1 Clean Existing Repository Configuration
+
+Remove previous ScyllaDB repository configurations:
+
+```bash
+sudo rm -f /etc/apt/sources.list.d/scylla*
+sudo apt-get update
 ```
 
-## 19.2 Node Failure
+---
+
+## 3.2 Install Required Packages
+
+```bash
+sudo apt-get install -y curl gnupg python3
+```
+
+---
+
+## 3.3 Add ScyllaDB Repository
+
+Run the official ScyllaDB installer:
+
+```bash
+curl -sSf https://get.scylladb.com/server | sudo bash
+```
+
+---
+
+## 3.4 Configure the Repository Signing Key
+
+```bash
+sudo gpg --homedir /tmp --no-default-keyring \
+--keyring /tmp/temp.gpg \
+--export C503C686B007F39E | \
+sudo tee /etc/apt/keyrings/scylladb.gpg > /dev/null
+```
+
+Copy the key:
+
+```bash
+sudo cp /etc/apt/keyrings/scylladb.gpg \
+/etc/apt/trusted.gpg.d/scylladb.gpg
+```
+
+Set the required permissions:
+
+```bash
+sudo chmod 644 \
+/etc/apt/keyrings/scylladb.gpg \
+/etc/apt/trusted.gpg.d/scylladb.gpg
+```
+
+Update the package list:
+
+```bash
+sudo apt-get update
+```
+
+---
+
+## 3.5 Install ScyllaDB
+
+```bash
+sudo apt-get install -y scylla
+```
+
+---
+
+## 3.6 Configure Development Mode
+
+For a low-resource EC2 POC environment:
+
+```bash
+sudo scylla_dev_mode_setup --developer-mode 1
+```
+
+Configure one CPU shard:
+
+```bash
+echo 'CPUSET="--smp 1"' | sudo tee /etc/scylla.d/cpuset.conf
+```
+
+Reload systemd:
+
+```bash
+sudo systemctl daemon-reload
+```
+
+---
+
+## 3.7 Start and Enable ScyllaDB
+
+Enable the service:
+
+```bash
+sudo systemctl enable scylla-server
+```
+
+Start the service:
+
+```bash
+sudo systemctl start scylla-server
+```
+
+Check the service:
+
+```bash
+sudo systemctl status scylla-server --no-pager
+```
+
+---
+
+## 3.8 Verify Cluster Status
+
+Check the ScyllaDB cluster:
 
 ```bash
 nodetool status
 ```
 
-Then verify:
+A healthy node should show the **UN** status:
 
-```bash
-sudo systemctl status scylla-server
+* **U** = Up
+* **N** = Normal
+
+---
+
+# 4. Configuration
+
+The main ScyllaDB configuration file is:
+
+```text
+/etc/scylla/scylla.yaml
 ```
 
-## 19.3 CQL Connection Failure
+Edit the configuration:
 
 ```bash
-cqlsh <IP_ADDRESS> 9042
+sudo nano /etc/scylla/scylla.yaml
 ```
 
-Check:
+Example configuration:
+
+```yaml
+cluster_name: 'Production-POC-Cluster'
+
+seed_provider:
+    - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+      parameters:
+          - seeds: "172.31.3.157"
+
+listen_address: 172.31.3.157
+
+rpc_address: 0.0.0.0
+
+endpoint_snitch: Ec2Snitch
+```
+
+## Configuration Parameters
+
+| **Parameter**     | **Purpose**                                                 |
+| ----------------- | ----------------------------------------------------------- |
+| `cluster_name`    | Defines the name of the ScyllaDB cluster.                   |
+| `seed_provider`   | Defines the seed node used for cluster discovery.           |
+| `listen_address`  | Defines the private IP used for node-to-node communication. |
+| `rpc_address`     | Defines the address used for client connections.            |
+| `endpoint_snitch` | Helps ScyllaDB understand the AWS infrastructure topology.  |
+
+Restart ScyllaDB after configuration changes:
 
 ```bash
-ss -lntp | grep 9042
+sudo systemctl restart scylla-server
 ```
 
-Verify:
+---
 
-- `rpc_address`
-- Firewall
-- Security Group
-- Network ACL
-- TLS configuration
+# 4. Basic CQL Operations
 
-## 19.4 High Disk Usage
+After installing ScyllaDB, basic CQL queries can be used to verify database connectivity, create a keyspace and table, insert data, and retrieve records.
+
+## 4.1 Connect to ScyllaDB
+
+Connect to the ScyllaDB CQL shell using:
 
 ```bash
-df -h
+cqlsh localhost 9042
 ```
 
-```bash
-du -sh /var/lib/scylla/*
+## 4.2 Create Keyspace
+
+Create a keyspace using `NetworkTopologyStrategy`:
+
+```sql
+CREATE KEYSPACE poc_keyspace 
+WITH replication = {'class': 'NetworkTopologyStrategy', 'datacenter1': 1};
 ```
 
-Check for:
+> **Note:** Replication factor `1` is suitable for the current single-node POC environment. For a multi-node production cluster, the replication factor should be configured according to the cluster design.
 
-- Large datasets
-- SSTables
-- Compaction
-- Backups
-- Insufficient capacity
+## 4.3 Create Table
 
----
+Create an `audit_log` table:
 
-# 20. Security
+```sql
+CREATE TABLE poc_keyspace.audit_log (
+    event_id uuid PRIMARY KEY,
+    service_name text,
+    status text,
+    created_at timestamp
+);
+```
 
-| **Security Area** | **Recommendation** |
-|---|---|
-| Network | Restrict database ports to trusted networks |
-| SSH | Allow only administrative sources |
-| CQL | Use authentication and encryption where required |
-| TLS | Enable TLS for sensitive environments |
-| Firewall | Restrict cluster ports |
-| Credentials | Store secrets securely |
-| Backups | Encrypt and restrict backup access |
-| Access Control | Apply least privilege |
-| Updates | Keep ScyllaDB and OS updated |
-| Monitoring | Alert on security and availability events |
+## 4.4 Insert Test Record
 
----
+Insert a test record into the table:
 
-# 21. Common Commands
+```sql
+INSERT INTO poc_keyspace.audit_log 
+(event_id, service_name, status, created_at)
+VALUES 
+(uuid(), 'user-auth-service', 'SUCCESS', toTimestamp(now()));
+```
 
-| **Command** | **Purpose** |
-|---|---|
-| `scylla --version` | Show ScyllaDB version |
-| `scylla_setup` | Configure system |
-| `cqlsh` | Open CQL shell |
-| `nodetool status` | Show cluster status |
-| `nodetool info` | Show node information |
-| `nodetool describecluster` | Show cluster information |
-| `systemctl status scylla-server` | Check service |
-| `systemctl restart scylla-server` | Restart service |
-| `journalctl -u scylla-server` | View service logs |
-| `ss -lntp` | Check listening ports |
+## 4.5 Query the Record
 
----
+Retrieve the inserted record:
 
-# 22. Production Architecture
+```sql
+SELECT * FROM poc_keyspace.audit_log;
+```
 
-<img width="584" height="364" alt="image" src="https://github.com/user-attachments/assets/103e5c12-9283-4f35-a462-a33d5bc693d6" />
+## 4.6 Verified Output
 
----
+The query was successfully verified on the EC2 instance:
 
-# 23. FAQs
+```text
+ event_id                             | created_at                      | service_name      | status
+--------------------------------------+---------------------------------+-------------------+---------
+ 04fcdf6d-0eec-4e52-bffd-1d5e1ff95618 | 2026-09-10 19:57:05.960000+0000 | user-auth-service | SUCCESS
 
-| **Question** | **Answer** |
-|---|---|
-| Is ScyllaDB SQL? | No. It is a NoSQL wide-column database using CQL. |
-| Is ScyllaDB Cassandra compatible? | Yes, it supports CQL and Cassandra-compatible clients. |
-| Does ScyllaDB support DynamoDB? | Yes, through the Alternator API. |
-| Does ScyllaDB support replication? | Yes. |
-| Does ScyllaDB support multi-DC? | Yes. |
-| Does ScyllaDB support AWS? | Yes. |
-| Does ScyllaDB support Graviton? | Yes, supported AArch64/Graviton deployments are available. |
-| Does ScyllaDB support Docker? | Yes. |
-| Does ScyllaDB support vector search? | Yes. |
-| Does ScyllaDB support CDC? | Yes. |
-| What checks cluster health? | `nodetool status`. |
-| What is the main configuration file? | `/etc/scylla/scylla.yaml`. |
-| What does `UN` mean? | Up and Normal. |
+(1 rows)
+```
+
+This confirms that **ScyllaDB is running, CQL connectivity is working, the keyspace and table were created successfully, and data can be inserted and retrieved successfully.**
+
 
 ---
 
-# 24. Contact Information
+# 5. Maintenance
 
-| **Name** | **Email** |
-|---|---|
-| Vashishtha Prakash | vashishtha.prakash.snaatak@mygurukulam.co |
+Regular maintenance helps keep the ScyllaDB cluster healthy and reliable.
+
+| **Task**               | **Command / Action**                   |
+| ---------------------- | -------------------------------------- |
+| Check Service          | `sudo systemctl status scylla-server`  |
+| Restart Service        | `sudo systemctl restart scylla-server` |
+| Check Cluster          | `nodetool status`                      |
+| Check CQL              | `cqlsh localhost 9042`                 |
+| Check Disk             | `df -h`                                |
+| Check System Resources | `free -h` / `nproc`                    |
+| Check Logs             | `sudo journalctl -u scylla-server`     |
 
 ---
 
-# 25. References
+# 6. Monitoring
 
-| **Reference** | **Purpose** |
-|---|---|
-| [ScyllaDB Documentation](https://docs.scylladb.com/manual/stable/) | Official documentation |
-| [ScyllaDB Installation](https://docs.scylladb.com/manual/stable/getting-started/install-scylla/) | Installation procedures |
-| [ScyllaDB System Requirements](https://docs.scylladb.com/manual/stable/getting-started/system-requirements.html) | Hardware and platform requirements |
-| [ScyllaDB Architecture](https://docs.scylladb.com/manual/stable/architecture/) | Architecture documentation |
-| [ScyllaDB Features](https://docs.scylladb.com/manual/stable/features/) | Feature documentation |
-| [ScyllaDB GitHub](https://github.com/scylladb/scylladb) | Source repository |
-| [OT-MICROSERVICES Software Template](https://github.com/OT-MICROSERVICES/documentation-template/wiki/Software-Template) | Documentation template |
+Monitoring helps identify performance problems, resource exhaustion, node failures, and service availability issues.
+
+| **Metric / Check** | **Purpose**                      | **Command / Tool**                    |
+| ------------------ | -------------------------------- | ------------------------------------- |
+| Node Status        | Detect failed or unhealthy nodes | `nodetool status`                     |
+| CPU Usage          | Detect CPU saturation            | `top` / `htop`                        |
+| Memory Usage       | Detect memory pressure           | `free -h` / `top`                     |
+| Disk Usage         | Prevent storage exhaustion       | `df -h`                               |
+| Disk I/O           | Identify storage bottlenecks     | `iostat`                              |
+| Network Traffic    | Detect network saturation        | `ss -s` / `sar -n DEV`                |
+| Service Status     | Verify service health            | `sudo systemctl status scylla-server` |
+| CQL Port           | Verify port 9042                 | `ss -lntp \| grep 9042`               |
+| Service Logs       | View recent logs                 | `journalctl -u scylla-server -n 100`  |
+| Live Logs          | Monitor logs continuously        | `journalctl -u scylla-server -f`      |
+
+
+---
+
+# 7. Disaster Recovery
+
+Disaster Recovery (DR) consists of processes, strategies, and tools used to recover ScyllaDB services and data after unexpected failures or disasters.
+
+| **Failure Scenario**      | **Protection Mechanism**          |
+| ------------------------- | --------------------------------- |
+| Node Failure              | Data replication                  |
+| Disk Failure              | Replicated data and backups       |
+| Data Corruption           | Backup and restore                |
+| Accidental Deletion       | Backup                            |
+| Availability Zone Failure | Multi-AZ deployment               |
+| Datacenter Failure        | Multi-DC deployment               |
+| Region Failure            | Cross-region strategy and backups |
+
+---
+
+# 8. High Availability
+
+High Availability (HA) ensures that ScyllaDB remains accessible with minimal downtime even when individual infrastructure components fail.
+
+| **HA Component**   | **Recommendation**                             |
+| ------------------ | ---------------------------------------------- |
+| Cluster            | Use multiple nodes                             |
+| Replication        | Configure an appropriate replication factor    |
+| Availability Zones | Distribute nodes across AZs                    |
+| Datacenters        | Use multiple DCs where required                |
+| Consistency        | Select according to application requirements   |
+| Backups            | Maintain independent backups                   |
+| Monitoring         | Configure health monitoring and alerts         |
+| Capacity           | Maintain sufficient capacity for node failures |
+
+
+# 9. Conclusion
+
+ScyllaDB provides high performance, scalability, and high availability for modern applications. A properly configured ScyllaDB deployment improves database performance, reliability, and fault tolerance.
+
+# 10. FAQs
+
+### Is ScyllaDB Cassandra compatible?
+
+Yes. ScyllaDB supports CQL and Cassandra-compatible clients and applications.
+
+###  Does ScyllaDB support DynamoDB?
+
+Yes. ScyllaDB provides the Alternator API, which provides DynamoDB-compatible access.
+
+
+###  Does ScyllaDB support multiple datacenters?
+
+Yes. ScyllaDB supports multi-datacenter deployments and topology-aware replication.
+
+---
+
+# 11. Contact Information
+
+| Name |         Email Address             |
+| ---- | ----------------------------------|
+| Ritu | ritu.dogra.snaatak@mygurukulam.co |
+
+---
+
+# 12. References
+
+| **Reference**                                                                                                           | **Purpose**                         |
+| ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| [ScyllaDB Documentation](https://docs.scylladb.com/manual/stable/)                                                      | Official ScyllaDB documentation     |
+| [ScyllaDB Installation](https://docs.scylladb.com/manual/stable/getting-started/install-scylla/)                        | ScyllaDB installation procedures    |
+| [ScyllaDB System Requirements](https://docs.scylladb.com/manual/stable/getting-started/system-requirements.html)        | Hardware and platform requirements  |
+| [ScyllaDB Features](https://docs.scylladb.com/manual/stable/features/)                                                  | ScyllaDB feature 
+---
