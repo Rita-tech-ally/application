@@ -70,3 +70,92 @@ CREATE TABLE IF NOT EXISTS employee_salary (
     status text,
     PRIMARY KEY (id, process_date)
 ) WITH CLUSTERING ORDER BY (process_date DESC);
+
+
+# Database Selection — OT-Microservices
+
+This project follows a **polyglot persistence** approach — each microservice uses the database best suited to its data pattern, instead of forcing a single database across the entire stack.
+
+| Point | Attendance | Salary | Employee |
+|---|---|---|---|
+| **Query type** | Complex (joins, aggregate, filters) | Simple lookup (id + date) | Simple lookup (id) |
+| **Data relationship** | Multiple tables joined together | Standalone record | Standalone record |
+| **Reporting need** | High (monthly reports, analytics) | Low | Low |
+| **Write pattern** | Very frequent (daily check-in/out) | Less frequent (monthly) | Very rare (on join/update) |
+| **Consistency need** | High (ACID required) | Medium | Medium |
+| **Best DB** | PostgreSQL (SQL) | ScyllaDB (NoSQL) | ScyllaDB (NoSQL) |
+
+## Why this matters
+
+- **Attendance-API** deals with event-based, relational data that needs aggregation and cross-table analytics → best served by a **relational (SQL)** database like **PostgreSQL**.
+- **Salary-API** and **Employee-API** deal with simple, standalone records accessed primarily by ID → best served by a **NoSQL** database like **ScyllaDB** for speed and horizontal scalability.
+- **Redis** is used across all three services as a caching layer to reduce database load and speed up frequently repeated read requests, regardless of the underlying database technology.
+
+# Why Liquibase (instead of manual SQL) — Attendance-API
+
+PostgreSQL is fully capable of creating tables on its own. Liquibase isn't used because PostgreSQL "needs" it — it's used to manage, track, and automate schema changes safely across environments and teams.
+
+## Comparison Table
+
+| Without Liquibase (Manual SQL) | With Liquibase |
+|---|---|
+| Har server pe manually SQL likhna padta hai | Ek changelog file, sab jagah automated run |
+| Kya already apply hua, yaad rakhna padta hai | Khud track karta hai (`DATABASECHANGELOG` table) |
+| Rollback khud likhna padta hai | Built-in rollback support |
+| Team ko pata nahi kya change hua | Git me versioned, sabko visible |
+| Human error ka risk | Consistent, repeatable |
+| Manual deployment | CI/CD me automate ho sakta hai |
+
+## Summary
+
+Liquibase applies the schema defined in [`db.changelog-master.xml`](./migration/db.changelog-master.xml) to PostgreSQL using the connection details in [`liquibase.properties`](./liquibase.properties). Running:
+
+```shell
+make run-migrations
+```
+
+ensures the same schema is created consistently across every environment (local, staging, production) without manual intervention.
+
+# What is ReactJS — Frontend-Web
+
+ReactJS is a **JavaScript library**, created by **Facebook (Meta)**, used for building the **UI (User Interface)** of web pages.
+
+## Simple Definition
+
+React helps build interactive, dynamic websites — where the page updates data **without a full reload** (like Gmail, Facebook, Instagram — click something and the content changes instantly, without refreshing the whole page).
+
+## How It Works
+
+**1. Components** — the page is broken down into small, reusable parts (e.g. Header, Button, Card, Form):
+
+```jsx
+function Button() {
+  return <button>Click Me</button>;
+}
+```
+
+**2. UI updates automatically on data change** — when data (state) changes, React updates only that specific part, not the entire page.
+
+## In the OT-Microservices Context
+
+The **Frontend-Web** app is built using React, which:
+- Fetches data from **Employee-API**, **Attendance-API**, and **Salary-API**
+- Displays that data to the user as **cards, tables, and forms**
+- Sends data back to those APIs when the user submits a form (e.g. adding a new employee)
+
+## Simple Analogy
+
+- **HTML** = the structure of a house (walls, roof)
+- **CSS** = the design/paint of the house (color, decoration)
+- **React (JavaScript)** = the smart system inside the house (like smart lighting) — it reacts instantly to user actions, without rebuilding the whole house
+
+## Quick Facts
+
+| Point | Detail |
+|---|---|
+| Created by | Facebook (Meta) |
+| Language | JavaScript |
+| Purpose | Building interactive web UI |
+| Why popular | Fast, reusable components, large community support |
+
+**Bottom line:** React is a tool for building fast, interactive websites where only the changed part of the UI updates — not the whole page — which is why apps built with it feel smooth and responsive.
