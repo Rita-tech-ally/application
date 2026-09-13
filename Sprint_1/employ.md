@@ -6,7 +6,7 @@ cd employee-ap
 curl -sSf get.scylladb.com/server | sudo bash
 sudo scylla_dev_mode_setup --developer-mode 1
 sudo systemctl enable scylla-server
-sudo systemctl start scylla-serve
+sudo systemctl start scylla-server
 
 cqlsh 127.0.0.1 9042
 
@@ -59,6 +59,7 @@ make run-migrations
 
 ## 
 # 1. Ensure karein ki main.go ka syntax fix ho gaya hai, phir build karein
+go mod tidy
 make build
 
 # 2. Background me run karein
@@ -67,10 +68,6 @@ nohup ./employee-api > ~/employee.log 2>&1 &
 # 3. Check karein ki port 8080 par listener active ho gaya ya nahi
 ss -tulnp | grep 8080
 
-go mod tidy
- make build
-  nohup ./employee-api > ~/employee.log 2>&1 &
-  
 curl http://localhost:8080/api/v1/employee/health/detail
 
 http://43.204.108.146:8080/swagger/doc.json
