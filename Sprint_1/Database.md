@@ -173,4 +173,42 @@ CREATE TABLE orders (
 | `journalctl -u scylla-server`          | View ScyllaDB service logs        |
 | `ss -lntp`                             | Check listening ports             |
 
+
+
+# poc employ 
+**ScyllaDB ko start karte time I/O Scheduler configuration missing thi.**
+
+Pehle error mein clearly tha:
+
+I/O Scheduler is not properly configured
+Reason found: none of --io-properties and --io-properties-file set
+Developer mode ne kya kiya?
+
+Jab aapne:
+
+sudo scylla_dev_mode_setup --developer-mode 1
+
+run kiya, ScyllaDB ko development/POC configuration mil gayi. Is configuration ki wajah se ScyllaDB ko required I/O settings ke bina startup karne ki permission/configuration mil gayi.
+
+Isliye:
+
+Without developer mode:
+
+I/O configuration missing
+        ↓
+ScyllaDB startup failed ❌
+
+With developer mode:
+
+Developer configuration applied
+        ↓
+I/O scheduler startup requirement handled
+        ↓
+ScyllaDB started successfully ✅
+README mein simple line
+
+Why? Enables developer mode so ScyllaDB can run with development-oriented settings on the POC EC2 environment.
+
+Note: Ye production setup ke liye recommended approach nahi hai; production mein proper I/O/disk configuration karni chahiye.
+
 ---
