@@ -17,9 +17,16 @@
 
 ---
 
-## Table of Contents
+# Table of Contents
 
 
+1. [Introduction](#1-introduction)
+2. [Prerequisites](#2-prerequisites)
+3. [Clone Repository](#3-clone-repository)
+4. [Installation and Setup](#4-installation-and-setup)
+5. [Conclusion](#5-conclusion)
+6. [Contact Information](#6-contact-information)
+7. [References](#7-references)
 
 ---
 
@@ -470,7 +477,7 @@ Swagger Verification
 
 
 
-# 6. Conclusion
+# 5. Conclusion
 
 The Employee API was successfully set up as a POC on an AWS EC2 Ubuntu 24.04 instance without Docker.
 ScyllaDB and Redis were configured as the required backend services. Go was installed, Docker-based application configuration was updated for local services, database migration was executed, and the Employee API was built and started on port `8080`.
@@ -478,7 +485,7 @@ The application was verified using the health endpoint and Swagger documentation
 
 ---
 
-# 7. Contact Information
+# 6. Contact Information
 
 | Name |         Email Address             |
 | ---- | ----------------------------------|
@@ -486,7 +493,7 @@ The application was verified using the health endpoint and Swagger documentation
 
 ---
 
-# 8. References
+# 7. References
 
 | Resource                | Link                                             |
 | ----------------------- | ------------------------------------------------ |
