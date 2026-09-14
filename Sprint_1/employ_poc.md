@@ -26,7 +26,6 @@
 # 1. Introduction
 
 Employee API is a backend microservice used for managing employee-related information.
-
 This document contains the rough steps followed during the Employee API POC setup on an AWS cloud server without using Docker.
 
 ---
@@ -107,12 +106,15 @@ curl -sSf get.scylladb.com/server | sudo bash
 <img width="1416" height="332" alt="Screenshot from 2026-09-14 12-57-46" src="https://github.com/user-attachments/assets/3b4d2df6-2a09-47fb-a432-85839feb1557" />
 
 
+
 **Enable developer mode:**
 
 ```bash
 sudo scylla_dev_mode_setup --developer-mode 1
 ```
 <img width="1078" height="35" alt="Screenshot from 2026-09-14 14-49-14" src="https://github.com/user-attachments/assets/456d7a00-7364-4e00-a862-f189b534c6dd" />
+
+
 
 **Enable, start and status check ScyllaDB:**
 
@@ -128,6 +130,8 @@ sudo systemctl start scylla-server
 sudo systemctl status scylla-server
 ```
 <img width="1085" height="383" alt="Screenshot from 2026-09-14 12-59-36" src="https://github.com/user-attachments/assets/249b37d2-5bbb-4835-acc3-7052ae7398c6" />
+
+
 
 
 **Connect to ScyllaDB:**
@@ -218,6 +222,7 @@ source ~/.bashrc
 ```bash
 go version
 ```
+<img width="1073" height="70" alt="Screenshot from 2026-09-14 15-05-15" src="https://github.com/user-attachments/assets/78566c74-86f4-4b50-8c51-26c84759bd6c" />
 
 > **Purpose:** Go is required to build and run the Employee API.
 
@@ -234,7 +239,7 @@ cd employee-api
 **Edit the application configuration:**
 
 ```bash
-Update the database address from the Docker IP to:
+Update the database address from the Docker IP(172.17.0.3) to:
 127.0.0.1
 ```
 
@@ -253,13 +258,11 @@ cat config.yaml
 
 **Edit the migration configuration:**
 ```bash
-Update the database address from the Docker IP to:
+Update the database address from the Docker IP(172.17.0.3) to:
 127.0.0.1
 ```
 ```bash
 cat migration.json
-Update the database address from the Docker IP to:
-127.0.0.1
 ```
 <img width="1243" height="117" alt="Screenshot from 2026-09-14 13-09-15" src="https://github.com/user-attachments/assets/aeb4823a-93e9-4bdf-b948-7408e09f7112" />
 
@@ -327,6 +330,7 @@ Verify the installation:
 ```bash
 migrate -version
 ```
+<img width="1073" height="70" alt="Screenshot from 2026-09-14 15-04-12" src="https://github.com/user-attachments/assets/a1a0a447-c259-4241-b8e4-2a2c2a2340ef" />
 
 **Install Make:**
 
@@ -340,6 +344,7 @@ sudo apt install make
 ```bash
 make run-migrations
 ```
+<img width="1501" height="83" alt="make" src="https://github.com/user-attachments/assets/89ec9de1-acec-4dc6-b9f4-b0edf9100545" />
 
 > **Purpose:** Applies the required database schema and migrations to ScyllaDB.
 
@@ -468,9 +473,7 @@ Swagger Verification
 # 6. Conclusion
 
 The Employee API was successfully set up as a POC on an AWS EC2 Ubuntu 24.04 instance without Docker.
-
 ScyllaDB and Redis were configured as the required backend services. Go was installed, Docker-based application configuration was updated for local services, database migration was executed, and the Employee API was built and started on port `8080`.
-
 The application was verified using the health endpoint and Swagger documentation.
 
 ---
