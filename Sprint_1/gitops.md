@@ -1,5 +1,10 @@
-# GitOps Tools Evaluation
+<p align="center">
+<img width="203" height="202" alt="image" src="https://github.com/user-attachments/assets/7907c75f-b0ed-4a2e-8136-e41813768c3c" />
+</p>
 
+---
+
+# GitOps Tools Evaluation
 ---
 
 ## Document Information
