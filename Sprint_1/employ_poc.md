@@ -112,6 +112,7 @@ curl -sSf get.scylladb.com/server | sudo bash
 ```bash
 sudo scylla_dev_mode_setup --developer-mode 1
 ```
+<img width="1078" height="35" alt="Screenshot from 2026-09-14 14-49-14" src="https://github.com/user-attachments/assets/456d7a00-7364-4e00-a862-f189b534c6dd" />
 
 **Enable, start and status check ScyllaDB:**
 
