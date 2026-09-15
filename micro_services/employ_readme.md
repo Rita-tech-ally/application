@@ -3204,3 +3204,7 @@ aerohub@localhost:~/employee-api$ ls
 api  client  config  config.yaml  Dockerfile  docs  go.mod  go.sum  LICENSE  main.go  Makefile  middleware  migration  migration.json  model  README.md  routes  static
 aerohub@localhost:~/employee-api$ 
 
+
+<img width="2720" height="2640" alt="scylladb_connection_flow" src="https://github.com/user-attachments/assets/6a9cde60-14e1-4640-976d-61e3ce6513f0" />
+
+
