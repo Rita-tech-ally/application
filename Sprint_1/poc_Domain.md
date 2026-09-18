@@ -9,22 +9,8 @@
 1. [Introduction](#1-introduction)
 2. [Prerequisites](#2-prerequisites)
 3. [Application Setup](#3-application-setup)
-
-   * [3.1 Create EC2 Instance](#31-create-ec2-instance)
-   * [3.2 Configure Security Group](#32-configure-security-group)
-   * [3.3 Connect to EC2](#33-connect-to-ec2)
-   * [3.4 Install NGINX](#34-install-nginx)
-   * [3.5 Create Application](#35-create-application)
-   * [3.6 Configure NGINX](#36-configure-nginx)
-   * [3.7 Validate Application](#37-validate-application)
 4. [Domain Setup](#4-domain-setup)
-
-   * [4.1 Create Domain](#41-create-domain)
-   * [4.2 Configure Domain with EC2 Public IP](#42-configure-domain-with-ec2-public-ip)
 5. [DNS Validation](#5-dns-validation)
-
-   * [5.1 Verify DNS Resolution](#51-verify-dns-resolution)
-   * [5.2 Access Application Using Domain](#52-access-application-using-domain)
 6. [POC Result](#6-poc-result)
 7. [Contact Information](#7-contact-information)
 8. [References](#8-references)
@@ -90,7 +76,7 @@ Configure the EC2 Security Group to allow the required traffic.
 ---
 
 
-## 3.4 Install NGINX
+## 3.3 Install NGINX
 
 Install NGINX:
 
@@ -143,7 +129,7 @@ active (running)
 
 ---
 
-## 3.5 Create Application
+## 3.4 Create Application
 
 Create the application directory:
 
@@ -218,7 +204,7 @@ Save the file and exit.
 
 ---
 
-## 3.6 Configure NGINX
+## 3.5 Configure NGINX
 
 Create an NGINX configuration file:
 
@@ -305,27 +291,7 @@ Verify that the hostname is displayed in the Hostinger dashboard.
 
 ---
 
-## 4.2 Configure Domain with EC2 Public IP
 
-In the DuckDNS dashboard, configure the created domain with the public IP address of the EC2 instance.
-
-Set the IP address to:
-
-```text
-devsecurity.shop;
-```
-
-The final mapping should be:
-
-```text
-devsecurity.shop → devsecurity.shop;
-```
-
-
-<img width="1920" height="1140" alt="Screenshot 2026-09-14 160516" src="https://github.com/user-attachments/assets/4e53b94e-313e-48a4-8f47-152a53f2e54c" />
-
-
----
 
 # 5. DNS Validation
 
@@ -346,8 +312,7 @@ Address: 15.207.254.122
 
 The domain should resolve to the public IP address of the EC2 instance.
 
-<img width="787" height="168" alt="Screenshot 2026-09-14 151729" src="https://github.com/user-attachments/assets/ba26cd20-ed86-468c-85ad-30452afb3d5a" />
-
+<img width="536" height="159" alt="Screenshot from 2026-09-18 11-07-09" src="https://github.com/user-attachments/assets/a8aa623b-3bef-4a15-8578-6d1978ba395b" />
 
 ---
 
@@ -356,14 +321,14 @@ The domain should resolve to the public IP address of the EC2 instance.
 Open the following URL in a browser:
 
 ```text
-http://mywebsite-dns.duckdns.org
+http://devsecurity.shop
 ```
 
 **Expected Result:**
 
 The application hosted on the EC2 instance should be accessible using the configured domain.
 
-<img width="1920" height="1140" alt="Screenshot 2026-09-14 153336" src="https://github.com/user-attachments/assets/e6f6c12c-73c6-43b7-a4a2-f9d31f2068a9" />
+<img width="1318" height="580" alt="image" src="https://github.com/user-attachments/assets/bf95041f-89f9-4d13-9e71-7c9bc245ab38" />
 
 
 ---
@@ -375,16 +340,23 @@ The DNS POC was successfully completed.
 The domain:
 
 ```text
-
+devsecurity.shop
 ```
 
 was configured to point to the AWS EC2 public IP:
 
 ```text
-13.48.193.66
+15.207.254.122
 ```
 
 The application was successfully accessed using the configured domain.
 
 ---
+# 7. Contact Information
+
+| Name |         Email Address             |
+|-------|-----------------------------------
+| Ritu | ritu.dogra.snaatak@mygurukulam.co— |
+
+----
 
