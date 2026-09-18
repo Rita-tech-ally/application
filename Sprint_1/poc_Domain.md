@@ -4,6 +4,8 @@
   <img width="90" height="auto" alt="dns-icon" src="https://img.icons8.com/fluency/96/domain.png" />
 </p>
 
+---
+
 # Table of Contents
 
 1. [Introduction](#1-introduction)
