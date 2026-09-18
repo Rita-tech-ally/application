@@ -360,3 +360,15 @@ The application was successfully accessed using the configured domain.
 
 ----
 
+## 8. References
+
+| **Reference**                                                                                                                                                                  | **Description**                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| [DNS Documentation — Sprint-1 | [AllStar] (https://github.com/SnaatakAllStars/Sprint-1/edit/SCRUM-113-MEHAK/Documentation/Domain_Security/DNS_SSL/DNS/DOC/README.md)| Project DNS documentation reference.                                                               |
+| [IBM — What is DNS?](https://www.ibm.com/think/topics/dns)                                                                                                                     | Provides an overview of DNS and how the Domain Name System works.                                  |
+| [AWS Route 53 Documentation](https://docs.aws.amazon.com/route53/)                                                                                                             | Official documentation for AWS Route 53 DNS service, hosted zones, records, and DNS routing.       |
+| [Cloudflare DNS Documentation](https://developers.cloudflare.com/dns/)                                                                                                         | Official documentation covering DNS records, DNSSEC, nameservers, and DNS management.              |
+| [Google Cloud DNS Documentation](https://cloud.google.com/dns/docs)                                                                                                            | Official documentation for Google Cloud DNS, including zones, records, DNSSEC, and DNS management. |
+| [GoDaddy — What is DNS?](https://www.godaddy.com/en-in/help/what-is-dns-665)                                                                                                   | Explains DNS basics, DNS records, nameservers, and DNS management.                                 |
+
+
