@@ -3208,3 +3208,1144 @@ aerohub@localhost:~/employee-api$
 <img width="2720" height="2640" alt="scylladb_connection_flow" src="https://github.com/user-attachments/assets/6a9cde60-14e1-4640-976d-61e3ce6513f0" />
 
 
+
+# Salary
+
+ritu@localhost:~$ cd salary-api/
+ritu@localhost:~/salary-api$ la
+Dockerfile  .gitignore  Makefile   migration.json  mvnw      pom.xml    src
+.git        LICENSE     migration  .mvn            mvnw.cmd  README.md  static
+ritu@localhost:~/salary-api$ cat Makefile 
+APP_VERSION ?= v0.1.0
+IMAGE_REGISTRY ?= quay.io/opstree
+IMAGE_NAME ?= salary-api
+
+# Build salary api
+build:
+	mvn clean package
+
+# Run checkstyle against code
+fmt:
+	mvn checkstyle:checkstyle
+
+# Run jacoco test cases for coverage
+test:
+	mvn test
+
+docker-build:
+	docker build -t ${IMAGE_REGISTRY}/${IMAGE_NAME}:${APP_VERSION} -f Dockerfile .
+
+docker-push:
+	docker push ${IMAGE_REGISTRY}/${IMAGE_NAME}:${APP_VERSION}
+
+run-migrations:
+	migrate -source file://migration -database "$(shell cat migration.json | jq -r '.database')" up
+ritu@localhost:~/salary-api$ ls
+Dockerfile  Makefile   migration.json  mvnw.cmd  README.md  static
+LICENSE     migration  mvnw            pom.xml   src
+ritu@localhost:~/salary-api$ cat migration.json 
+{
+  "database": "cassandra://172.17.0.3:9042/employee_db?username=scylladb&password=password"
+}ritu@localhost:~/salary-api$ cat mvnw.cmd 
+@REM ----------------------------------------------------------------------------
+@REM Licensed to the Apache Software Foundation (ASF) under one
+@REM or more contributor license agreements.  See the NOTICE file
+@REM distributed with this work for additional information
+@REM regarding copyright ownership.  The ASF licenses this file
+@REM to you under the Apache License, Version 2.0 (the
+@REM "License"); you may not use this file except in compliance
+@REM with the License.  You may obtain a copy of the License at
+@REM
+@REM    http://www.apache.org/licenses/LICENSE-2.0
+@REM
+@REM Unless required by applicable law or agreed to in writing,
+@REM software distributed under the License is distributed on an
+@REM "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+@REM KIND, either express or implied.  See the License for the
+@REM specific language governing permissions and limitations
+@REM under the License.
+@REM ----------------------------------------------------------------------------
+
+@REM ----------------------------------------------------------------------------
+@REM Apache Maven Wrapper startup batch script, version 3.2.0
+@REM
+@REM Required ENV vars:
+@REM JAVA_HOME - location of a JDK home dir
+@REM
+@REM Optional ENV vars
+@REM MAVEN_BATCH_ECHO - set to 'on' to enable the echoing of the batch commands
+@REM MAVEN_BATCH_PAUSE - set to 'on' to wait for a keystroke before ending
+@REM MAVEN_OPTS - parameters passed to the Java VM when running Maven
+@REM     e.g. to debug Maven itself, use
+@REM set MAVEN_OPTS=-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000
+@REM MAVEN_SKIP_RC - flag to disable loading of mavenrc files
+@REM ----------------------------------------------------------------------------
+
+@REM Begin all REM lines with '@' in case MAVEN_BATCH_ECHO is 'on'
+@echo off
+@REM set title of command window
+title %0
+@REM enable echoing by setting MAVEN_BATCH_ECHO to 'on'
+@if "%MAVEN_BATCH_ECHO%" == "on"  echo %MAVEN_BATCH_ECHO%
+
+@REM set %HOME% to equivalent of $HOME
+if "%HOME%" == "" (set "HOME=%HOMEDRIVE%%HOMEPATH%")
+
+@REM Execute a user defined script before this one
+if not "%MAVEN_SKIP_RC%" == "" goto skipRcPre
+@REM check for pre script, once with legacy .bat ending and once with .cmd ending
+if exist "%USERPROFILE%\mavenrc_pre.bat" call "%USERPROFILE%\mavenrc_pre.bat" %*
+if exist "%USERPROFILE%\mavenrc_pre.cmd" call "%USERPROFILE%\mavenrc_pre.cmd" %*
+:skipRcPre
+
+@setlocal
+
+set ERROR_CODE=0
+
+@REM To isolate internal variables from possible post scripts, we use another setlocal
+@setlocal
+
+@REM ==== START VALIDATION ====
+if not "%JAVA_HOME%" == "" goto OkJHome
+
+echo.
+echo Error: JAVA_HOME not found in your environment. >&2
+echo Please set the JAVA_HOME variable in your environment to match the >&2
+echo location of your Java installation. >&2
+echo.
+goto error
+
+:OkJHome
+if exist "%JAVA_HOME%\bin\java.exe" goto init
+
+echo.
+echo Error: JAVA_HOME is set to an invalid directory. >&2
+echo JAVA_HOME = "%JAVA_HOME%" >&2
+echo Please set the JAVA_HOME variable in your environment to match the >&2
+echo location of your Java installation. >&2
+echo.
+goto error
+
+@REM ==== END VALIDATION ====
+
+:init
+
+@REM Find the project base dir, i.e. the directory that contains the folder ".mvn".
+@REM Fallback to current working directory if not found.
+
+set MAVEN_PROJECTBASEDIR=%MAVEN_BASEDIR%
+IF NOT "%MAVEN_PROJECTBASEDIR%"=="" goto endDetectBaseDir
+
+set EXEC_DIR=%CD%
+set WDIR=%EXEC_DIR%
+:findBaseDir
+IF EXIST "%WDIR%"\.mvn goto baseDirFound
+cd ..
+IF "%WDIR%"=="%CD%" goto baseDirNotFound
+set WDIR=%CD%
+goto findBaseDir
+
+:baseDirFound
+set MAVEN_PROJECTBASEDIR=%WDIR%
+cd "%EXEC_DIR%"
+goto endDetectBaseDir
+
+:baseDirNotFound
+set MAVEN_PROJECTBASEDIR=%EXEC_DIR%
+cd "%EXEC_DIR%"
+
+:endDetectBaseDir
+
+IF NOT EXIST "%MAVEN_PROJECTBASEDIR%\.mvn\jvm.config" goto endReadAdditionalConfig
+
+@setlocal EnableExtensions EnableDelayedExpansion
+for /F "usebackq delims=" %%a in ("%MAVEN_PROJECTBASEDIR%\.mvn\jvm.config") do set JVM_CONFIG_MAVEN_PROPS=!JVM_CONFIG_MAVEN_PROPS! %%a
+@endlocal & set JVM_CONFIG_MAVEN_PROPS=%JVM_CONFIG_MAVEN_PROPS%
+
+:endReadAdditionalConfig
+
+SET MAVEN_JAVA_EXE="%JAVA_HOME%\bin\java.exe"
+set WRAPPER_JAR="%MAVEN_PROJECTBASEDIR%\.mvn\wrapper\maven-wrapper.jar"
+set WRAPPER_LAUNCHER=org.apache.maven.wrapper.MavenWrapperMain
+
+set WRAPPER_URL="https://repo.maven.apache.org/maven2/org/apache/maven/wrapper/maven-wrapper/3.2.0/maven-wrapper-3.2.0.jar"
+
+FOR /F "usebackq tokens=1,2 delims==" %%A IN ("%MAVEN_PROJECTBASEDIR%\.mvn\wrapper\maven-wrapper.properties") DO (
+    IF "%%A"=="wrapperUrl" SET WRAPPER_URL=%%B
+)
+
+@REM Extension to allow automatically downloading the maven-wrapper.jar from Maven-central
+@REM This allows using the maven wrapper in projects that prohibit checking in binary data.
+if exist %WRAPPER_JAR% (
+    if "%MVNW_VERBOSE%" == "true" (
+        echo Found %WRAPPER_JAR%
+    )
+) else (
+    if not "%MVNW_REPOURL%" == "" (
+        SET WRAPPER_URL="%MVNW_REPOURL%/org/apache/maven/wrapper/maven-wrapper/3.2.0/maven-wrapper-3.2.0.jar"
+    )
+    if "%MVNW_VERBOSE%" == "true" (
+        echo Couldn't find %WRAPPER_JAR%, downloading it ...
+        echo Downloading from: %WRAPPER_URL%
+    )
+
+    powershell -Command "&{"^
+		"$webclient = new-object System.Net.WebClient;"^
+		"if (-not ([string]::IsNullOrEmpty('%MVNW_USERNAME%') -and [string]::IsNullOrEmpty('%MVNW_PASSWORD%'))) {"^
+		"$webclient.Credentials = new-object System.Net.NetworkCredential('%MVNW_USERNAME%', '%MVNW_PASSWORD%');"^
+		"}"^
+		"[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $webclient.DownloadFile('%WRAPPER_URL%', '%WRAPPER_JAR%')"^
+		"}"
+    if "%MVNW_VERBOSE%" == "true" (
+        echo Finished downloading %WRAPPER_JAR%
+    )
+)
+@REM End of extension
+
+@REM If specified, validate the SHA-256 sum of the Maven wrapper jar file
+SET WRAPPER_SHA_256_SUM=""
+FOR /F "usebackq tokens=1,2 delims==" %%A IN ("%MAVEN_PROJECTBASEDIR%\.mvn\wrapper\maven-wrapper.properties") DO (
+    IF "%%A"=="wrapperSha256Sum" SET WRAPPER_SHA_256_SUM=%%B
+)
+IF NOT %WRAPPER_SHA_256_SUM%=="" (
+    powershell -Command "&{"^
+       "$hash = (Get-FileHash \"%WRAPPER_JAR%\" -Algorithm SHA256).Hash.ToLower();"^
+       "If('%WRAPPER_SHA_256_SUM%' -ne $hash){"^
+       "  Write-Output 'Error: Failed to validate Maven wrapper SHA-256, your Maven wrapper might be compromised.';"^
+       "  Write-Output 'Investigate or delete %WRAPPER_JAR% to attempt a clean download.';"^
+       "  Write-Output 'If you updated your Maven version, you need to update the specified wrapperSha256Sum property.';"^
+       "  exit 1;"^
+       "}"^
+       "}"
+    if ERRORLEVEL 1 goto error
+)
+
+@REM Provide a "standardized" way to retrieve the CLI args that will
+@REM work with both Windows and non-Windows executions.
+set MAVEN_CMD_LINE_ARGS=%*
+
+%MAVEN_JAVA_EXE% ^
+  %JVM_CONFIG_MAVEN_PROPS% ^
+  %MAVEN_OPTS% ^
+  %MAVEN_DEBUG_OPTS% ^
+  -classpath %WRAPPER_JAR% ^
+  "-Dmaven.multiModuleProjectDirectory=%MAVEN_PROJECTBASEDIR%" ^
+  %WRAPPER_LAUNCHER% %MAVEN_CONFIG% %*
+if ERRORLEVEL 1 goto error
+goto end
+
+:error
+set ERROR_CODE=1
+
+:end
+@endlocal & set ERROR_CODE=%ERROR_CODE%
+
+if not "%MAVEN_SKIP_RC%"=="" goto skipRcPost
+@REM check for post script, once with legacy .bat ending and once with .cmd ending
+if exist "%USERPROFILE%\mavenrc_post.bat" call "%USERPROFILE%\mavenrc_post.bat"
+if exist "%USERPROFILE%\mavenrc_post.cmd" call "%USERPROFILE%\mavenrc_post.cmd"
+:skipRcPost
+
+@REM pause the script if MAVEN_BATCH_PAUSE is set to 'on'
+if "%MAVEN_BATCH_PAUSE%"=="on" pause
+
+if "%MAVEN_TERMINATE_CMD%"=="on" exit %ERROR_CODE%
+
+cmd /C exit /B %ERROR_CODE%
+ritu@localhost:~/salary-api$ ls
+Dockerfile  Makefile   migration.json  mvnw.cmd  README.md  static
+LICENSE     migration  mvnw            pom.xml   src
+ritu@localhost:~/salary-api$ cat README.md 
+<p align="center">
+  <img src="./static/salary-api-logo.svg" height="300" width="300">
+</p>
+
+Salary API is a Java based microservice which is responsible for all the salary related transactions and records in **[OT-Microservices](https://github.com/OT-MICROSERVICES)** stack. The application is platform independent and can be run on multiple operating system. **[Java Runtime](https://www.java.com/en/download/manual.jsp)** would be required to run this application.
+
+Supported features of the Salary API are:-
+
+- Spring boot based web framework, which uses tomcat as webserver.
+- ScyllaDB is used as primary database for storing all the salary data.
+- Redis as cache manager to store the cache response.
+- Prometheus and Open-telemetry metrics support for monitoring and observability
+- Swagger integration for the API documentation of endpoints and payloads.
+- Database migration using the tool called **[migrate](https://github.com/golang-migrate/migrate)**.
+
+## Pre-Requisites
+
+The Salary API application have some database, cache manager and package dependencies. Some of the dependencies are optional and some are mandatory. To compile the application, we only need `maven` as build tool, but for running the application following things are required:-
+
+- **[ScyllaDB](https://www.scylladb.com/)**
+- **[Redis](https://redis.io/)**
+- **[Migrate](https://github.com/golang-migrate/migrate)**
+- **[Maven](https://maven.apache.org/)**
+
+Maven will be used as package manager to download specific version of dependencies to run the Salary API.
+
+## Architecture
+
+![](./static/salary.png)
+
+## Application
+
+For building the Salary API application, we can use `make` commands with our **[Makefile](./Makefile)**. But first, we need to install the dependencies which can be simply done using the `make` command.
+
+```shell
+make build
+```
+
+For building the docker image artifact of the attendance api, we can invoke another make command.
+
+```shell
+make docker-build
+make docker-push
+```
+
+Also, Salary API contains different test cases and code quality related integrations. To check the code quality, we can use `checkstyle` plugin with maven. Also, for code coverage and unit testing, we are using Jacoco, and Junit respectively.
+
+```shell
+make fmt
+make test
+```
+
+```shell
+mvn checkstyle:checkstyle
+# For unit testing and code coverage
+mvn test
+```
+
+The test cases are present in **[src/test/java/com/opstree/microservice/salary](./src/test/java/com/opstree/microservice/salary)**. For dev testing, the Swagger UI can be used for sample payload generation and requests. The swagger page will be accessible on http://localhost:8080/salary-documentation.
+
+Before running the application, we have to make sure our mandatory database (ScyllaDB and Redis) is up and running. Configuration properties will be configured inside **[application.yml](./src/main/resources/application.yml)** file. Also, once the property file is defined and configured properly, we need to run migrations to create database, schema etc. The connection details for migration is available in **[migration.json](./migration.json)**.
+
+```shell
+make run-migrations
+```
+
+Once the schema, table and database is configured, we can start our application using java runtime.
+
+```shell
+java -jar target/salary-0.1.0-RELEASE.jar
+```
+
+## Endpoint Information
+
+| **Endpoint**                   | **Method** | **Description**                                                                               |
+|--------------------------------|------------|-----------------------------------------------------------------------------------------------|
+| `/api/v1/salary/create/record` | POST       | Data creation endpoint which accepts certain JSON body to add salary information in database  |
+| `/api/v1/salary/search`        | GET        | Endpoint for searching data information using the params in the URL                           |
+| `/api/v1/salary/search/all`    | GET        | Endpoint for searching all information across the system                                      |
+| `/actuator/prometheus`         | GET        | Application healthcheck and performance metrics are available on this endpoint                |
+| `/actuator/health`             | GET        | Endpoint for providing shallow healthcheck information about application health and readiness |
+
+## Contact Information
+
+[Opstree Opensource](mailto:opensource@opstree.com)
+ritu@localhost:~/salary-api$ ls
+Dockerfile  Makefile   migration.json  mvnw.cmd  README.md  static
+LICENSE     migration  mvnw            pom.xml   src
+ritu@localhost:~/salary-api$ cat LICENSE 
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [2023] [Opstree Solutions]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ritu@localhost:~/salary-api$ ls
+Dockerfile  Makefile   migration.json  mvnw.cmd  README.md  static
+LICENSE     migration  mvnw            pom.xml   src
+ritu@localhost:~/salary-api$ cd migration/
+ritu@localhost:~/salary-api/migration$ ls
+000001_create_employee_salary_table.down.sql
+000001_create_employee_salary_table.up.sql
+ritu@localhost:~/salary-api/migration$ cat 000001_create_employee_salary_table.down.sql 
+CREATE TABLE IF NOT EXISTS employee_salary (
+                                 id text,
+                                 process_date text,
+                                 name text,
+                                 salary float,
+                                 status text,
+                                 PRIMARY KEY (id, process_date)
+) WITH CLUSTERING ORDER BY (process_date DESC);
+ritu@localhost:~/salary-api/migration$ cat 000001_create_employee_salary_table.down.sql 
+CREATE TABLE IF NOT EXISTS employee_salary (
+                                 id text,
+                                 process_date text,
+                                 name text,
+                                 salary float,
+                                 status text,
+                                 PRIMARY KEY (id, process_date)
+) WITH CLUSTERING ORDER BY (process_date DESC);
+ritu@localhost:~/salary-api/migration$ cd ..
+ritu@localhost:~/salary-api$ ls
+Dockerfile  Makefile   migration.json  mvnw.cmd  README.md  static
+LICENSE     migration  mvnw            pom.xml   src
+ritu@localhost:~/salary-api$ cat pom.xml 
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.1.1</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.opstree.microservice</groupId>
+	<artifactId>salary</artifactId>
+	<version>0.1.0-RELEASE</version>
+	<name>salary</name>
+	<description>Java microservice to handle all salary related data</description>
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>6.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-cassandra</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+<!--				<version>2.17</version>-->
+				<configuration>
+					<excludes>
+						<exclude>com/opstree/microservice/salary/controller/**</exclude>
+						<exclude>com/opstree/microservice/salary/service/**</exclude>
+						<exclude>com/opstree/microservice/salary/repository/**</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.7</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<excludes>
+						<exclude>com/opstree/microservice/salary/controller/**</exclude>
+						<exclude>com/opstree/microservice/salary/service/**</exclude>
+						<exclude>com/opstree/microservice/salary/repository/**</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
+ritu@localhost:~/salary-api$ cd src/
+ritu@localhost:~/salary-api/src$ ls
+main  test
+ritu@localhost:~/salary-api/src$ cd main/
+ritu@localhost:~/salary-api/src/main$ ls
+java  resources
+ritu@localhost:~/salary-api/src/main$ cd java/
+ritu@localhost:~/salary-api/src/main/java$ ls
+com
+ritu@localhost:~/salary-api/src/main/java$ cd com/
+ritu@localhost:~/salary-api/src/main/java/com$ ls
+opstree
+ritu@localhost:~/salary-api/src/main/java/com$ c do
+c: command not found
+ritu@localhost:~/salary-api/src/main/java/com$ cd opstree/
+ritu@localhost:~/salary-api/src/main/java/com/opstree$ ls
+microservice
+ritu@localhost:~/salary-api/src/main/java/com/opstree$ cd microservice/
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice$ ls
+salary
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice$ cd salary/
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary$ ls
+config  contollers  model  repository  SalaryApplication.java  service
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary$ cat SalaryApplication.java 
+package com.opstree.microservice.salary;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
+import org.springframework.context.annotation.Bean;
+import com.opstree.microservice.salary.model.Employee;
+
+import java.time.Duration;
+
+import org.springframework.cache.annotation.EnableCaching;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+
+@SpringBootApplication
+@EnableCaching
+public class SalaryApplication {
+
+  @Bean
+  public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+    RedisTemplate<Object, Object> template = new RedisTemplate<>();
+    template.setConnectionFactory(connectionFactory);
+    Jackson2JsonRedisSerializer<Employee> serializer = new Jackson2JsonRedisSerializer<>(Employee.class);
+    template.setDefaultSerializer(serializer);
+    return template;
+  }
+
+  @Bean
+  public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+    RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig() //
+        .prefixCacheNameWith(this.getClass().getPackageName() + ".") //
+        .entryTtl(Duration.ofSeconds(1)) //
+        .disableCachingNullValues();
+
+    return RedisCacheManager.builder(connectionFactory) //
+        .cacheDefaults(config) //
+        .build();
+  }
+
+	public static void main(String[] args) {
+		SpringApplication.run(SalaryApplication.class, args);
+	}
+}
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary$ ls
+config  contollers  model  repository  SalaryApplication.java  service
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary$ cd con
+-bash: cd: con: No such file or directory
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary$ cd con
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary$ cd config/
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/config$ ls
+OpenAPIConfig.java
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/config$ cat OpenAPIConfig.java 
+package com.opstree.microservice.salary.swagger;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.servers.Server;
+
+@Configuration
+public class OpenAPIConfig {
+
+  @Bean
+  public OpenAPI myOpenAPI() {
+    Server devServer = new Server();
+    devServer.setUrl("http://localhost:8080");
+    devServer.setDescription("Server URL in Development environment");
+
+    Contact contact = new Contact();
+    contact.setEmail("opensource@opstree.com");
+    contact.setName("Opstree Solutions");
+    contact.setUrl("https://opstree.com");
+
+    License mitLicense = new License().name("MIT License").url("https://choosealicense.com/licenses/mit/");
+
+    Info info = new Info()
+        .title("Salary Microservice API")
+        .version("1.0")
+        .contact(contact)
+        .description("This API exposes endpoints to manage salary information.").termsOfService("https://www.opstree.com/terms")
+        .license(mitLicense);
+
+    return new OpenAPI().info(info).servers(List.of(devServer));
+  }
+}
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/config$ cd ..
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary$ cd contollers/
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/contollers$ ls
+SpringDataController.java
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/contollers$ cat SpringDataController.java 
+package com.opstree.microservice.salary.controller;
+
+import com.opstree.microservice.salary.service.SpringDataSalaryService;
+import com.opstree.microservice.salary.model.Employee;
+import com.opstree.microservice.salary.model.Message;
+
+import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Salary API", description = "Management APIs for all salary related transaction")
+@RestController
+@RequestMapping("/api/v1/salary")
+@RequiredArgsConstructor
+public class SpringDataController {
+
+    @Autowired
+    SpringDataSalaryService springDataSalaryService;
+
+    @Operation(summary = "Create a new employee salary record", tags = { })
+    @ApiResponses({@ApiResponse(responseCode = "201", content = { @Content(schema = @Schema(implementation = Employee.class), mediaType = "application/json") }) })
+    @PostMapping("/create/record")
+    public ResponseEntity<Employee> createSalaryRecord(@RequestBody Employee employee) {
+        try {
+           Employee _employee = springDataSalaryService
+               .saveSalary(new Employee(employee.getId(), employee.getName(), employee.getSalary(), employee.getProcessDate(), employee.getStatus()));
+           return new ResponseEntity<>(employee, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Operation(summary = "Retrieve all employee salary information", tags = {})
+    @ApiResponses({@ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = Employee.class), mediaType = "application/json") })})
+    @GetMapping("/search/all")
+    public ResponseEntity<List<Employee>> getAllEmployeeSalary() {
+        try {
+            return new ResponseEntity<>(springDataSalaryService.getAllEmployeeSalary(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Operation(
+      summary = "Retrieve a Salary by Employee Id",
+      description = "Get a salary object by specifying its id. The response is Employee object with id, name, salary.",
+      tags = {})
+    @ApiResponses({@ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Employee.class), mediaType = "application/json") })})
+    @GetMapping("/search")
+    public ResponseEntity<Employee> findSalary(@RequestParam("id") String id) {
+        try {
+            return new ResponseEntity<>(springDataSalaryService.getEmployeeSalary(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+}
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/contollers$ ls
+SpringDataController.java
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/contollers$ cd ..
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary$ ls
+config  contollers  model  repository  SalaryApplication.java  service
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary$ cd model/
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/model$ ls
+Employee.java  Message.java
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/model$ cat Employee.java 
+package com.opstree.microservice.salary.model;
+
+import java.time.LocalDate;
+import java.io.Serializable;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.cassandra.core.mapping.Column;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Table("employee_salary")
+public class Employee implements Serializable {
+
+    @Id
+    @PrimaryKey
+    @Column("id")
+    private String id;
+
+    @Column("name")
+    private String name;
+
+    @Column("salary")
+    private Float salary;
+
+    @Column("process_date")
+    private String processDate;
+
+    @Column("status")
+    private String status;
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Float getSalary() {
+        return salary;
+    }
+
+    public String getProcessDate() {
+        return processDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+}
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/model$ car Message.java 
+Command 'car' not found, but can be installed with:
+sudo apt install ucommon-utils
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/model$ ls
+Employee.java  Message.java
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/model$ cat Message.java 
+package com.opstree.microservice.salary.model;
+
+public class Message {
+    private String message;
+
+    public Message(String message) {
+        this.message = message;
+    }
+}
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/model$ ls
+Employee.java  Message.java
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/model$ cd ..
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary$ ls
+config  contollers  model  repository  SalaryApplication.java  service
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary$ cd repository/
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/repository$ ls
+EmployeeRepository.java
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/repository$ cat EmployeeRepository.java 
+package com.opstree.microservice.salary.repository;
+
+import com.opstree.microservice.salary.model.Employee;
+
+import java.util.List;
+import java.util.UUID;
+import org.springframework.data.cassandra.repository.CassandraRepository;
+import org.springframework.data.cassandra.repository.Query;
+
+public interface EmployeeRepository extends CassandraRepository<Employee, UUID> {
+
+    @Query("SELECT * FROM employee_salary WHERE id = ?0")
+    Employee findByIdAsString(String id);
+}
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/repository$ cd ..
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary$ ls
+config  contollers  model  repository  SalaryApplication.java  service
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary$ cd service/
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/service$ ls
+SpringDataSalaryService.java
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/service$ cat SpringDataSalaryService.java 
+package com.opstree.microservice.salary.service;
+
+import com.opstree.microservice.salary.model.Employee;
+import com.opstree.microservice.salary.repository.EmployeeRepository;
+
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
+
+@Service
+@EnableCassandraRepositories(basePackages={"com.opstree.microservice.salary"})
+public class SpringDataSalaryService {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    public List<Employee> getAllEmployeeSalary(){
+        return employeeRepository.findAll();
+    }
+
+    @Cacheable("salary-search-id")
+    public Employee getEmployeeSalary(String id){
+        return employeeRepository.findByIdAsString(id);
+    }
+
+    public Employee saveSalary(Employee employee) {
+        employeeRepository.save(employee);
+        return employee;
+    }
+}
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary/service$ cd ..
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary$ ls
+config  contollers  model  repository  SalaryApplication.java  service
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice/salary$ cd ..
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice$ ls
+salary
+ritu@localhost:~/salary-api/src/main/java/com/opstree/microservice$ cd ..
+ritu@localhost:~/salary-api/src/main/java/com/opstree$ ls
+microservice
+ritu@localhost:~/salary-api/src/main/java/com/opstree$ cd ..
+ritu@localhost:~/salary-api/src/main/java/com$ ls
+opstree
+ritu@localhost:~/salary-api/src/main/java/com$ cd ..
+ritu@localhost:~/salary-api/src/main/java$ ls
+com
+ritu@localhost:~/salary-api/src/main/java$ cd ..
+ritu@localhost:~/salary-api/src/main$ ls
+java  resources
+ritu@localhost:~/salary-api/src/main$ cd resources/
+ritu@localhost:~/salary-api/src/main/resources$ ls
+application.yml  logback-spring.xml
+ritu@localhost:~/salary-api/src/main/resources$ cat application.yml 
+spring:
+  cassandra:
+    keyspace-name: employee_db
+    contact-points: 172.17.0.3
+    port: 9042
+    username: scylladb
+    password: password
+    local-datacenter: datacenter1
+  data:
+    redis:
+      host: 172.17.0.4
+      port: 6379
+      password: password
+
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: [ "health","prometheus", "metrics" ]
+  health:
+    cassandra:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+
+springdoc:
+  swagger-ui:
+    path: /salary-documentation
+    tryItOutEnabled: true
+    filter: true
+  api-docs:
+    path: /salary-api-docs
+  show-actuator: true
+ritu@localhost:~/salary-api/src/main/resources$ cat logback-spring.xml 
+<configuration>
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="console" />
+    </root>
+</configuration>
+ritu@localhost:~/salary-api/src/main/resources$ cd ..
+ritu@localhost:~/salary-api/src/main$ ls
+java  resources
+ritu@localhost:~/salary-api/src/main$ ls
+java  resources
+ritu@localhost:~/salary-api/src/main$ cd ..
+ritu@localhost:~/salary-api/src$ ls
+main  test
+ritu@localhost:~/salary-api/src$ cd test/
+ritu@localhost:~/salary-api/src/test$ ls
+java  resources
+ritu@localhost:~/salary-api/src/test$ cd java/
+ritu@localhost:~/salary-api/src/test/java$ ls
+com
+ritu@localhost:~/salary-api/src/test/java$ cd ..
+ritu@localhost:~/salary-api/src/test$ ls
+java  resources
+ritu@localhost:~/salary-api/src/test$ cd resources/
+ritu@localhost:~/salary-api/src/test/resources$ ls
+application.yml  logback-spring.xml
+ritu@localhost:~/salary-api/src/test/resources$ cd ..
+ritu@localhost:~/salary-api/src/test$ cd ..
+ritu@localhost:~/salary-api/src$ ls
+main  test
+ritu@localhost:~/salary-api/src$ cd ..
+ritu@localhost:~/salary-api$ ls
+Dockerfile  LICENSE  Makefile  migration  migration.json  mvnw  mvnw.cmd  pom.xml  README.md  src  static
+ritu@localhost:~/salary-api$ 
+
+
+
+
