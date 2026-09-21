@@ -1,3 +1,7 @@
+<p align="center">
+<img width="220" height="220" alt="image" src="https://github.com/user-attachments/assets/3c0cd5ef-418d-41a4-8920-f7fc6cc1cf6c" />
+</p>
+
 # GitLab Feature Documentation
 
 ## Document Information
