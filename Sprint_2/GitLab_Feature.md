@@ -1,5 +1,13 @@
 # GitLab Feature Documentation
 
+## Document Information
+
+| Author | Created On | Version | L0 Reviewer | L1 Reviewer | L2 Reviewer |
+| --- | --- | --- | --- | --- | --- |
+| Ritu | 09/08/2026 | 1.1 | Liyakhat/Anirudh  | Aman Raj | Sandeep Rawat/Ravindra |
+
+---
+
 ## Table of Contents
 
 1. [Introduction](#1-introduction)
@@ -86,6 +94,11 @@ Overall, GitLab helps teams deliver applications in a more structured, automated
 
 # 10. Contact Information
 
+| Name | Email Address                                                                 |
+| ---- | ----------------------------------------------------------------------------- |
+| Ritu | [ritu.dogra.snaatak@mygurukulam.co](mailto:ritu.dogra.snaatak@mygurukulam.co) |
+
+---
 
 ---
 
