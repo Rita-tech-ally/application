@@ -101,7 +101,6 @@ GitLab provides a single platform for source code management, CI/CD, collaborati
 
 ---
 
----
 
 # 9. References
 
@@ -110,7 +109,4 @@ GitLab provides a single platform for source code management, CI/CD, collaborati
 | [GitLab Official Website](https://about.gitlab.com/)                          | General information about GitLab       |
 | [GitLab Documentation](https://docs.gitlab.com/)                              | Official GitLab documentation          |
 | [GitLab CI/CD Documentation](https://docs.gitlab.com/ci/)                     | CI/CD pipelines, jobs and runners      |
-| [GitLab Merge Requests](https://docs.gitlab.com/user/project/merge_requests/) | Merge Request and code review workflow |
-| [GitLab CI/CD Pipelines](https://docs.gitlab.com/ci/pipelines/)               | Pipeline concepts and execution        |
-| [GitLab DevSecOps](https://docs.gitlab.com/devsecops/)                        | Security and DevSecOps capabilities    |
 | [GitLab Platform](https://about.gitlab.com/platform/)                         | GitLab platform capabilities           |
