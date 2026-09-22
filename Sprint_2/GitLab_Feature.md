@@ -1,5 +1,5 @@
 <p align="center">
-<img width="220" height="220" alt="image" src="https://github.com/user-attachments/assets/3c0cd5ef-418d-41a4-8920-f7fc6cc1cf6c" />
+<img width="110" height="110" alt="image" src="https://github.com/user-attachments/assets/3c0cd5ef-418d-41a4-8920-f7fc6cc1cf6c" />
 </p>
 
 # GitLab Feature Documentation
@@ -8,46 +8,33 @@
 
 | Author | Created On | Version | L0 Reviewer | L1 Reviewer | L2 Reviewer |
 | --- | --- | --- | --- | --- | --- |
-| Ritu | 09/08/2026 | 1.1 | Liyakhat/Anirudh  | Aman Raj | Sandeep Rawat/Ravindra |
+| Ritu | 21/09/2026 | 1.1 | Liyakhat/Anirudh  | Aman Raj | Sandeep Rawat/Ravindra |
 
 ---
-
-## Table of Contents
+# Table of Contents
 
 1. [Introduction](#1-introduction)
 2. [What is GitLab?](#2-what-is-gitlab)
 3. [Why GitLab?](#3-why-gitlab)
-4. [Key Features of GitLab](#4-key-features-of-gitlab)
-5. [GitLab Workflow](#5-gitlab-workflow)
-6. [Workflow Diagram](#6-workflow-diagram)
-7. [Advantages](#7-advantages)
-8. [Best Practices](#8-best-practices)
-9. [Conclusion](#9-conclusion)
-10. [Contact Information](#10-contact-information)
-11. [References](#11-references)
+4. [Workflow Diagram](#4-workflow-diagram)
+5. [Advantages](#5-advantages)
+6. [Best Practices](#6-best-practices)
+7. [Conclusion](#7-conclusion)
+8. [Contact Information](#8-contact-information)
+9. [References](#9-references)
+
+
 
 ---
 
 # 1. Introduction
 
-GitLab is a DevSecOps platform that provides tools for managing the software development lifecycle. It supports source code management, collaboration, CI/CD, security, deployment, and monitoring.
-
-GitLab brings development, operations, and security activities together on a single platform. It helps teams collaborate, automate repetitive tasks, and manage the software delivery process.
-
-GitLab can be used as:
-
-* Source Code Management platform
-* Git Repository hosting platform
-* CI/CD platform
-* DevSecOps platform
-* Container Registry
-* Issue and Project Management platform
-* Deployment platform
-* Infrastructure Management platform
+This document provides an overview of GitLab, including what GitLab is, why it is used, its workflow, advantages, and best practices.
 
 ---
 
 # 2. What is GitLab?
+
 GitLab is a web-based DevOps platform that enables teams to manage the entire software development lifecycle in a single application. It combines version control with built-in tools for automation, collaboration, and deployment.
 
 * Provides Git-based repository hosting similar to GitHub.
@@ -56,8 +43,10 @@ GitLab is a web-based DevOps platform that enables teams to manage the entire so
 
 * Supports code review, issue tracking, and project management in one place.
 
+---
 
 # 3. Why GitLab?
+
 | **No.** | **Key Capability**                              | **Description**                                                                                                                                              | **Main Features**                                                   |
 | ------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------- |
 | **01**  | **One Platform for All Workflows**              | GitLab provides a single platform where teams can manage software delivery workflows and reduce context switching and manual handoffs.                       | Agentic AI, Built-in CI/CD, Agile Planning                          |
@@ -67,9 +56,14 @@ GitLab is a web-based DevOps platform that enables teams to manage the entire so
 
 ---
 
+#  4. Workflow Diagram
+
+ <img width="1024" height="218" alt="image" src="https://github.com/user-attachments/assets/f7b1f569-368a-4657-ae6d-ece324e34f07" />
+
+---
 
 
-# 7. Advantages
+# 5. Advantages
 
 | **Advantage**                       | **Description**                                                                                                            |
 | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
@@ -80,23 +74,25 @@ GitLab is a web-based DevOps platform that enables teams to manage the entire so
 
 
 ---
- # Best Pratices
+
+ # 6.  Best Pratices
+
+ 
 | **No.** | **Best Practice**         | **Description**                                                                                                 |
 | ------- | ------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | **1**   | **Use Feature Branches**  | Create a separate branch for each feature instead of committing directly to the main branch.                    |
 | **2**   | **Test Every Commit**     | Run CI/CD tests and security scans such as SAST, Secret Detection, and Dependency Scanning on feature branches. |
 | **3**   | **Run Tests in Parallel** | Run tests on every commit. If tests take longer, run them in parallel to save time.                             |
-| **4**   | **Perform Code Reviews**  | Review code through Merge Requests before merging it into the main branch to identify issues early.             |
+| **4**   | **Perform Code Reviews**  | Review code through Merge Requests before merging it into the main branch to identify issues early.     
+----|
 
-# 9. Conclusion
-itLab is an all-in-one DevSecOps platform that helps teams manage source code, code reviews, CI/CD, security, and deployments in a single place.
-It improves collaboration, automation, and visibility across the software development lifecycle.
+# 7. Conclusion
 
-Overall, GitLab helps teams deliver applications in a more structured, automated, and consistent way.
+GitLab provides a single platform for source code management, CI/CD, collaboration, security, and deployment. It helps teams manage the software development lifecycle in a structured and automated way.
 
 ---
 
-# 10. Contact Information
+# 8. Contact Information
 
 | Name | Email Address                                                                 |
 | ---- | ----------------------------------------------------------------------------- |
@@ -106,7 +102,7 @@ Overall, GitLab helps teams deliver applications in a more structured, automated
 
 ---
 
-# 11. References
+# 9. References
 
 | **Reference**                                                                 | **Description**                        |
 | ----------------------------------------------------------------------------- | -------------------------------------- |
