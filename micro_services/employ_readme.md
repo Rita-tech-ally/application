@@ -6691,7 +6691,1643 @@ elasticsearch==7.8.0
 config-with-yaml==0.1.0
 schedule==0.6.0
 ritu@localhost:~/notification-worker$ 
+----
+
+# Frontend
+
+itu@localhost:~$ cd frontend/
+ritu@localhost:~/frontend$ ls
+Dockerfile  LICENSE  Makefile  package.json  public  README.md  src  static
+ritu@localhost:~/frontend$ cat l
+cat: l: No such file or directory
+ritu@localhost:~/frontend$ cat LICENSE 
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [2023] [Opstree Solutions]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ritu@localhost:~/frontend$ car package.json 
+Command 'car' not found, but can be installed with:
+sudo apt install ucommon-utils
+ritu@localhost:~/frontend$ cat package.json 
+{
+  "name": "ot-go-webapp",
+  "homepage": "https://opstree.github.io",
+  "proxy": "http://localhost:3000",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "@elastic/apm-rum-react": "^1.4.2",
+    "@material-ui/core": "^4.11.0",
+    "@progress/kendo-drawing": "^1.8.1",
+    "@progress/kendo-react-pdf": "^3.14.0",
+    "d3-scale": "^3.0.0",
+    "formik": "^2.1.4",
+    "material-table": "^1.63.1",
+    "prop-types": "^15.6.1",
+    "react": "^16.2.0",
+    "react-c3js": "^0.1.20",
+    "react-dom": "^16.2.0",
+    "react-formik-ui": "^4.1.2",
+    "react-google-maps": "^9.4.5",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "^2.0.3",
+    "react-simple-maps": "^0.12.0",
+    "react-syntax-highlighter": "^10.0.0",
+    "reactstrap": "^8.5.1",
+    "refractor": "^2.6.1",
+    "tabler-react": "^2.0.0-alpha.1",
+    "yup": "^0.29.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "watch": "react-scripts start --watch",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
+ritu@localhost:~/frontend$ ls
+Dockerfile  LICENSE  Makefile  package.json  public  README.md  src  static
+ritu@localhost:~/frontend$ cd public/
+ritu@localhost:~/frontend/public$ ls
+index.html
+ritu@localhost:~/frontend/public$ cat index.html 
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+
+    <title>tabler-react</title>
+  </head>
+
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+
+    <span id="root"></span>
+  </body>
+</html>ritu@localhost:~/frontend/public$ cd ..
+ritu@localhost:~/frontend$ cat README.md 
+<p align="center">
+  <img src="./static/frontend-logo.svg" height="280" width="280">
+</p>
+
+Frontend Web is a REACTJS based application that is main frontend UI of [OT-Microservices](https://github.com/OT-MICROSERVICES) stack. This application supports cross-platform, the only thing will be required to run this application is javarscript runtime modules.
+
+Supported features of the application are:-
+
+- ReactJS based web framework for the complete web page based operations
+- Test case integration for application functionality verification
+
+## Pre-Requisites
+
+The frontend application have dependencies on other REST API of [OT-Microservices](https://github.com/OT-MICROSERVICES). To run the application successfully, we need these things configured:
+
+- [Employee API](https://github.com/OT-MICROSERVICES/employee-api)
+- [Attendance API](https://github.com/OT-MICROSERVICES/attendance-api)
+- [Salary API](https://github.com/OT-MICROSERVICES/salary-api)
+
+## Architecture
+
+![](./static/frontend.png)
+
+## Application
+
+For building the application, we can use make command with our Makefile. But as first and foremost step, we need to install all the dependencies and packages using `npm`. We can simple use make command for it.
+
+```makefile
+make build
+```
+
+For building the docker image artifact of the frontend web, we can invoke another make command.
+
+```makefile
+make docker-build
+```
+
+For running the docker image artifact of the frontend web, we can invoke another make command.
+
+```makefile
+make docker-run
+```
+
+## Contact Information
+
+[Opstree Opensource](opensource@opstree.com)
+ritu@localhost:~/frontend$ cd src/
+ritu@localhost:~/frontend/src$ ls
+App.css       AttendanceForm.js  custom.css     EmployeeData.js  EmployeeList.js    index.css  ListSalary.js  PdfContainer.js       static
+App.react.js  AttendanceList.js  DocService.js  EmployeeForm.js  HomePage.react.js  index.js   logo.png       SiteWrapper.react.js
+ritu@localhost:~/frontend/src$ cat App.css 
+ritu@localhost:~/frontend/src$ cat AttendanceForm.js 
+import react, * as React from "react";
+import { Page, Grid } from "tabler-react";
+import SiteWrapper from "./SiteWrapper.react";
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { withFormik } from 'formik';
+
+const AttendanceForm = ({ values, handleChange, handleSubmit, errors, touched, isSubmitting }) => {
+  return (
+    <SiteWrapper>
+      <Page.Card
+            title="Employee Registration"
+        ></Page.Card>
+        <Grid.Col md={6} lg={6} className="align-self-center">
+        <Form onSubmit={handleSubmit}>
+          <FormGroup>
+            {touched.id && errors.id && <p className="red">{errors.id}</p>}
+            <Label for="id">Employee ID</Label>
+            <Input 
+              type="number" 
+              name="id"
+              value={values.id}
+              onChange={handleChange}
+              id="id" 
+              placeholder="Employee ID" 
+            />
+          </FormGroup>
+          <FormGroup>
+            {touched.status && errors.status && <p className="red">{errors.status}</p>}
+            <Label for="status">Status</Label>
+            <Input type="select" name="status" id="status" value={values.status} onChange={handleChange}>
+              <option>Select Status</option>
+              <option>Present</option>
+              <option>Absent</option>
+            </Input>
+          </FormGroup>
+
+          <FormGroup>
+            {touched.date && errors.date && <p className="red">{errors.date}</p>}
+            <Label for="date">Date</Label>
+            <Input
+              type="date"
+              name="date"
+              id="date"
+              placeholder="datetime placeholder"
+              value={values.date} 
+              onChange={handleChange}
+            />
+          </FormGroup>
+          <Button color="primary" disabled={isSubmitting}>Submit</Button>
+        </Form>
+    </Grid.Col>
+    </SiteWrapper>
+  );
+}
+
+const FormikApp = withFormik({
+  mapPropsToValues({ username, password }) {
+    return { username, password }
+  },
+  handleSubmit(values, { props, resetForm, setErrors, setSubmitting }) {
+    console.log(JSON.stringify(values))
+    fetch('/attendance/create', {
+      method: 'POST',
+      body: JSON.stringify(values),
+      headers: {
+          'Content-Type': 'application/json'
+    }})
+  }
+})(AttendanceForm);
+
+export default FormikApp
+ritu@localhost:~/frontend/src$ cat custom.css 
+.c3 svg {
+    font: 10px sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+      "Helvetica Neue", Arial, sans-serif;
+  }
+  
+  .c3 path,
+  .c3 line {
+    fill: none;
+    stroke: rgba(0, 40, 100, 0.12);
+  }
+  
+  .c3 text {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-size: px2rem(12px);
+  }
+  
+  .c3-legend-item-tile,
+  .c3-xgrid-focus,
+  .c3-ygrid,
+  .c3-event-rect,
+  .c3-bars path {
+    shape-rendering: crispEdges;
+  }
+  
+  .c3-chart-arc path {
+    stroke: #fff;
+  }
+  
+  .c3-chart-arc text {
+    fill: #fff;
+    font-size: 13px;
+  }
+  
+  /*-- Axis --*/
+  /*-- Grid --*/
+  .c3-grid line {
+    stroke: #f0f0f0;
+  }
+  
+  .c3-grid text {
+    fill: #aaa;
+  }
+  
+  .c3-xgrid,
+  .c3-ygrid {
+    stroke: #e6e6e6;
+    stroke-dasharray: 2 4;
+  }
+  
+  /*-- Text on Chart --*/
+  .c3-text {
+    font-size: 12px;
+  }
+  
+  .c3-text.c3-empty {
+    fill: #808080;
+    font-size: 2em;
+  }
+  
+  /*-- Line --*/
+  .c3-line {
+    stroke-width: 2px;
+  }
+  
+  /*-- Point --*/
+  .c3-circle._expanded_ {
+    stroke-width: 2px;
+    stroke: white;
+  }
+  
+  .c3-selected-circle {
+    fill: white;
+    stroke-width: 1.5px;
+  }
+  
+  /*-- Bar --*/
+  .c3-bar {
+    stroke-width: 0;
+  }
+  
+  .c3-bar._expanded_ {
+    fill-opacity: 1;
+    fill-opacity: 0.75;
+  }
+  
+  /*-- Focus --*/
+  .c3-target.c3-focused {
+    opacity: 1;
+  }
+  
+  .c3-target.c3-focused path.c3-line,
+  .c3-target.c3-focused path.c3-step {
+    stroke-width: 2px;
+  }
+  
+  .c3-target.c3-defocused {
+    opacity: 0.3 !important;
+  }
+  
+  /*-- Region --*/
+  .c3-region {
+    fill: steelblue;
+    fill-opacity: 0.1;
+  }
+  
+  /*-- Brush --*/
+  .c3-brush .extent {
+    fill-opacity: 0.1;
+  }
+  
+  /*-- Select - Drag --*/
+  /*-- Legend --*/
+  .c3-legend-item text {
+    fill: #545454;
+    font-size: 14px;
+  }
+  
+  .c3-legend-item-hidden {
+    opacity: 0.15;
+  }
+  
+  .c3-legend-background {
+    fill: transparent;
+    stroke: lightgray;
+    stroke-width: 0;
+  }
+  
+  /*-- Title --*/
+  .c3-title {
+    font: 14px sans-serif;
+  }
+  
+  /*-- Tooltip --*/
+  .c3-tooltip-container {
+    z-index: 10;
+  }
+  
+  .c3-tooltip {
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    font-size: 11px;
+    line-height: 1;
+    font-weight: 700;
+    color: #fff;
+    border-radius: 3px;
+    background: #212529 !important;
+    white-space: nowrap;
+  }
+  
+  .c3-tooltip th {
+    padding: 6px 6px;
+    text-align: left;
+  }
+  
+  .c3-tooltip td {
+    padding: 4px 6px;
+    font-weight: 400;
+  }
+  
+  .c3-tooltip td > span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+    border-radius: 50%;
+    vertical-align: baseline;
+  }
+  
+  .c3-tooltip td.value {
+    text-align: right;
+  }
+  
+  /*-- Area --*/
+  .c3-area {
+    stroke-width: 0;
+    opacity: 0.1;
+  }
+  
+  .c3-target-filled .c3-area {
+    opacity: 1 !important;
+  }
+  
+  /*-- Arc --*/
+  .c3-chart-arcs-title {
+    dominant-baseline: middle;
+    font-size: 1.3em;
+  }
+  
+  .c3-chart-arcs .c3-chart-arcs-background {
+    fill: #e0e0e0;
+    stroke: none;
+  }
+  
+  .c3-chart-arcs .c3-chart-arcs-gauge-unit {
+    fill: #000;
+    font-size: 16px;
+  }
+  
+  .c3-chart-arcs .c3-chart-arcs-gauge-max {
+    fill: #777;
+  }
+  
+  .c3-chart-arcs .c3-chart-arcs-gauge-min {
+    fill: #777;
+  }
+  
+  .c3-chart-arc .c3-gauge-value {
+    fill: #000;
+    /*  font-size: 28px !important;*/
+  }
+  
+  .c3-chart-arc.c3-target g path {
+    opacity: 1;
+  }
+  
+  .c3-chart-arc.c3-target.c3-focused g path {
+    opacity: 1;
+  }
+  
+  .c3-axis {
+    fill: #9aa0ac;
+  }ritu@localhost:~/frontend/src$ ls
+App.css       AttendanceForm.js  custom.css     EmployeeData.js  EmployeeList.js    index.css  ListSalary.js  PdfContainer.js       static
+App.react.js  AttendanceList.js  DocService.js  EmployeeForm.js  HomePage.react.js  index.js   logo.png       SiteWrapper.react.js
+ritu@localhost:~/frontend/src$ cat EmployeeData.js 
+import { useState, useEffect } from 'react';
+import react, * as React from "react";
+import {Grid, StatsCard, Card, colors} from 'tabler-react';
+import C3Chart from "react-c3js";
+
+function generateResult(input) {
+  if (input === undefined) {
+    return 0
+  } else {
+    return input
+  }
+}
 
 
+export function ListAllEmployees() {
+    const [stats, handleStats] = useState([]);
+
+    const FetchData = async () => {
+      const data = await fetch('/employee/search/all');
+      const stats = await data.json();
+      handleStats(stats)  
+    }
+  
+    useEffect(() => {
+      FetchData()
+    }, [])
+    const empData = stats.length
+    
+    return (
+      <Grid.Col sm={3}>
+        <StatsCard 
+            layout={1} 
+            movement={0} 
+            total={empData} 
+            label="Total Employees" 
+        />
+      </Grid.Col>
+    )
+}
+
+export function ListEmployeeActiveEmployee() {
+  const [stats, handleStats] = useState([]);
+
+  const FetchData = async () => {
+    const data = await fetch('/employee/search/status');
+    const stats = await data.json();
+    handleStats(stats)  
+  }
+
+  useEffect(() => {
+    FetchData()
+  }, [])
+  const empData = stats
+
+  return (
+    <Grid.Col sm={3}>
+    <StatsCard
+      layout={1}
+      movement={0}
+      total={generateResult(empData["Current Employee"])}
+      label="Active Employees"
+    />
+    </Grid.Col>
+  )
+}
+
+export function ListEmployeeInActiveEmployee() {
+  const [stats, handleStats] = useState([]);
+
+  const FetchData = async () => {
+    const data = await fetch('/employee/search/status');
+    const stats = await data.json();
+    handleStats(stats)  
+  }
+
+  useEffect(() => {
+    FetchData()
+  }, [])
+  const empData = stats
+
+  return (
+    <Grid.Col sm={3}>
+    <StatsCard
+      layout={1}
+      movement={0}
+      total={generateResult(empData["Ex-Employee"])}
+      label="Ex-Employees"
+    />
+    </Grid.Col>
+  )
+}
+
+export function RoleDistribution() {
+  const [stats, handleStats] = useState([]);
+
+  const FetchData = async () => {
+    const data = await fetch('/employee/search/roles');
+    const stats = await data.json();
+    handleStats(stats)  
+  }
+
+  useEffect(() => {
+    FetchData()
+  }, [])
+  const empData = stats
+
+  return (
+      <Grid.Col sm={4}>
+      <Card>
+        <Card.Header>
+          <Card.Title>Job Role Distribution</Card.Title>
+        </Card.Header>
+        <Card.Body>
+          <C3Chart
+            style={{ height: "12rem" }}
+            data={{
+              columns: [
+                // each columns data
+                ["DevOps", generateResult(empData["DevOps"])],
+                ["Developer", generateResult(empData["Developer"])],
+              ],
+              type: "donut", // default type of chart
+              colors: {
+                data1: colors["green"],
+                data2: colors["green-light"],
+              },
+              names: {
+                // name of each serie
+                data1: "Maximum",
+                data2: "Minimum",
+              },
+            }}
+            legend={{
+              show: false, //hide legend
+            }}
+            padding={{
+              bottom: 0,
+              top: 0,
+            }}
+          />
+        </Card.Body>
+      </Card>
+    </Grid.Col>
+  )
+}
+
+export function LocationDistribution() {
+  const [stats, handleStats] = useState([]);
+
+  const FetchData = async () => {
+    const data = await fetch('/employee/search/location');
+    const stats = await data.json();
+    handleStats(stats)  
+  }
+
+  useEffect(() => {
+    FetchData()
+  }, [])
+  const empData = stats
+
+  return (
+    <Grid.Col sm={4}>
+    <Card>
+      <Card.Header>
+        <Card.Title>Locations Distribution</Card.Title>
+      </Card.Header>
+      <Card.Body>
+        <C3Chart
+          style={{ height: "12rem" }}
+          data={{
+            columns: [
+              // each columns data
+              ["Delhi", generateResult(empData["Delhi"])],
+              ["Bangalore", generateResult(empData["Bangalore"])],
+              ["Hyederabad", generateResult(empData["Hyderabad"])],
+              ["Newyork", generateResult(empData["Newyork"])],
+            ],
+            type: "donut", // default type of chart
+            colors: {
+              data1: colors["blue-darker"],
+              data2: colors["blue"],
+              data3: colors["blue-light"],
+              data4: colors["blue-lighter"],
+            },
+            names: {
+              // name of each serie
+              data1: "A",
+              data2: "B",
+              data3: "C",
+              data4: "D",
+            },
+          }}
+          legend={{
+            show: false, //hide legend
+          }}
+          padding={{
+            bottom: 0,
+            top: 0,
+          }}
+        />
+      </Card.Body>
+    </Card>
+  </Grid.Col>
+  )
+}
+
+export function StatusDistribution() {
+  const [stats, handleStats] = useState([]);
+
+  const FetchData = async () => {
+    const data = await fetch('/employee/search/status');
+    const stats = await data.json();
+    handleStats(stats)  
+  }
+
+  useEffect(() => {
+    FetchData()
+  }, [])
+  const empData = stats
+
+  return (
+      <Grid.Col sm={4}>
+      <Card>
+        <Card.Header>
+          <Card.Title>Employees Distribution</Card.Title>
+        </Card.Header>
+        <Card.Body>
+          <C3Chart
+            style={{ height: "12rem" }}
+            data={{
+              columns: [
+                // each columns data
+                ["Current Employees", generateResult(empData["Current Employee"])],
+                ["Ex-Employees", generateResult(empData["Ex-Employee"])],
+              ],
+              type: "donut", // default type of chart
+              colors: {
+                data1: colors["blue-darker"],
+                data2: colors["blue"],
+                data3: colors["blue-light"],
+                data4: colors["blue-lighter"],
+              },
+              names: {
+                // name of each serie
+                data1: "A",
+                data2: "B",
+                data3: "C",
+                data4: "D",
+              },
+            }}
+            legend={{
+              show: false, //hide legend
+            }}
+            padding={{
+              bottom: 0,
+              top: 0,
+            }}
+          />
+        </Card.Body>
+      </Card>
+    </Grid.Col>
+  )
+}
+ritu@localhost:~/frontend/src$ cat EmployeeList.js 
+import react, * as React from "react";
+import { Page, Grid, Table, Button } from "tabler-react";
+import SiteWrapper from "./SiteWrapper.react";
+//import { withTransaction } from '@elastic/apm-rum-react';
+
+class ListEmployee extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = { data: [] }
+	}
+	
+	loadData() {
+		fetch("/employee/search/all")
+			.then(response => response.json())
+			.then(data => {
+				this.setState({data: data })
+		})
+			.catch(err => console.error(this.props.url, err.toString()))
+	}
+
+	componentDidMount() {
+		this.loadData()
+	}
+	
+  render() {
+      return (
+          <SiteWrapper>
+          <Page.Card
+              title="Employee List"
+          ></Page.Card>
+          <Grid.Col md={6} lg={10} className="align-self-center">
+          <Table>
+            <Table.Header>
+                 <Table.ColHeader>Employee ID</Table.ColHeader>
+                 <Table.ColHeader>Name</Table.ColHeader>
+                 <Table.ColHeader>Email</Table.ColHeader>
+                 <Table.ColHeader>Phone Number</Table.ColHeader>
+                 <Table.ColHeader>Job Role</Table.ColHeader>
+                 <Table.ColHeader>Job Location</Table.ColHeader>
+            </Table.Header>
+            <Table.Body>
+           { this.state.data.map((item, i) => {
+                return (
+                    <Table.Row>
+                        <Table.Col>{item.id}</Table.Col>
+                        <Table.Col>{item.name}</Table.Col>
+                        <Table.Col>{item.email}</Table.Col>
+                        <Table.Col>{item.phone_number}</Table.Col>
+                        <Table.Col>{item.job_role}</Table.Col>
+                        <Table.Col>{item.location}</Table.Col>
+                    </Table.Row>  
+                );
+                })  
+            }
+            </Table.Body>
+            </Table>
+          </Grid.Col>
+          </SiteWrapper>
+      );
+  }
+}
+
+export default ListEmployee
+//export default withTransaction('ListEmployee', 'component')(ListEmployee)ritu@localhost:~/frontend/src$ ls
+App.css       AttendanceForm.js  custom.css     EmployeeData.js  EmployeeList.js    index.css  ListSalary.js  PdfContainer.js       static
+App.react.js  AttendanceList.js  DocService.js  EmployeeForm.js  HomePage.react.js  index.js   logo.png       SiteWrapper.react.js
+ritu@localhost:~/frontend/src$ cat index.css 
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+ritu@localhost:~/frontend/src$ cat ListSalary.js 
+import react, * as React from "react";
+import { Page, Grid, Table, Button } from "tabler-react";
+import SiteWrapper from "./SiteWrapper.react";
+
+class ListSalary extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = { data: [] }
+	}
+
+	loadData() {
+		fetch('/salary/search/all')
+			.then(response => response.json())
+			.then(data => {
+				this.setState({data: data })
+		})
+			.catch(err => console.error(this.props.url, err.toString()))
+	}
+
+	componentDidMount() {
+		this.loadData()
+	}
+
+  render() {
+      return (
+          <SiteWrapper>
+          <Page.Card
+              title="Salary List"
+          ></Page.Card>
+          <Grid.Col md={6} lg={10} className="align-self-center">
+          <Table>
+            <Table.Header>
+                 <Table.ColHeader>Employee ID</Table.ColHeader>
+                 <Table.ColHeader>Name</Table.ColHeader>
+                 <Table.ColHeader>Salary</Table.ColHeader>
+            </Table.Header>
+            <Table.Body>
+           { this.state.data.map((item, i) => {
+                return (
+                    <Table.Row>
+                        <Table.Col>{item.id}</Table.Col>
+                        <Table.Col>{item.name}</Table.Col>
+                        <Table.Col>{item.annual_package}</Table.Col>
+                    </Table.Row>
+                );
+                })
+            }
+            </Table.Body>
+            </Table>
+          </Grid.Col>
+          </SiteWrapper>
+      );
+  }
+}
+//
+export default ListSalary
+//export default withTransaction('ListSalary', 'component')(ListSalary)
+ritu@localhost:~/frontend/src$ ls
+App.css       AttendanceForm.js  custom.css     EmployeeData.js  EmployeeList.js    index.css  ListSalary.js  PdfContainer.js       static
+App.react.js  AttendanceList.js  DocService.js  EmployeeForm.js  HomePage.react.js  index.js   logo.png       SiteWrapper.react.js
+ritu@localhost:~/frontend/src$ cat PdfContainer.js 
+import React from 'react';
+
+export default (props) => {
+  const bodyRef = React.createRef();
+  const createPdf = () => props.createPdf(bodyRef.current);
+  return (
+    <section className="pdf-container">
+      <section className="pdf-toolbar">
+        <button onClick={createPdf}>Create PDF</button>
+      </section>
+      <section className="pdf-body" ref={bodyRef}>
+        {props.children}
+      </section>
+    </section>
+  )
+}
+ritu@localhost:~/frontend/src$ cat App.react.js 
+import * as React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { ApmRoute } from '@elastic/apm-rum-react'
+//import { init as initApm } from "@elastic/apm-rum";
+
+import HomePage from "./HomePage.react";
+import EmployeeForm from "./EmployeeForm";
+import EmployeeList from './EmployeeList';
+import AttendanceForm from "./AttendanceForm";
+import ListAttendance from './AttendanceList';
+import ListSalary from './ListSalary';
+
+import "tabler-react/dist/Tabler.css";
+
+type Props = {||};
+
+//initApm({
+//  serverUrl: "http://apm-server:8200",
+//  serviceName: "frontend",
+//  instrument: "false"
+//});
+
+function App(props: Props): React.Node {
+  return (
+    <React.Fragment>
+      <Router>
+        <Switch>
+          <ApmRoute exact path="/" component={HomePage} />
+          <ApmRoute exact path="/employee-add" component={EmployeeForm} />
+          <ApmRoute exact path="/employee-list" component={EmployeeList} />
+          <ApmRoute exact path="/attendance-add" component={AttendanceForm} />
+          <ApmRoute exact path="/attendance-list" component={ListAttendance} />
+          <ApmRoute exact path="/salary-list" component={ListSalary} />
+        </Switch>
+      </Router>
+    </React.Fragment>
+  );
+}
+
+export default App;
+ritu@localhost:~/frontend/src$ ls
+App.css       AttendanceForm.js  custom.css     EmployeeData.js  EmployeeList.js    index.css  ListSalary.js  PdfContainer.js       static
+App.react.js  AttendanceList.js  DocService.js  EmployeeForm.js  HomePage.react.js  index.js   logo.png       SiteWrapper.react.js
+ritu@localhost:~/frontend/src$ cat AttendanceList.js 
+import react, * as React from "react";
+import { Page, Grid, Table, Button } from "tabler-react";
+import SiteWrapper from "./SiteWrapper.react";
+//import { withTransaction } from '@elastic/apm-rum-react';
+
+class ListEmployee extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = { data: [] }
+	}
+	
+	loadData() {
+		fetch('/attendance/search')
+			.then(response => response.json())
+			.then(data => {
+				this.setState({data: data })
+		})
+			.catch(err => console.error(this.props.url, err.toString()))
+	}
+
+	componentDidMount() {
+		this.loadData()
+	}
+	
+  render() {
+      return (
+          <SiteWrapper>
+          <Page.Card
+              title="Attendance List"
+          ></Page.Card>
+          <Grid.Col md={6} lg={10} className="align-self-center">
+          <Table>
+            <Table.Header>
+                 <Table.ColHeader>Employee ID</Table.ColHeader>
+                 <Table.ColHeader>Status</Table.ColHeader>
+                 <Table.ColHeader>Date</Table.ColHeader>
+            </Table.Header>
+            <Table.Body>
+           { this.state.data.map((item, i) => {
+                return (
+                    <Table.Row>
+                        <Table.Col>{item.id}</Table.Col>
+                        <Table.Col>{item.status}</Table.Col>
+                        <Table.Col>{item.date}</Table.Col>
+                    </Table.Row>  
+                );
+                })  
+            }
+            </Table.Body>
+            </Table>
+          </Grid.Col>
+          </SiteWrapper>
+      );
+  }
+}
+
+export default ListEmployee
+//export default withTransaction('ListEmployee', 'component')(ListEmployee)ritu@localhost:~/frontend/src$ cat DocService.js 
+import { savePDF } from '@progress/kendo-react-pdf';
+
+class DocService {
+  createPdf = (html) => {
+    savePDF(html, { 
+      paperSize: 'Letter',
+      fileName: 'form.pdf',
+      margin: 3
+    })
+  }
+}
+
+const Doc = new DocService();
+export default Doc;
+ritu@localhost:~/frontend/src$ ls
+App.css       AttendanceForm.js  custom.css     EmployeeData.js  EmployeeList.js    index.css  ListSalary.js  PdfContainer.js       static
+App.react.js  AttendanceList.js  DocService.js  EmployeeForm.js  HomePage.react.js  index.js   logo.png       SiteWrapper.react.js
+ritu@localhost:~/frontend/src$ cat EmployeeForm.js 
+import react, * as React from "react";
+import { Page, Grid } from "tabler-react";
+import SiteWrapper from "./SiteWrapper.react";
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { withFormik } from 'formik';
+
+const EmployeeForm = ({ values, handleChange, handleSubmit, errors, touched, isSubmitting }) => {
+  return (
+    <SiteWrapper>
+      <Page.Card
+            title="Employee Registration"
+        ></Page.Card>
+        <Grid.Col md={6} lg={6} className="align-self-center">
+        <Form onSubmit={handleSubmit}>
+          <FormGroup>
+            {touched.id && errors.id && <p className="red">{errors.id}</p>}
+            <Label for="id">Employee ID</Label>
+            <Input 
+              type="text" 
+              name="id"
+              value={values.id}
+              onChange={handleChange}
+              id="id" 
+              placeholder="Employee ID" 
+            />
+          </FormGroup>
+          <FormGroup>
+            {touched.name && errors.name && <p className="red">{errors.name}</p>}
+            <Label for="name">Name</Label>
+            <Input 
+              type="text" 
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+              id="name" 
+              placeholder="Employee Name" 
+            />
+          </FormGroup>
+          <FormGroup>
+            {touched.address && errors.address && <p className="red">{errors.address}</p>}
+            <Label for="address">Address</Label>
+            <Input 
+              type="text" 
+              name="address"
+              value={values.address}
+              onChange={handleChange}
+              id="address" 
+              placeholder="Employee Address" 
+            />
+          </FormGroup>
+          <FormGroup>
+            {touched.email && errors.email && <p className="red">{errors.email}</p>}
+            <Label for="email">Email ID</Label>
+            <Input 
+              type="text" 
+              name="email"
+              value={values.email}
+              onChange={handleChange}
+              id="email" 
+              placeholder="Email ID" 
+            />
+          </FormGroup>
+          <FormGroup>
+            {touched.phone_number && errors.phone_number && <p className="red">{errors.phone_number}</p>}
+            <Label for="phone_number">Phone Number</Label>
+            <Input 
+              type="text" 
+              name="phone_number"
+              value={values.phone_number}
+              onChange={handleChange}
+              id="phone_number" 
+              placeholder="Phone Number" 
+            />
+          </FormGroup>
+          <FormGroup>
+            {touched.annual_package && errors.annual_package && <p className="red">{errors.annual_package}</p>}
+            <Label for="annual_package">Annual Package</Label>
+            <Input 
+              type="number" 
+              name="annual_package"
+              value={values.annual_package}
+              onChange={handleChange}
+              id="annual_package" 
+              placeholder="Annual Package" 
+            />
+          </FormGroup>
+          <FormGroup>
+            {touched.job_role && errors.job_role && <p className="red">{errors.job_role}</p>}
+            <Label for="job_role">Job Role</Label>
+            <Input type="select" name="job_role" id="job_role" value={values.job_role} onChange={handleChange}>
+              <option>Select Role</option>
+              <option>Developer</option>
+              <option>DevOps</option>
+            </Input>
+          </FormGroup>
+          <FormGroup>
+            {touched.status && errors.status && <p className="red">{errors.status}</p>}
+            <Label for="status">Status</Label>
+            <Input type="select" name="status" id="status" value={values.status} onChange={handleChange}>
+              <option>Select Status</option>
+              <option>Ex-Employee</option>
+              <option>Current Employee</option>
+            </Input>
+          </FormGroup>
+          <FormGroup>
+            {touched.location && errors.location && <p className="red">{errors.location}</p>}
+            <Label for="location">Location</Label>
+            <Input type="select" name="location" id="location" value={values.location} onChange={handleChange}>
+              <option>Select Location</option>
+              <option>Delhi</option>
+              <option>Bangalore</option>
+              <option>Hyderabad</option>
+              <option>Newyork</option>
+            </Input>
+          </FormGroup>
+          <FormGroup>
+            {touched.joining_date && errors.joining_date && <p className="red">{errors.joining_date}</p>}
+            <Label for="joining_date">Joining Date</Label>
+            <Input
+              type="date"
+              name="joining_date"
+              id="joining_date"
+              placeholder="datetime placeholder"
+              value={values.joining_date} 
+              onChange={handleChange}
+            />
+          </FormGroup>
+          <Button color="primary" disabled={isSubmitting}>Submit</Button>
+        </Form>
+    </Grid.Col>
+    </SiteWrapper>
+  );
+}
+
+const FormikApp = withFormik({
+  mapPropsToValues({ username, password }) {
+    return { username, password }
+  },
+  handleSubmit(values, { props, resetForm, setErrors, setSubmitting }) {
+    fetch('/employee/create', {
+      method: 'POST',
+      body: JSON.stringify(values),
+      headers: {
+          'Content-Type': 'application/json'
+    }})
+    fetch('/notification/send', {
+      method: 'POST',
+      body: JSON.stringify(values),
+      headers: {
+          'Content-Type': 'application/json'
+    }})
+    console.log(JSON.stringify(values))
+  }
+})(EmployeeForm);
+
+export default FormikApp
+ritu@localhost:~/frontend/src$ cat HomePage.react.js 
+// @flow
+
+import * as React from "react";
+
+import {
+  Page,
+  Avatar,
+  Icon,
+  Grid,
+  Card,
+  Text,
+  Table,
+  Alert,
+  Progress,
+  colors,
+  Dropdown,
+  Button,
+  StampCard,
+  StatsCard,
+  ProgressCard,
+  Badge,
+} from "tabler-react";
+
+import C3Chart from "react-c3js";
+
+import SiteWrapper from "./SiteWrapper.react";
+import { ListAllEmployees, 
+  ListEmployeeActiveEmployee,
+  ListEmployeeInActiveEmployee,
+  RoleDistribution,
+  LocationDistribution,
+  StatusDistribution } from './EmployeeData';
+
+function Home() {
+  return (
+    <SiteWrapper>
+      <Page.Content title="Dashboard">
+        <Grid.Row cards={true}>
+          <ListAllEmployees/>
+          <ListEmployeeActiveEmployee/>
+          <ListEmployeeInActiveEmployee/>
+          <Grid.Col sm={3}>
+            <StatsCard
+              layout={1}
+              movement={0}
+              total="4"
+              label="Office Locations"
+            />
+          </Grid.Col>
+          <Grid.Col>
+            <Grid.Row cards="true">
+              <RoleDistribution/>
+              <StatusDistribution/>
+              <LocationDistribution/>
+            </Grid.Row>
+          </Grid.Col>
+        </Grid.Row>
+      </Page.Content>
+    </SiteWrapper>
+  );
+}
+
+export default Home;ritu@localhost:~/frontend/src$ ls
+App.css       AttendanceForm.js  custom.css     EmployeeData.js  EmployeeList.js    index.css  ListSalary.js  PdfContainer.js       static
+App.react.js  AttendanceList.js  DocService.js  EmployeeForm.js  HomePage.react.js  index.js   logo.png       SiteWrapper.react.js
+ritu@localhost:~/frontend/src$ cat index.js 
+import React from "react";
+import ReactDOM from "react-dom";
+
+import "./index.css";
+import "./custom.css";
+
+import App from "./App.react";
+
+const rootElement = document.getElementById("root");
+
+if (rootElement) {
+  ReactDOM.render(<App />, rootElement);
+} else {
+  throw new Error("Could not find root element to mount to!");
+}
+ritu@localhost:~/frontend/src$ cat SiteWrapper.react.js 
+import * as React from "react";
+import { NavLink, withRouter } from "react-router-dom";
+
+import {
+  Site,
+  Nav,
+  Grid,
+  List,
+  Button,
+  RouterContextProvider,
+} from "tabler-react";
+
+import type { NotificationProps } from "tabler-react";
+
+type Props = {|
+  +children: React.Node,
+|};
+
+type State = {|
+  notificationsObjects: Array<NotificationProps>,
+|};
+
+type subNavItem = {|
+  +value: string,
+  +to?: string,
+  +icon?: string,
+  +LinkComponent?: React.ElementType,
+  +useExact?: boolean,
+|};
+
+type navItem = {|
+  +value: string,
+  +to?: string,
+  +icon?: string,
+  +active?: boolean,
+  +LinkComponent?: React.ElementType,
+  +subItems?: Array<subNavItem>,
+  +useExact?: boolean,
+|};
+
+const navBarItems: Array<navItem> = [
+  {
+    value: "Overview",
+    to: "/",
+    icon: "home",
+    LinkComponent: withRouter(NavLink),
+    useExact: true,
+  },
+  {
+    value: "Add Employee",
+    to: "/employee-add",
+    icon: "user-plus",
+    LinkComponent: withRouter(NavLink),
+    useExact: true,
+  },
+  {
+    value: "List Employee",
+    to: "/employee-list",
+    icon: "users",
+    LinkComponent: withRouter(NavLink),
+  },
+  {
+    value: "Add Attendance",
+    to: "/attendance-add",
+    icon: "book-open",
+    LinkComponent: withRouter(NavLink),
+  },
+  {
+    value: "List Attendance",
+    to: "/attendance-list",
+    icon: "book",
+    LinkComponent: withRouter(NavLink),
+  },
+  {
+    value: "Salary",
+    to: "/salary-list",
+    icon: "dollar-sign",
+    LinkComponent: withRouter(NavLink),
+  },
+];
+
+class SiteWrapper extends React.Component<Props, State> {
+  state = {
+    notificationsObjects: [
+      {
+        unread: true,
+        avatarURL: "demo/faces/male/41.jpg",
+        message: (
+          <React.Fragment>
+            <strong>Nathan</strong> pushed new commit: Fix page load performance
+            issue.
+          </React.Fragment>
+        ),
+        time: "10 minutes ago",
+      },
+      {
+        unread: true,
+        avatarURL: "demo/faces/female/1.jpg",
+        message: (
+          <React.Fragment>
+            <strong>Alice</strong> started new task: Tabler UI design.
+          </React.Fragment>
+        ),
+        time: "1 hour ago",
+      },
+      {
+        unread: false,
+        avatarURL: "demo/faces/female/18.jpg",
+        message: (
+          <React.Fragment>
+            <strong>Rose</strong> deployed new version of NodeJS REST Api // V3
+          </React.Fragment>
+        ),
+        time: "2 hours ago",
+      },
+    ],
+  };
+
+  render(): React.Node {
+    const notificationsObjects = this.state.notificationsObjects || [];
+    const unreadCount = this.state.notificationsObjects.reduce(
+      (a, v) => a || v.unread,
+      false
+    );
+    return (
+      <Site.Wrapper
+        headerProps={{
+          href: "/",
+          alt: "",
+          imageURL: "https://www.buildpiper.io/wp-content/uploads/2022/05/logo_black.png",
+          navItems: (
+            <Nav.Item type="div" className="d-none d-md-flex">
+            </Nav.Item>
+          ),
+          notificationsTray: {
+            notificationsObjects,
+            markAllAsRead: () =>
+              this.setState(
+                () => ({
+                  notificationsObjects: this.state.notificationsObjects.map(
+                    v => ({ ...v, unread: false })
+                  ),
+                }),
+                () =>
+                  setTimeout(
+                    () =>
+                      this.setState({
+                        notificationsObjects: this.state.notificationsObjects.map(
+                          v => ({ ...v, unread: true })
+                        ),
+                      }),
+                    5000
+                  )
+              ),
+            unread: unreadCount,
+          },
+        }}
+        navProps={{ itemsObjects: navBarItems }}
+        routerContextComponentType={withRouter(RouterContextProvider)}
+        footerProps={{
+          links: [
+            <a href="#">First Link</a>,
+            <a href="#">Second Link</a>,
+            <a href="#">Third Link</a>,
+            <a href="#">Fourth Link</a>,
+            <a href="#">Five Link</a>,
+            <a href="#">Sixth Link</a>,
+            <a href="#">Seventh Link</a>,
+            <a href="#">Eigth Link</a>,
+          ],
+          note:
+            "Premium and Open Source dashboard template with responsive and high quality UI. For Free!",
+          copyright: (
+            <React.Fragment>
+            </React.Fragment>
+          ),
+          nav: (
+            <React.Fragment>
+              <Grid.Col auto={true}>
+                <List className="list-inline list-inline-dots mb-0">
+                  <List.Item className="list-inline-item">
+                    <a href="./docs/index.html">Documentation</a>
+                  </List.Item>
+                  <List.Item className="list-inline-item">
+                    <a href="./faq.html">FAQ</a>
+                  </List.Item>
+                </List>
+              </Grid.Col>
+              <Grid.Col auto={true}>
+                <Button
+                  href="https://github.com/tabler/tabler-react"
+                  size="sm"
+                  outline
+                  color="primary"
+                  RootComponent="a"
+                >
+                  Source code
+                </Button>
+              </Grid.Col>
+            </React.Fragment>
+          ),
+        }}
+      >
+        {this.props.children}
+      </Site.Wrapper>
+    );
+  }
+}
+
+export default SiteWrapper;
+ritu@localhost:~/frontend/src$ cd static/
+ritu@localhost:~/frontend/src/static$ ls
+logo.png  logo.svg
+ritu@localhost:~/frontend/src/static$ 
+
+
+
+
+  
 
 
