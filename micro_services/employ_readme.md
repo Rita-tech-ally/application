@@ -6447,6 +6447,251 @@ config.yaml  log.conf              poetry.lock     router
 Dockerfile   Makefile              pyproject.toml  scripts
 ritu@localhost:~/attendance-api$ 
 
+# Notification
+
+ritu@localhost:~/notification-worker$ cat config.yaml 
+---
+smtp:
+  from: "test@example.com"
+  username: "test"
+  password: "test"
+  smtp_server: "test.smtp.com"
+  smtp_port: "25"
+
+elasticsearch:
+  username: "elastic"
+  password: "elastic"
+  host: "empms-es"
+  port: 9200
+ritu@localhost:~/notification-worker$ cat entrypoint.sh 
+#!/bin/bash
+
+BASE_COMMAND="python3 notification_api.py"
+CONFIG_FILE=${CONFIG_FILE:-"/app/config.yaml"}
+
+if [ -f "${CONFIG_FILE}" ]; then
+    echo "Reading properties from config file"
+else
+echo """---
+smtp:
+  from: \"${FROM}\"
+  username: \"${SMTP_USERNAME}\"
+  password: \"${SMTP_PASSWORD}\"
+  smtp_server: \"${SMTP_SERVER}\"
+  smtp_port: \"${SMTP_PORT}\"
+
+elasticsearch:
+  username: \"${ELASTIC_USERNAME}\"
+  password: \"${ELASTIC_PASSWORD}\"
+  host: \"${ELASTIC_HOST}\"
+  port: \"${ELASTIC_PORT}\"
+""" >> "${CONFIG_FILE}"
+fi
+
+exec env CONFIG_FILE=${CONFIG_FILE} ${BASE_COMMAND}
+ritu@localhost:~/notification-worker$ cat Makefile 
+build:
+	pip3 install -r requirements.txt
+
+build-image:
+	docker build -t opstree/empms-notification:1.0 -f Dockerfile .
+ritu@localhost:~/notification-worker$ cat notification_api.py 
+#!/usr/bin/python3
+#pylint: disable = invalid-name, broad-except
+"""
+A notification application which runs on scheduled basis and send the information to users.
+Author:- Opstree Solutions
+"""
+
+import argparse
+import os
+import sys
+import logging
+import time
+import emails
+import config_with_yaml as config
+from elasticsearch import Elasticsearch
+import schedule
+
+CONFIG_FILE = os.environ.get("CONFIG_FILE")
+FORMATTER = logging.Formatter("%(asctime)s — %(name)s — %(levelname)s — %(message)s")
+
+def init_logger():
+    """Function to initialize logger"""
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setFormatter(FORMATTER)
+    return console_handler
+
+def get_logger():
+    """Function to get logger"""
+    logger = logging.getLogger("notification-service")
+    logger.setLevel(logging.DEBUG)
+    logger.addHandler(init_logger())
+    return logger
+
+def read_configuration():
+    """This function will read the complete configuration file"""
+    logger = get_logger()
+    try:
+        cfg = config.load(CONFIG_FILE)
+        return cfg
+    except Exception as e:
+        logger.error("Not able to parse the configuration file: %s", e)
+
+def send_mail(email_id):
+    """function which will send mail to user"""
+    logger = get_logger()
+    config_content = read_configuration()
+    try:
+        message = emails.html(
+            html="<strong>Your salary slip is generated please check</strong>",
+            subject="Salary Slip",
+            mail_from=config_content.getProperty("smtp.from"),
+        )
+
+        message.send(
+            to=email_id,
+            smtp={
+                "host": config_content.getProperty("smtp.smtp_server"),
+                "port": config_content.getProperty("smtp.smtp_port"),
+                "timeout": 5,
+                "user": config_content.getProperty("smtp.username"),
+                "password": config_content.getProperty("smtp.password"),
+                "tls": True,
+            },
+        )
+    except Exception as e:
+        logger.error("Not able to send the mail: %s", e)
+
+def send_mail_to_all_users():
+    """This function will fetch user information from elasticsearch"""
+    logger = get_logger()
+    config_content = read_configuration()
+
+    try:
+        es_client = Elasticsearch(
+            [config_content.getProperty("elasticsearch.host")],
+            http_auth=(config_content.getProperty("elasticsearch.username"), \
+                config_content.getProperty("elasticsearch.password")),
+            scheme="http",
+            port=config_content.getProperty("elasticsearch.port"),
+        )
+
+        result = es_client.search(
+            index="employee-management",
+            body={
+                "query": {
+                    "match_all": {}
+                }
+            }
+        )
+
+        for data in result["hits"]["hits"]:
+            send_mail(data["_source"]["email_id"])
+
+    except Exception as e:
+        logger.error("Error while executing elasticsearch query: %s", e)
+
+def schedule_operation():
+    """This function will gets executed for a scheduled interval"""
+    logger = get_logger()
+    schedule.every().hour.do(send_mail_to_all_users)
+    while True:
+        logger.info("Waiting for scheduled time to come, I am sure it will come")
+        schedule.run_pending()
+        time.sleep(1)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-m", "--mode", \
+        help="Mode in which application will run, options - scheduled and external", \
+        default="scheduled")
+    args = parser.parse_args()
+
+    if args.mode == "scheduled":
+        schedule_operation()
+    else:
+        send_mail_to_all_users()
+ritu@localhost:~/notification-worker$ cat README.md 
+# Notification
+
+Notification is a service which gets used to send mail notifications to employees. This application runs in scheduled based frequency.
+
+## Available Flags
+
+```shell
+$ python3 notification_api.py --help
+usage: notification_api.py [-h] [-m MODE]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -m MODE, --mode MODE  Mode in which application will run, options -
+                        scheduled and external
+```
+
+With `--mode` flag you can control the behaviour of the application. In case of `scheduled` value it will run at every month beginning, and with `external` it will run once.
+
+## Dependency
+
+Notification service is dependent on SMTP server. SMTP server details needs to be provided at application bootup.
+
+## Environment Variable
+
+|**ENVIRONMENT VARIABLE**|**DEFAULT VALUE**|**DESCRIPTION**|
+|------------------------|-----------------|---------------|
+| CONFIG_FILE | `/app/config.yaml` | Path of configuration file |
+| FROM | - | From is the name of the sender from which mail will be sent |
+| SMTP_USERNAME | - | Username for the SMTP server |
+| SMTP_PASSWORD | - | Password of the SMTP username |
+| SMTP_SERVER | - | Name of the SMTP server |
+| SMTP_PORT | - | Port number on which SMTP server is listening |
+| ELASTIC_USERNAME | - | Username for the elasticsearch server |
+| ELASTIC_PASSWORD | - | Password of the elasticsearch server |
+| ELASTIC_HOST | - | DNS name or IP of the elasticsearch server |
+| ELASTIC_PORT | - | Port number on which elasticsearch is listening |
+
+## Quickstart
+
+```yaml
+---
+# SMTP connection details
+smtp:
+  from: "test@example.com"
+  username: "test"
+  password: "test"
+  smtp_server: "test.smtp.com"
+  smtp_port: "25"
+
+# elasticsearch connection details
+elasticsearch:
+  username: "elastic"
+  password: "elastic"
+  host: "172.17.0.2"
+  port: 9200
+```
+
+```shell
+# For compiling code
+make build
+```
+
+```shell
+# For running code locally
+export CONFIG_FILE=/path/to/config.yaml
+python3 notification_api.py
+```
+
+```shell
+make build-image
+```ritu@localhost:~/notification-worker$ ls
+config.yaml  Dockerfile  entrypoint.sh  LICENSE  Makefile  notification_api.py  README.md  requirements.txt
+ritu@localhost:~/notification-worker$ cat requirements.txt 
+emails==0.6
+elasticsearch==7.8.0
+config-with-yaml==0.1.0
+schedule==0.6.0
+ritu@localhost:~/notification-worker$ 
+
 
 
 
