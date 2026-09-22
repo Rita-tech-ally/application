@@ -75,16 +75,17 @@ GitLab is a web-based DevOps platform that enables teams to manage the entire so
 
 ---
 
- # 6.  Best Pratices
+# 6. Best Practices
 
- 
 | **No.** | **Best Practice**         | **Description**                                                                                                 |
 | ------- | ------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | **1**   | **Use Feature Branches**  | Create a separate branch for each feature instead of committing directly to the main branch.                    |
 | **2**   | **Test Every Commit**     | Run CI/CD tests and security scans such as SAST, Secret Detection, and Dependency Scanning on feature branches. |
-| **3**   | **Run Tests in Parallel** | Run tests on every commit. If tests take longer, run them in parallel to save time.                             |
-| **4**   | **Perform Code Reviews**  | Review code through Merge Requests before merging it into the main branch to identify issues early.     
-----|
+| **3**   | **Run Tests in Parallel** | Run independent tests in parallel to reduce the overall CI/CD pipeline execution time.                          |
+| **4**   | **Perform Code Reviews**  | Review code through Merge Requests before merging it into the main branch to identify issues early.             |
+
+
+---
 
 # 7. Conclusion
 
