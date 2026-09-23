@@ -65,28 +65,28 @@ GitLab is a web-based DevOps platform that enables teams to manage the entire so
 The GitLab workflow follows a continuous cycle from planning and development to deployment, monitoring, and improvement.
 
 1. **Plan & Create**
-   Define the project work by creating **Epics, Milestones, and Issues** based on project requirements.
+   Define the project work by creating Epics, Milestones, and Issues based on project requirements.
 
 2. **Create / Assign Issue**
-   Create an issue with the required **description, labels, priority, and assignee**. The issue is assigned to the responsible team member.
+   Create an issue with the required description, labels, priority, and assignee. The issue is assigned to the responsible team member.
 
 3. **Code & Commit**
-   Create a separate **branch** for the assigned issue, develop the required changes, commit the code, and push the branch to the repository.
+   Create a separate branch for the assigned issue, develop the required changes, commit the code, and push the branch to the repository.
 
 4. **Merge Request**
-   Create a **Merge Request (MR)** to review the code, discuss changes, and perform the required checks before merging it into the target branch.
+   Create a Merge Request (MR) to review the code, discuss changes, and perform the required checks before merging it into the target branch.
 
 5. **CI/CD Pipeline**
-   The configured **GitLab CI/CD pipeline** automatically performs required activities such as **build, testing, validation, linting, and code quality checks**.
+   The configured GitLab CI/CD pipeline automatically performs required activities such as build, testing, validation, linting, and code quality checks.
 
 6. **Deploy**
-   After successful pipeline execution and approval, deploy the application to the required environment, such as **Development, Staging, or Production**.
+   After successful pipeline execution and approval, deploy the application to the required environment, such as Development, Staging, or Production.
 
 7. **Monitor & Improve**
-   Monitor the deployed application using **logs, metrics, and error monitoring** to identify performance issues or failures.
+   Monitor the deployed application using logs, metrics, and error monitoring to identify performance issues or failures.
 
 8. **Feedback & New Issues**
-   Create new issues based on **monitoring results, bugs, user feedback, or new requirements**, and continue the development cycle.
+   Create new issues based on monitoring results, bugs, user feedback, or new requirements, and continue the development cycle.
 
 ---
 
