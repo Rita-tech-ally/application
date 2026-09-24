@@ -137,38 +137,19 @@ The following workflow represents a typical SonarQube Disaster Recovery process:
 
 ### Workflow Explanation
 
-1. **SonarQube Running**
-   The normal SonarQube environment is running and serving users and CI/CD pipelines.
-
-2. **Database Backup**
-   Regular backups are created to protect SonarQube data.
-
-3. **Secure Backup Storage**
-   Backups are stored separately from the primary SonarQube environment.
-
-4. **Disaster / Failure**
-   A failure affects the SonarQube environment or its database.
-
-5. **Identify Failure**
-   The team identifies the failed component and determines the appropriate recovery method.
-
-6. **Recover Infrastructure**
-   Failed infrastructure is repaired or recreated.
-
-7. **Recover Database**
-   The database is restored from backup, recovered from a snapshot, or switched to a suitable replica depending on the DR strategy.
-
-8. **Restore SonarQube Configuration**
-   Required SonarQube configuration and dependencies are restored.
-
-9. **Start SonarQube**
-   SonarQube is started on the recovered environment.
-
-10. **Validate SonarQube**
-    The application, database connection, projects, configuration, and integrations are verified.
-
-11. **Service Restored**
-    After successful validation, SonarQube is returned to normal operation.
+| Step | Workflow Stage                      | Description                                                                                                                      |
+| ---: | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+|    1 | **SonarQube Running**               | The normal SonarQube environment is running and serving users and CI/CD pipelines.                                               |
+|    2 | **Database Backup**                 | Regular backups are created to protect SonarQube data.                                                                           |
+|    3 | **Secure Backup Storage**           | Backups are stored separately from the primary SonarQube environment.                                                            |
+|    4 | **Disaster / Failure**              | A failure affects the SonarQube environment or its database.                                                                     |
+|    5 | **Identify Failure**                | The team identifies the failed component and determines the appropriate recovery method.                                         |
+|    6 | **Recover Infrastructure**          | Failed infrastructure is repaired or recreated.                                                                                  |
+|    7 | **Recover Database**                | The database is restored from backup, recovered from a snapshot, or switched to a suitable replica depending on the DR strategy. |
+|    8 | **Restore SonarQube Configuration** | Required SonarQube configuration and dependencies are restored.                                                                  |
+|    9 | **Start SonarQube**                 | SonarQube is started on the recovered environment.                                                                               |
+|   10 | **Validate SonarQube**              | The application, database connection, projects, configuration, and integrations are verified.                                    |
+|   11 | **Service Restored**                | After successful validation, SonarQube is returned to normal operation.                                                          |
 
 ---
 
