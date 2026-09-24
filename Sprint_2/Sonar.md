@@ -1,77 +1,68 @@
+<p align="center">
+<img width="223" height="100" alt="image" src="https://github.com/user-attachments/assets/31a60337-d4fb-485e-b815-e74438a3703c" />
+</p>
+
 # SonarQube Disaster Recovery
+
+---
+
+## Document Information
+
+| Author | Created On | Version | L0 Reviewer      | L1 Reviewer | L2 Reviewer            |
+| ------ | ---------- | ------- | ---------------- | ----------- | ---------------------- |
+| Ritu   | 24/09/2026 | 1.1     | Liyakhat/Anirudh | Aman Raj    | Sandeep Rawat/Ravindra |
+
+----
+
+## Table of Contents
+
+1. [Introduction](#1-introduction)
+2. [What is SonarQube Disaster Recovery](#2-what-is-sonarqube-disaster-recovery)
+3. [Why SonarQube Disaster Recovery is Required](#3-why-sonarqube-disaster-recovery-is-required)
+4. [Workflow Diagram](#4-workflow-diagram)
+5. [Backup](#5-backup)
+6. [Recovery](#6-recovery)
+7. [Advantages](#7-advantages)
+8. [Best Practices](#8-best-practices)
+9. [Conclusion](#9-conclusion)
+10. [Contact Information](#10-contact-information)
+11. [References](#11-references)
+
+---
 
 ## 1. Introduction
 
-SonarQube Disaster Recovery (DR) is a structured process used to protect and restore a SonarQube environment after an unexpected failure or disaster.
+SonarQube Disaster Recovery (DR) is a structured approach for backing up, recovering, and restoring the SonarQube environment after a failure.
 
-SonarQube is an important part of the software development and CI/CD process because it performs code quality and security analysis. If the SonarQube environment becomes unavailable, development and CI/CD activities may be affected.
+This document covers SonarQube DR workflow, backup, recovery, MTTR, different DR methods, advantages, and best practices to support a reliable and repeatable recovery process.
 
-A Disaster Recovery strategy ensures that the required SonarQube data can be recovered and the service can be restored within an acceptable time.
-
-The main focus of SonarQube Disaster Recovery is:
-
-* Protecting SonarQube data through regular backups.
-* Recovering the SonarQube environment after a failure.
-* Minimizing data loss and service downtime.
-* Reducing **Mean Time to Recovery (MTTR)**.
-* Providing a documented and repeatable recovery process.
 
 ---
 
 ## 2. What is SonarQube Disaster Recovery?
 
-SonarQube Disaster Recovery is the process of restoring SonarQube and its required data after a failure such as:
+SonarQube Disaster Recovery is the process of restoring SonarQube and its required data after failures such as server, database, storage, infrastructure, configuration, or regional failures.
 
-* SonarQube server failure.
-* Database failure or corruption.
-* Storage failure.
-* Infrastructure failure.
-* Accidental deletion.
-* Configuration loss.
-* Regional infrastructure failure.
-
-SonarQube mainly depends on its **database** for storing important information such as project data, analysis history, quality profiles, quality gates, users, permissions, and other SonarQube configuration data.
+SonarQube depends mainly on its database for project data, analysis history, quality profiles, quality gates, users, permissions, and configuration.
 
 Therefore, database protection is a critical part of SonarQube Disaster Recovery.
 
-A complete DR approach can be represented as:
-
-```text
-Backup
-   ↓
-Secure Backup Storage
-   ↓
-Disaster / Failure
-   ↓
-Infrastructure Recovery
-   ↓
-Database Recovery
-   ↓
-SonarQube Recovery
-   ↓
-Validation
-   ↓
-Service Restored
-```
-
 ---
 
-## 3. Why SonarQube Disaster Recovery is Required
+## 3. Why SonarQube Disaster Recovery is Required?
 
-A SonarQube failure can interrupt code analysis and may affect CI/CD pipelines that depend on SonarQube quality checks.
+A SonarQube failure can interrupt code analysis and CI/CD quality checks.
 
-Without a proper Disaster Recovery strategy, an organization may face:
+Without a proper DR strategy, organizations may face:
 
-* Loss of project analysis history.
-* Loss of SonarQube configuration.
+* Loss of analysis history and configuration.
 * Loss of quality profiles and quality gates.
-* Extended service downtime.
-* Delays in CI/CD pipelines.
-* Additional manual recovery effort.
-* Increased recovery time.
+* Extended downtime and increased recovery time.
+* CI/CD delays and additional manual effort.
 * Difficulty restoring the environment consistently.
 
-A properly designed DR strategy provides a predefined recovery process and helps the team restore SonarQube in a controlled manner.
+A proper DR strategy provides a **predefined and controlled recovery process** for restoring SonarQube.
+
 
 ---
 
@@ -79,61 +70,7 @@ A properly designed DR strategy provides a predefined recovery process and helps
 
 The following workflow represents a typical SonarQube Disaster Recovery process:
 
-```text
-                 +----------------------+
-                 |   SonarQube Running  |
-                 +----------+-----------+
-                            |
-                            v
-                 +----------------------+
-                 |   Database Backup    |
-                 +----------+-----------+
-                            |
-                            v
-                 +----------------------+
-                 |  Secure Backup       |
-                 |      Storage         |
-                 +----------+-----------+
-                            |
-                            |
-                     Disaster / Failure
-                            |
-                            v
-                 +----------------------+
-                 |   Identify Failure   |
-                 +----------+-----------+
-                            |
-                            v
-                 +----------------------+
-                 | Recover Infrastructure|
-                 +----------+-----------+
-                            |
-                            v
-                 +----------------------+
-                 |   Recover Database   |
-                 +----------+-----------+
-                            |
-                            v
-                 +----------------------+
-                 |  Restore SonarQube   |
-                 |   Configuration      |
-                 +----------+-----------+
-                            |
-                            v
-                 +----------------------+
-                 | Start SonarQube      |
-                 +----------+-----------+
-                            |
-                            v
-                 +----------------------+
-                 | Validate SonarQube   |
-                 +----------+-----------+
-                            |
-                            v
-                 +----------------------+
-                 | Service Restored     |
-                 +----------------------+
-```
+<img width="1024" height="559" alt="image" src="https://github.com/user-attachments/assets/41a2db10-4ae6-4adb-8461-87c53cbce537" />
 
 ### Workflow Explanation
 
@@ -155,429 +92,118 @@ The following workflow represents a typical SonarQube Disaster Recovery process:
 
 ## 5. Backup
 
-Backup is one of the most important parts of SonarQube Disaster Recovery.
+Backup is a critical part of SonarQube Disaster Recovery. It provides a recoverable copy of SonarQube data that can be restored after failure or data loss.
 
-The purpose of a backup is to create a recoverable copy of SonarQube data that can be used when the primary environment becomes unavailable or data is lost.
-
-The SonarQube database should be included in the organization's regular database backup strategy because it contains important SonarQube information.
-
-### Backup Flow
-
-```text
-SonarQube
-    |
-    v
-SonarQube Database
-    |
-    v
-Scheduled Backup
-    |
-    v
-Backup Storage
-    |
-    v
-Backup Verification
-```
+The SonarQube database should be included in the organization's regular database backup strategy because it stores important SonarQube information.
 
 ### Important Backup Practices
 
-* Perform backups at a defined frequency.
-* Store backups separately from the production environment.
-* Apply an appropriate backup retention policy.
-* Protect backup storage with proper access controls.
-* Encrypt backups where required.
-* Monitor backup jobs.
-* Verify that backups are successfully created.
-* Regularly test restoration from backups.
-
-### Backup Verification
-
-Creating a backup is not enough. The backup should also be tested to confirm that it can be successfully restored.
-
-```text
-Create Backup
-      ↓
-Verify Backup
-      ↓
-Restore Test
-      ↓
-Validate Data
-```
-
-A tested backup provides greater confidence during an actual disaster.
+| **Practice**            | **Description**                                           |
+| ----------------------- | --------------------------------------------------------- |
+| **Backup Frequency**    | Perform backups at a defined and appropriate frequency.   |
+| **Separate Storage**    | Store backups separately from the production environment. |
+| **Retention Policy**    | Apply an appropriate backup retention policy.             |
+| **Access Control**      | Protect backup storage with proper access controls.       |
+| **Encryption**          | Encrypt backups where required.                           |
+| **Monitoring**          | Monitor backup jobs and their status.                     |
+| **Backup Verification** | Verify that backups are created successfully.             |
+| **Restore Testing**     | Regularly test restoration from backups.                  |
 
 ---
-
 ## 6. Recovery
 
-Recovery is the process of restoring SonarQube after a failure.
+Recovery is the process of restoring the SonarQube environment after a failure. A typical recovery process includes the following steps:
 
-The recovery process depends on the type of failure and the selected Disaster Recovery method.
-
-### Recovery Process
-
-```text
-Failure Detected
-      |
-      v
-Identify Failed Component
-      |
-      v
-Select Recovery Method
-      |
-      v
-Recover Infrastructure
-      |
-      v
-Recover Database
-      |
-      v
-Restore Configuration
-      |
-      v
-Start SonarQube
-      |
-      v
-Validate
-      |
-      v
-Resume Service
-```
-
-### Database Recovery
-
-The database can be recovered using the organization's selected database recovery mechanism, such as:
-
-* Backup restore.
-* Point-in-time recovery, where supported.
-* Database replication/failover.
-* Snapshot recovery.
-
-### SonarQube Recovery
-
-After the database is recovered:
-
-1. Prepare the SonarQube environment.
-2. Install the required compatible SonarQube version.
-3. Configure the database connection.
-4. Restore required configuration.
-5. Ensure required plugins and dependencies are compatible.
-6. Start SonarQube.
-7. Verify that SonarQube can communicate with the database.
-8. Validate projects and configuration.
-9. Test CI/CD integration.
-
-### Recovery Validation
-
-The following should be verified after recovery:
-
-```text
-SonarQube Login
-      ↓
-Database Connection
-      ↓
-Projects Available
-      ↓
-Analysis History Available
-      ↓
-Quality Profiles Available
-      ↓
-Quality Gates Available
-      ↓
-CI/CD Integration Working
-```
+| **Step** | **Recovery Activity**    | **Description**                                                                                                                            |
+| -------: | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+|    **1** | **Identify Failure**     | Identify the failed SonarQube, database, infrastructure, or storage component.                                                             |
+|    **2** | **Prepare Environment**  | Repair or recreate the required infrastructure for SonarQube.                                                                              |
+|    **3** | **Restore Database**     | Restore the SonarQube database using the selected recovery approach.                                                                       |
+|    **4** | **Configure SonarQube**  | Install a compatible SonarQube version and configure the database connection and required settings.                                        |
+|    **5** | **Restore Dependencies** | Verify required plugins, configurations, and dependencies.                                                                                 |
+|    **6** | **Start SonarQube**      | Start the SonarQube service after completing the recovery configuration.                                                                   |
+|    **7** | **Validate Recovery**    | Verify SonarQube accessibility, database connectivity, projects, analysis history, quality profiles, quality gates, and CI/CD integration. |
+|    **8** | **Restore Service**      | Return SonarQube to normal operation after successful validation.                                                                          |
 
 ---
 
-## 7. MTTR (Mean Time to Recovery)
+### 6.1 Recovery Metrics
 
-**MTTR (Mean Time to Recovery)** is the average time required to recover a failed system and restore normal service.
+| **Metric**                         | **Details**                                                                                      |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------ |
+| **RPO (Recovery Point Objective)** | Defines the maximum acceptable amount of data loss measured in time.                             |
+| **RTO (Recovery Time Objective)**  | Defines the maximum acceptable time required to restore the service after a failure.             |
+| **MTTR (Mean Time to Recovery)**   | Measures the average time required to recover a failed system and restore normal service.        |
+| **MTTR Formula**                   | `MTTR = Total Recovery Time / Number of Recovery Incidents`                                      |
+| **Example**                        | If recovery times are **60, 90, and 30 minutes**, then `MTTR = (60 + 90 + 30) / 3 = 60 minutes`. |
+| **Automation**                     | Automating infrastructure, backup, and database recovery can reduce recovery time.               |
+| **DR Testing**                     | Regular DR testing helps identify recovery issues before an actual failure.                      |
 
-It is an important metric for measuring the effectiveness of a Disaster Recovery process.
 
-### Formula
+--
+### 6.2 Different Methods for Disaster Recovery
 
-```text
-MTTR = Total Recovery Time / Number of Recovery Incidents
-```
+| **Method**                       | **Details**                                                                                                                                                                                                                     |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Backup and Restore**           | Regularly backs up the SonarQube database and restores it when recovery is required. **Advantage:** Simple, cost-effective, and easy to automate. **Consideration:** Recovery time depends on backup size and restoration time. |
+| **Database Replication**         | Maintains a copy of the primary database for recovery or failover. **Advantage:** Can reduce the data-loss window and recovery time. **Consideration:** Does not replace backups because corruption may also be replicated.     |
+| **Snapshot-Based Recovery**      | Captures the state of storage or infrastructure at a specific point in time and restores it when required. **Advantage:** Fast infrastructure-level recovery. **Consideration:** Should be combined with database backups.      |
+| **Infrastructure as Code (IaC)** | Uses tools such as Terraform to recreate infrastructure and restore the SonarQube environment. **Advantage:** Repeatable, consistent, and automated recovery. **Consideration:** Does not replace database backups.             |
+| **Multi-Region Recovery**        | Maintains recovery infrastructure in another geographical region. **Advantage:** Provides protection against regional failures. **Consideration:** Requires additional infrastructure, management, testing, and cost.           |
+           
 
-### Example
+   ---        
 
-If SonarQube recovery took:
-
-```text
-Incident 1 = 60 minutes
-Incident 2 = 90 minutes
-Incident 3 = 30 minutes
-```
-
-Then:
-
-```text
-MTTR = (60 + 90 + 30) / 3
-     = 60 minutes
-```
-
-### How DR Helps Reduce MTTR
-
-MTTR can be reduced by:
-
-* Automating infrastructure creation.
-* Automating backup processes.
-* Keeping tested backups available.
-* Maintaining clear recovery procedures.
-* Using Infrastructure as Code.
-* Automating database recovery where possible.
-* Regularly testing Disaster Recovery.
-* Monitoring backup and recovery processes.
-
----
-
-## 8. Different Methods for Disaster Recovery
-
-Different Disaster Recovery methods can be used depending on infrastructure requirements, acceptable downtime, data-loss tolerance, and recovery objectives.
-
-### 8.1 Backup and Restore
-
-In this approach, the SonarQube database is backed up regularly and the backup is restored when recovery is required.
-
-```text
-Primary Database
-       |
-       v
-    Backup
-       |
-       v
-Backup Storage
-       |
-       | Disaster
-       v
-Restore Database
-       |
-       v
-SonarQube Recovery
-```
-
-**Advantages:**
-
-* Simple to implement.
-* Cost-effective.
-* Easy to automate.
-* Suitable for many environments.
-
-**Consideration:**
-
-Recovery time depends on backup size, infrastructure provisioning, and database restoration time.
-
----
-
-### 8.2 Database Replication
-
-Database replication maintains a copy of the primary database on another database instance.
-
-```text
-Primary Database
-       |
-       | Replication
-       v
-Replica Database
-       |
-       v
-Recovery / Failover
-```
-
-**Advantages:**
-
-* Can reduce the data-loss window.
-* Can support faster database recovery.
-* Useful for environments requiring higher availability.
-
-**Consideration:**
-
-Replication should not be treated as a replacement for backups because unwanted changes or corruption may also be replicated.
-
----
-
-### 8.3 Snapshot-Based Recovery
-
-A snapshot captures the state of the relevant storage or infrastructure at a particular point in time.
-
-```text
-Database / Storage
-       |
-       v
-   Snapshot
-       |
-       v
-Snapshot Storage
-       |
-       | Disaster
-       v
-Restore Snapshot
-       |
-       v
-Recovered Environment
-```
-
-**Advantages:**
-
-* Can provide fast recovery.
-* Useful for infrastructure-level recovery.
-* Can simplify recovery of large storage volumes.
-
-**Consideration:**
-
-Snapshots should be combined with appropriate database backup practices.
-
----
-
-### 8.4 Infrastructure as Code-Based Recovery
-
-Infrastructure can be recreated using Infrastructure as Code tools such as Terraform.
-
-```text
-Infrastructure Code
-       |
-       v
-Terraform
-       |
-       v
-New Infrastructure
-       |
-       v
-SonarQube Setup
-       |
-       v
-Database Recovery
-       |
-       v
-Validation
-```
-
-**Advantages:**
-
-* Repeatable infrastructure recovery.
-* Reduces manual configuration.
-* Improves consistency.
-* Makes recovery automation easier.
-
-**Consideration:**
-
-IaC recreates infrastructure but does not replace database backups.
-
----
-
-### 8.5 Multi-Region Disaster Recovery
-
-For environments requiring protection from regional infrastructure failures, recovery infrastructure can be maintained in a different geographical region.
-
-```text
-              Primary Region
-                   |
-             SonarQube + DB
-                   |
-                   |
-            Backup / Replication
-                   |
-                   v
-               DR Region
-                   |
-            Recovery Infrastructure
-                   |
-                   v
-               SonarQube
-```
-
-**Advantages:**
-
-* Provides protection against regional failures.
-* Provides geographically separated recovery infrastructure.
-* Can support higher availability requirements.
-
-**Consideration:**
-
-This approach requires additional infrastructure, management, testing, and cost.
-
----
-
-## 9. Advantages
+## 7. Advantages
 
 A properly implemented SonarQube Disaster Recovery strategy provides the following advantages:
 
-* **Data Protection** – Protects important SonarQube database information.
-* **Reduced Downtime** – Provides a structured process for restoring SonarQube.
-* **Reduced MTTR** – Automation and predefined recovery procedures can reduce recovery time.
-* **Business Continuity** – Helps maintain software quality and CI/CD activities after failures.
-* **Repeatable Recovery** – Provides a documented and consistent recovery process.
-* **Improved Reliability** – Regular backup and recovery testing improves recovery readiness.
-* **Infrastructure Automation** – IaC can simplify infrastructure recreation.
-* **Risk Reduction** – Reduces dependency on a single SonarQube environment.
+| **Advantage**                 | **Description**                                                         |
+| ----------------------------- | ----------------------------------------------------------------------- |
+| **Data Protection**           | Protects important SonarQube database information.                      |
+| **Reduced Downtime**          | Provides a structured process for restoring SonarQube.                  |
+| **Reduced MTTR**              | Automation and predefined recovery procedures can reduce recovery time. |
+| **Business Continuity**       | Helps maintain software quality and CI/CD activities after failures.    |
+| **Repeatable Recovery**       | Provides a documented and consistent recovery process.                  |
+| **Improved Reliability**      | Regular backup and recovery testing improves recovery readiness.        |
+| **Infrastructure Automation** | IaC simplifies infrastructure recreation.                               |
+| **Risk Reduction**            | Reduces dependency on a single SonarQube environment.                   |
 
 ---
 
-## 10. Best Practices
+## 8. Best Practices
 
-### Backup Best Practices
-
-* Schedule backups according to the required recovery objectives.
-* Store backups separately from the primary environment.
-* Maintain an appropriate backup retention period.
-* Encrypt sensitive backup data.
-* Restrict access to backup storage.
-* Monitor backup jobs.
-* Verify backup integrity.
-
-### Recovery Best Practices
-
-* Maintain a documented recovery procedure.
-* Keep required SonarQube and database versions documented.
-* Maintain compatible plugin information.
-* Automate infrastructure provisioning where possible.
-* Test database restoration regularly.
-* Validate SonarQube after recovery.
-* Test CI/CD integration after recovery.
-
-### Disaster Recovery Best Practices
-
-* Define **RPO (Recovery Point Objective)**.
-* Define **RTO (Recovery Time Objective)**.
-* Track **MTTR**.
-* Perform regular DR testing.
-* Keep recovery procedures updated.
-* Use Infrastructure as Code where appropriate.
-* Keep secrets in secure secret-management systems.
-* Monitor backup and recovery processes.
-* Document lessons learned after every DR test or incident.
+| **Best Practice**              | **Description**                                                        |
+| ------------------------------ | ---------------------------------------------------------------------- |
+| **Regular Backups**            | Schedule and automate regular backups.                                 |
+| **Secure Storage**             | Store backups securely and separately from the production environment. |
+| **Retention & Access Control** | Apply proper retention and access-control policies.                    |
+| **Encryption & Monitoring**    | Encrypt backups where required and monitor backup activities.          |
+| **Backup Verification**        | Verify backup integrity and test restoration regularly.                |
+| **Recovery Procedures**        | Maintain documented recovery procedures and compatible versions.       |
+| **IaC Automation**             | Automate infrastructure recovery using IaC where possible.             |
+| **Define RPO, RTO & MTTR**     | Define recovery objectives and track recovery performance.             |
+| **Regular DR Testing**         | Test DR regularly and validate SonarQube and CI/CD after recovery.     |
+| **Secrets & Documentation**    | Keep secrets secure and update DR documentation after testing.         |
 
 ---
 
-## 11. Conclusion
-
-SonarQube Disaster Recovery is an important part of maintaining a reliable SonarQube environment.
-
-A complete DR strategy should include regular backups, secure backup storage, a defined recovery process, appropriate recovery methods, and regular recovery testing.
-
-Different methods such as **Backup and Restore, Database Replication, Snapshot-Based Recovery, Infrastructure as Code, and Multi-Region Recovery** can be selected according to the environment's requirements.
-
-The effectiveness of the DR process can be measured using **RPO, RTO, and MTTR**.
-
-Regular testing and continuous improvement ensure that the documented recovery process remains practical and ready to use when an actual failure occurs.
+## 9. Conclusion
+SonarQube Disaster Recovery ensures reliable recovery through regular backups, secure storage, defined recovery procedures, and regular testing. Using appropriate DR methods and tracking RPO, RTO, and MTTR helps minimize downtime and data loss.
 
 ---
 
-## 12. Contact Information
+## 10. Contact Information
 
-| Information         | Details                                       |
-| ------------------- | --------------------------------------------- |
-| Team                | DevOps / Platform Team                        |
-| Documentation Owner | DevOps Team                                   |
-| Support Channel     | Team Communication Channel                    |
-| Incident Process    | Organization's Incident Management Process    |
-| Escalation          | Designated Application / Infrastructure Owner |
+
+| Name | Email Address                                                                 |
+| ---- | ----------------------------------------------------------------------------- |
+| Ritu | [ritu.dogra.snaatak@mygurukulam.co](mailto:ritu.dogra.snaatak@mygurukulam.co) |
 
 ---
+---
 
-## 13. References
+## 11. References
 
 * [SonarQube Documentation](https://docs.sonarsource.com/sonarqube/)
 * [SonarQube Server Documentation](https://docs.sonarsource.com/sonarqube-server/)
