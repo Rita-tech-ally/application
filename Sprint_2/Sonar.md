@@ -142,15 +142,13 @@ Recovery is the process of restoring the SonarQube environment after a failure. 
 
 --
 ### 6.2 Different Methods for Disaster Recovery
-
-| **Method**                       | **Details**                                                                                                                                                                                                                     |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Backup and Restore**           | Regularly backs up the SonarQube database and restores it when recovery is required. **Advantage:** Simple, cost-effective, and easy to automate. **Consideration:** Recovery time depends on backup size and restoration time. |
-| **Database Replication**         | Maintains a copy of the primary database for recovery or failover. **Advantage:** Can reduce the data-loss window and recovery time. **Consideration:** Does not replace backups because corruption may also be replicated.     |
-| **Snapshot-Based Recovery**      | Captures the state of storage or infrastructure at a specific point in time and restores it when required. **Advantage:** Fast infrastructure-level recovery. **Consideration:** Should be combined with database backups.      |
-| **Infrastructure as Code (IaC)** | Uses tools such as Terraform to recreate infrastructure and restore the SonarQube environment. **Advantage:** Repeatable, consistent, and automated recovery. **Consideration:** Does not replace database backups.             |
-| **Multi-Region Recovery**        | Maintains recovery infrastructure in another geographical region. **Advantage:** Provides protection against regional failures. **Consideration:** Requires additional infrastructure, management, testing, and cost.           |
-           
+| **Method**                       | **How It Works**                                                                                           | **Advantages**                                           | **Considerations**                                                  |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------- |
+| **Backup and Restore**           | Regularly backs up the SonarQube database and restores it when recovery is required.                       | Simple, cost-effective, and easy to automate.            | Recovery time depends on backup size and restoration time.          |
+| **Database Replication**         | Maintains a copy of the primary database for recovery or failover.                                         | Can reduce the data-loss window and recovery time.       | Does not replace backups because corruption may also be replicated. |
+| **Snapshot-Based Recovery**      | Captures the state of storage or infrastructure at a specific point in time and restores it when required. | Provides fast infrastructure-level recovery.             | Should be combined with database backups.                           |
+| **Infrastructure as Code (IaC)** | Uses tools such as Terraform to recreate infrastructure and restore the SonarQube environment.             | Provides repeatable, consistent, and automated recovery. | Does not replace database backups.                                  |
+| **Multi-Region Recovery**        | Maintains recovery infrastructure in another geographical region.                                          | Provides protection against regional failures.           | Requires additional infrastructure, management, testing, and cost.  |
 
    ---        
 
