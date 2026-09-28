@@ -5,12 +5,24 @@
 
 #  Continuous Integration (CI) Documentation
 
+## Table of Contents
+
+1. [What is CI?](#1-what-is-ci)
+2. [Why CI is Used](#2-why-ci-is-used)
+3. [Key Components of CI](#3-key-components-of-ci)
+4. [CI Workflow](#4-ci-workflow)
+5. [Benefits of CI](#5-benefits-of-ci)
+6. [CI Best Practices](#6-ci-best-practices)
+7. [Conclusion](#7-conclusion)
+8. [Contact Information](#8-contact-information)
+9. [References](#9-references)
+
 
 ## Document Information
 
 | Author | Created On | Version | L0 Reviewer | L1 Reviewer | L2 Reviewer |
 | --- | --- | --- | --- | --- | --- |
-| Ritu | 21/09/2026 | 1.1 | Liyakhat/Anirudh  | Aman Raj | Sandeep Rawat/Ravindra |
+| Ritu | 28/09/2026 | 1.0 | Liyakhat/Anirudh  | Aman Raj | Sandeep Rawat/Ravindra |
 
 ---
 ## 1. What is CI?
@@ -19,9 +31,6 @@
 
 Whenever code is pushed, an automated CI pipeline can **build, test, and validate** the changes. This helps identify issues early before the code moves to later stages such as deployment.
 
-### Key Idea
-
-> **CI means frequently integrating code changes and automatically validating them through build and test processes.**
 
 ---
 
@@ -57,32 +66,8 @@ CI is used to reduce integration problems and detect code issues as early as pos
 
 ## 4. CI Workflow
 
-```text
-Developer
-    |
-    | Code Change
-    v
-Version Control Repository
-    |
-    | Trigger
-    v
-CI Pipeline
-    |
-    +----> Build
-    |
-    +----> Automated Tests
-    |
-    +----> Code Quality Checks
-    |
-    +----> Package / Create Artifact
-    |
-    v
-Pipeline Result
-    |
-    +----> Success
-    |
-    +----> Failure
-```
+<img width="700" height="400" alt="image" src="https://github.com/user-attachments/assets/1d309c9c-2e67-48c5-96da-271962842eb8" />
+
 
 ### Workflow Steps
 
@@ -140,14 +125,11 @@ Continuous Integration (CI) helps teams integrate code changes frequently and va
 
 ---
 
-## 8. References
+## 9. References
 
-| **Source**                                          | **Reference Link**                                                                                                                                           |
-| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **GitHub Documentation – Continuous Integration**   | [GitHub CI Documentation](https://github.com/github/docs/blob/main/content/actions/get-started/continuous-integration.md?utm_source=chatgpt.com)             |
-| **Atlassian – What is Continuous Integration?**     | [Atlassian CI Documentation](https://www.atlassian.com/continuous-delivery/continuous-integration?utm_source=chatgpt.com)                                    |
-| **Atlassian – How to Setup Continuous Integration** | [Atlassian CI Setup Guide](https://www.atlassian.com/continuous-delivery/continuous-integration/how-to-get-to-continuous-integration?utm_source=chatgpt.com) |
-| **GitHub Actions – Building and Testing Code**      | [GitHub Build and Test Documentation](https://docs.github.com/en/actions/tutorials/build-and-test-code?utm_source=chatgpt.com)                               |
-
-| **Manage Dependencies**         | Keep application dependencies controlled and reproducible.                            |
-| **Secure CI Pipelines**         | Protect credentials, secrets, and sensitive configuration used by the pipeline.       |
+| **Source**                                        | **Reference Link**                                                                                                        |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **GitHub Documentation – Continuous Integration** | [GitHub CI Documentation](https://github.com/github/docs/blob/main/content/actions/get-started/continuous-integration.md) |
+| **Atlassian – What is Continuous Integration?**   | [Atlassian CI Documentation](https://www.atlassian.com/continuous-delivery/continuous-integration)                        |
+| **Jenkins Documentation – Pipeline**              | [Jenkins Pipeline Documentation](https://www.jenkins.io/doc/book/pipeline/)                                               |
+| **GitHub Actions – Building and Testing Code**    | [GitHub Build and Test Documentation](https://docs.github.com/en/actions/tutorials/build-and-test-code)                   |
