@@ -58,7 +58,7 @@ The backend services (Employee API, Attendance API, Salary API) are **not deploy
 | Operating System    | Ubuntu 24.04.4 LTS                            |
 | Instance Type       | `<instance type used>` (4 GB+ RAM recommended) |
 | Storage             | 20 GB gp3 recommended                         |
-| Private IPv4        | `172.31.22.120`                               |
+| Private IPv4        | `172.31.30.166`                               |
 | Public IPv4         | `3.110.51.28`                                 |
 
 
@@ -179,7 +179,7 @@ sudo nano /etc/nginx/sites-available/ot-poc
 ```nginx
 server {
     listen 80 default_server;
-    server_name devsecurity.shop www.devsecurity.shop _;
+    server_name ritu.sohandogra.com;
 
     root /home/ubuntu/frontend/build;
     index index.html;
@@ -227,12 +227,12 @@ sudo nginx -t && sudo systemctl reload nginx
 
 ```bash
 curl -I http://localhost
-curl http://localhost/employee/search/all
 ```
 
 **Expected Result:** `HTTP/1.1 200 OK` for the first command and the employee JSON for the second.
 
-<img width="1498" height="380" alt="image" src="https://github.com/user-attachments/assets/148f230a-b325-494a-9b6c-2266ce035f7c" />
+<img width="643" height="173" alt="Screenshot from 2026-09-29 19-21-51" src="https://github.com/user-attachments/assets/38eb6b42-4b77-4c50-adf4-89d5ddda6506" />
+
 
 
 
@@ -256,19 +256,9 @@ http://3.110.51.28
 
 # 8. Domain and DNS Setup (Route 53)
 
-## 8.1 Domain and Hosted Zone
+## 8.1 Create A Record
 
-The domain `devsecurity.shop` is managed in **AWS Route 53**. The public hosted zone contains the default NS and SOA records:
-
-| **Record Type** | **Value** |
-| --------------- | --------- |
-| NS | `ns-67.awsdns-08.com.` <br> `ns-1910.awsdns-46.co.uk.` <br> `ns-866.awsdns-44.net.` <br> `ns-1530.awsdns-63.org.` |
-
-📸 **Screenshot 12:** Route 53, Hosted zones, `devsecurity.shop` (NS and SOA records).
-
-## 8.2 Create A Record
-
-Route 53, Hosted zones, `devsecurity.shop`, **Create record**:
+Route 53, Hosted zones, `ritu.sohandogra.com`, **Create record**:
 
 | **Configuration** | **Value**                                    |
 | ----------------- | -------------------------------------------- |
@@ -276,12 +266,8 @@ Route 53, Hosted zones, `devsecurity.shop`, **Create record**:
 | Record Type       | `A`                                          |
 | Routing Policy    | `Simple`                                     |
 | Alias             | `No`                                         |
-| Value             | `3.109.201.212` (EC2 Elastic IP)               |
-| TTL               | `300` seconds                                |
-
-> **Note:** Leave the record name blank for the root domain. Typing the full domain in the name field creates `devsecurity.shop.devsecurity.shop`, which is incorrect.
-
-Optional: create another A record with name `www` and the same IP for `www.devsecurity.shop`.
+| Value             | `3.110.51.28` (EC2 Elastic IP)               |
+| TTL               | `60` seconds                                |
 
 <img width="1517" height="354" alt="Screenshot from 2026-09-29 18-05-25" src="https://github.com/user-attachments/assets/c0ebbe26-1d0d-47b0-ba4b-bd10d74a4493" />
 
@@ -293,7 +279,7 @@ Optional: create another A record with name `www` and the same IP for `www.devse
 ## 9.1 Verify DNS Resolution
 
 ```bash
-nslookup devsecurity.shop
+nslookup ritu.sohandogra.com
 ```
 
 **Expected Result:** The domain resolves to the EC2 public IP.
@@ -324,7 +310,7 @@ The POC was completed successfully. The React frontend is hosted on an AWS EC2 i
 User Browser
      |
      v
-devsecurity.shop
+ritu.sohandogra.com
      |
      v
 AWS Route 53 (A Record)
@@ -340,26 +326,7 @@ React Build (/home/ubuntu/frontend/build)   Mock JSON (/var/www/mock)
  (dashboard UI)                             (/employee, /attendance, /salary)
 ```
 
-### Limitations
 
-* **Add Employee** and **Add Attendance** forms do not work, because they send POST requests and static files do not accept POST (405).
-* The data is fixed sample data. To change it, edit the JSON files in `/var/www/mock`. No rebuild is needed.
-* The site runs on HTTP. HTTPS can be added later with Certbot.
-
----
-
-# 11. Issues Faced and Fixes
-
-| **Issue** | **Cause** | **Fix** |
-| --------- | --------- | ------- |
-| `ERR_OSSL_EVP_UNSUPPORTED` during build | Old webpack with Node 18 | Use Node 16 through nvm |
-| `heap out of memory` / `ENOSPC` | Small instance and full disk | Larger instance, 20 GB disk, swap file |
-| `500 Internal Server Error` (`rewrite or internal redirection cycle`) | NGINX `root` had no `index.html` | Point `root` to `/home/ubuntu/frontend/build` |
-| `403 / 500` for build files | Home directory permission on Ubuntu 24.04 | `chmod o+x /home/ubuntu` and `chmod -R o+rX build` |
-| Domain not resolving | A record created as `devsecurity.shop.devsecurity.shop` | Recreate record with blank name |
-| `nginx -t` failed (`sites-enabled/ot-poc` missing) | Symlink created without the config file | Create the file in `sites-available`, then relink |
-
----
 
 # 12. Contact Information
 
