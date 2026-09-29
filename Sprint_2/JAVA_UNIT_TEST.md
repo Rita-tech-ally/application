@@ -18,7 +18,7 @@
 3. [Why Unit Testing Matters](#3-why-unit-testing-matters)
 4. [Unit Testing Workflow](#4-unit-testing-workflow)
 5. [Different Unit Testing Tools](#5-different-unit-testing-tools)
-6. [Common Unit Testing Tools and Comparison](#6-common-unit-testing-tools-and-comparison)
+6. [Tools Comparison](#6-tools-comparison)
 7. [Advantages of Unit Testing](#7-advantages-of-unit-testing)
 8. [Best Practices](#8-best-practices)
 9. [Conclusion](#9-conclusion)
@@ -29,17 +29,15 @@
 
 ## 1. Introduction
 
-Unit testing is the practice of testing the smallest testable parts of a Java application, such as individual methods or classes.
+This document explains the concept of unit testing, its importance, testing workflow, commonly used tools, tool comparison, advantages, and best practices. It also explains how unit tests can be executed locally and integrated into a CI pipeline, with JaCoCo used to measure code coverage.
 
-In a Spring Boot microservice, unit testing mainly focuses on testing the business logic of **Service** and **Controller** classes without using real external dependencies such as databases, caches, or network services.
-
-Unit tests are an important part of the testing process because they provide fast feedback whenever code is changed.
+The objective of this document is to provide a clear understanding of how unit testing helps detect issues early, support safe code changes, and improve the reliability of Java applications.
 
 ---
 
 ## 2. What is Unit Testing?
 
-A **unit test** verifies whether a small and independent part of an application works as expected for a given input.
+A unit test verifies whether a small and independent part of an application works as expected for a given input.
 
 External dependencies are replaced with **mocks** or **stubs** so that the actual unit can be tested in isolation.
 
@@ -52,13 +50,6 @@ External dependencies are replaced with **mocks** or **stubs** so that the actua
 | **Automated**     | Can be executed automatically using commands such as `mvn test`.     |
 | **Repeatable**    | The same test can be executed multiple times without manual effort.  |
 
-### Unit Test vs Integration Test vs E2E Test
-
-| Test Type            | Scope                           | Speed     | External Dependencies              |
-| -------------------- | ------------------------------- | --------- | ---------------------------------- |
-| **Unit Test**        | Individual method/class         | Very fast | Mocked or replaced                 |
-| **Integration Test** | Multiple application components | Medium    | Usually real/test dependencies     |
-| **End-to-End Test**  | Complete application flow       | Slow      | Real or fully deployed environment |
 
 ---
 
@@ -126,17 +117,16 @@ flowchart TD
 
 ---
 
-## 6. Common Unit Testing Tools and Comparison
+## 6. Tools Comparison
 
-| Tool                 | Main Purpose              | Best Used For                  | Learning Curve | Required?                           |
-| -------------------- | ------------------------- | ------------------------------ | -------------- | ----------------------------------- |
-| **JUnit 5**          | Writing and running tests | General Java unit testing      | Low            | Recommended                         |
-| **Mockito**          | Mocking dependencies      | Testing classes in isolation   | Low            | Recommended for mocked dependencies |
-| **AssertJ**          | Assertions                | Readable and fluent assertions | Low            | Optional                            |
-| **JaCoCo**           | Code coverage             | Measuring tested code          | Low            | Optional but useful                 |
-| **Spring Boot Test** | Spring testing            | Testing Spring components      | Medium         | Depends on test type                |
-| **TestNG**           | Testing framework         | Data-driven and parallel tests | Medium         | Alternative to JUnit                |
-
+| Tool                 | Main Purpose              | Best Used For                  | Required?                           |
+| -------------------- | ------------------------- | ------------------------------ | ----------------------------------- |
+| **JUnit 5**          | Writing and running tests | General Java unit testing      | Recommended                         |
+| **Mockito**          | Mocking dependencies      | Testing classes in isolation   | Recommended for mocked dependencies |
+| **AssertJ**          | Assertions                | Readable and fluent assertions | Optional                            |
+| **JaCoCo**           | Code coverage             | Measuring tested code          | Optional but useful                 |
+| **Spring Boot Test** | Spring testing            | Testing Spring components      | Depends on test type                |
+| **TestNG**           | Testing framework         | Data-driven and parallel tests | Alternative to JUnit                |
 
 ---
 
@@ -170,7 +160,7 @@ flowchart TD
 
 Unit testing is an important part of Java application development. It helps developers verify individual methods and classes, detect bugs early, and make code changes safely.
 
-For a Spring Boot microservice, **JUnit 5** can be used to write tests, **Mockito** to mock dependencies, and **JaCoCo** to measure code coverage. Running unit tests locally and automatically in the **CI pipeline** provides fast and continuous feedback.
+For a Spring Boot microservice, JUnit 5 can be used to write tests, Mockito to mock dependencies, and JaCoCo to measure code coverage. Running unit tests locally and automatically in the CI pipeline provides fast and continuous feedback.
 
 A well-maintained unit test suite improves code quality, reduces debugging effort, and increases confidence when making future changes.
 
@@ -184,7 +174,7 @@ A well-maintained unit test suite improves code quality, reduces debugging effor
 ---
 
 
-## 12. References
+## 11. References
 
 | **Source**                              | **Reference Link**                                                                                                                            |
 | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
