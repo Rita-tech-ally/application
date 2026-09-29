@@ -61,10 +61,12 @@ The backend services (Employee API, Attendance API, Salary API) are **not deploy
 | Private IPv4        | `172.31.22.120`                               |
 | Public IPv4         | `3.110.51.28`                                 |
 
-> Attach an **Elastic IP** so the public IP does not change after a restart.
 
-<img width="1645" height="564" alt="Screenshot from 2026-09-29 16-56-48" src="https://github.com/user-attachments/assets/3be87282-94d0-4790-9f30-89a74186683d" />
 
+
+<img width="1302" height="542" alt="Screenshot from 2026-09-29 17-57-40" src="https://github.com/user-attachments/assets/523e180d-a2dd-46f8-af2a-9744a203ff3d" />
+
+---
 
 ## 3.2 Configure Security Group
 
@@ -95,7 +97,8 @@ node -v
 
 **Expected Result:** `v16.20.2`
 
-<img width="1129" height="128" alt="Screenshot from 2026-09-29 17-03-49" src="https://github.com/user-attachments/assets/0d8a211f-79ac-47b7-87ba-86ca7c5b2f85" />
+<img width="1008" height="64" alt="Screenshot from 2026-09-29 17-59-20" src="https://github.com/user-attachments/assets/e13a3a28-e11c-4711-88de-359134b1e38b" />
+
 
 
 
@@ -160,7 +163,8 @@ sudo chmod -R o+rX /var/www/mock
 ls -R /var/www/mock
 ```
 
-📸 **Screenshot 7:** `ls -R /var/www/mock` output.
+<img width="1567" height="329" alt="Screenshot from 2026-09-29 18-00-32" src="https://github.com/user-attachments/assets/063d7598-6104-4137-99ef-98643d4ef100" />
+
 
 ---
 
@@ -212,7 +216,8 @@ sudo nginx -t && sudo systemctl reload nginx
 
 **Expected Result:**
 
-<img width="1124" height="134" alt="Screenshot from 2026-09-29 17-05-42" src="https://github.com/user-attachments/assets/1e2e3760-9e92-46b4-89eb-2d9c2d59ef3d" />
+<img width="1073" height="69" alt="Screenshot from 2026-09-29 18-01-20" src="https://github.com/user-attachments/assets/d62e82c3-c491-4d9d-ac51-abd310ac0bab" />
+
 
 ---
 
@@ -227,7 +232,8 @@ curl http://localhost/employee/search/all
 
 **Expected Result:** `HTTP/1.1 200 OK` for the first command and the employee JSON for the second.
 
-<img width="1138" height="329" alt="Screenshot from 2026-09-29 17-08-03" src="https://github.com/user-attachments/assets/31cfb6e1-f2f3-4a10-bfed-0fd71bbb3bc5" />
+<img width="1498" height="380" alt="image" src="https://github.com/user-attachments/assets/148f230a-b325-494a-9b6c-2266ce035f7c" />
+
 
 
 ## 7.2 Browser Check
@@ -240,9 +246,10 @@ http://3.110.51.28
 
 **Expected Result:** The dashboard is displayed with stat cards (Total, Active, Ex-Employees, Office Locations) and the Role, Employee and Location donut charts. Employee List, Attendance List and Salary pages also show the mock data.
 
-<img width="1655" height="707" alt="Screenshot from 2026-09-29 17-08-57" src="https://github.com/user-attachments/assets/42835884-f5a4-4bb0-ad0c-c5671e7799a5" />
-
-<img width="1644" height="653" alt="Screenshot from 2026-09-29 17-09-26" src="https://github.com/user-attachments/assets/8747f315-a30f-4c40-b661-efadc4d68f17" />
+<img width="1417" height="883" alt="Screenshot from 2026-09-29 18-03-10" src="https://github.com/user-attachments/assets/8ff7bb01-042f-4c21-a103-bd7f85f0bd62" />
+<img width="1478" height="618" alt="Screenshot from 2026-09-29 18-03-34" src="https://github.com/user-attachments/assets/cbcf4642-ef73-4b05-9729-4ce02733e60e" />
+<img width="1478" height="618" alt="Screenshot from 2026-09-29 18-03-50" src="https://github.com/user-attachments/assets/54105a43-0e30-4d06-ad15-bf4b7313d815" />
+<img width="1490" height="500" alt="Screenshot from 2026-09-29 18-04-14" src="https://github.com/user-attachments/assets/ea9a2b67-fe70-46a1-8c91-0a5bd9fae86a" />
 
 
 ---
@@ -269,14 +276,14 @@ Route 53, Hosted zones, `devsecurity.shop`, **Create record**:
 | Record Type       | `A`                                          |
 | Routing Policy    | `Simple`                                     |
 | Alias             | `No`                                         |
-| Value             | `43.204.227.47` (EC2 Elastic IP)               |
+| Value             | `3.109.201.212` (EC2 Elastic IP)               |
 | TTL               | `300` seconds                                |
 
 > **Note:** Leave the record name blank for the root domain. Typing the full domain in the name field creates `devsecurity.shop.devsecurity.shop`, which is incorrect.
 
 Optional: create another A record with name `www` and the same IP for `www.devsecurity.shop`.
 
-<img width="1165" height="321" alt="Screenshot from 2026-09-29 17-11-34" src="https://github.com/user-attachments/assets/58ccd875-980e-43cd-ba4f-04c11b41bed5" />
+<img width="1517" height="354" alt="Screenshot from 2026-09-29 18-05-25" src="https://github.com/user-attachments/assets/c0ebbe26-1d0d-47b0-ba4b-bd10d74a4493" />
 
 
 ---
@@ -291,20 +298,19 @@ nslookup devsecurity.shop
 
 **Expected Result:** The domain resolves to the EC2 public IP.
 
-```text
-Name:   devsecurity.shop
-Address: 3.110.51.28
-```
+<img width="707" height="191" alt="Screenshot from 2026-09-29 18-06-39" src="https://github.com/user-attachments/assets/b076d66a-7cdd-4c33-b251-7524f6b0d14e" />
 
-📸 **Screenshot 14:** `nslookup` output.
+
 
 ## 9.2 Access the Application Using the Domain
 
 ```text
-http://devsecurity.shop
+http://ritu.sohandogra.com
 ```
 
-📸 **Screenshot 15:** Dashboard opened using `http://devsecurity.shop` (domain visible in the address bar).
+<img width="1920" height="1080" alt="dasboard" src="https://github.com/user-attachments/assets/3e0e6213-b1a5-482c-a73f-579fe7a08e47" />
+<img width="1920" height="1080" alt="employ" src="https://github.com/user-attachments/assets/29a46535-7412-4851-8a89-b237806a5bac" />
+<img width="1920" height="1080" alt="SALARY" src="https://github.com/user-attachments/assets/6812d96e-e1bf-4fad-9cbc-76a02a1d62ff" />
 
 ---
 
