@@ -21,6 +21,22 @@ This POC demonstrates how to perform Java unit testing locally using **JUnit 5, 
 The POC helps verify that the application works as expected and that its code is adequately tested before further development or deployment.
 
 ---
+## Table of Contents
+
+1. [Introduction](#introduction)
+2. [Pre-requisites](#pre-requisites)
+3. [Step 1 — Set Up the Environment](#step-1--set-up-the-environment)
+4. [Step 2 — Clone and Verify Project Structure](#step-2--clone-and-verify-project-structure)
+5. [Step 3 — Compile the Application](#step-3--compile-the-application)
+6. [Step 4 — Run Unit Tests](#step-4--run-unit-tests)
+7. [Step 5 — Generate JaCoCo Coverage](#step-5--generate-jacoco-coverage)
+8. [Step 6 — View JaCoCo Coverage Report](#step-6--view-jacoco-coverage-report)
+9. [Step 7 — Test Failure Scenario](#step-7--test-failure-scenario)
+10. [Flow](#flow)
+11. [Conclusion](#conclusion)
+12. [Contact Information](#8-contact-information)
+13. [References](#references)
+
 
 ## Pre-requisites
 
