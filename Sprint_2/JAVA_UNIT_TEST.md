@@ -71,23 +71,8 @@ Unit testing therefore helps reduce debugging time and makes code changes safer.
 
 ## 4. Unit Testing Workflow
 
-```mermaid
-flowchart TD
-    A[Developer writes or changes code] --> B[Write Unit Test]
-    B --> C[Run mvn test]
-    C --> D{Tests Passed?}
+<img width="3980" height="1477" alt="image" src="https://github.com/user-attachments/assets/b78818db-d492-4425-a907-c77e97ff20ef" />
 
-    D -- No --> E[Fix Code or Test]
-    E --> C
-
-    D -- Yes --> F[Commit and Push Code]
-    F --> G[CI Pipeline Runs Unit Tests]
-    G --> H{All Tests Passed?}
-
-    H -- No --> I[Build or PR Check Fails]
-    H -- Yes --> J[Generate JaCoCo Coverage Report]
-    J --> K[Continue to Build or Merge]
-```
 
 ### Workflow Explanation
 
