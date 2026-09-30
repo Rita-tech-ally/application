@@ -38,6 +38,9 @@ The POC helps verify that the application works as expected and that its code is
 13. [References](#references)
 
 
+---
+
+
 ## Pre-requisites
 
 
@@ -51,6 +54,7 @@ The POC helps verify that the application works as expected and that its code is
 
 
 ---
+
 
 ## Step 1 — Set Up the Environment
 
@@ -68,7 +72,9 @@ mvn -version
 ```
 <img width="856" height="240" alt="Screenshot from 2026-09-30 22-40-05" src="https://github.com/user-attachments/assets/18a990f4-1a08-41b9-890b-205910d61ff0" />
 
+
 ---
+
 
 ## Step 2 — Clone and Verify Project Structure
 
@@ -91,6 +97,9 @@ tree
 The project contains the application source code, unit test code, and `pom.xml` configuration file required to build and test the application.
 
 
+---
+
+
 ## Step 3 — Compile the Application
 
 Run:
@@ -107,6 +116,7 @@ This compiles the application code without running tests.
 
 
 ---
+
 
 ## Step 4 — Run Unit Tests
 
@@ -141,6 +151,7 @@ mvn clean verify
 
 
 ---
+
 
 ## Step 6 — View JaCoCo Coverage Report
 
@@ -231,6 +242,7 @@ This POC demonstrates local Java unit testing using JUnit 5, Mockito, Maven, and
 It verifies code compilation, unit test execution, failure detection, and code coverage without using any CI/CD tool.
 
 ---
+
 # 8. Contact Information
 
 | Name | Email Address                                                                 |
