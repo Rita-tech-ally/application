@@ -23,6 +23,7 @@ Verify the installation:
 java -version
 mvn -version
 ```
+<img width="893" height="86" alt="Screenshot from 2026-09-30 18-09-40" src="https://github.com/user-attachments/assets/9bc1317a-81ec-408f-b750-9ec53d9d2d1a" />
 
 ---
 
