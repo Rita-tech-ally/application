@@ -1,15 +1,26 @@
-# POC Run Guide — salary-ci-poc
+<p align="center">
+<img width="170" height="148" alt="image" src="https://github.com/user-attachments/assets/4a2ee792-2c62-44f6-b3bf-89bc5e1975b1" />
+</p>
 
-This guide explains how to run the Java Unit Testing POC locally using **JUnit 5, Mockito, Maven, and JaCoCo**.
+---
+
+# POC of Java Unit Testing
+---
+
+## Document Information
+
+| Author | Created On | Version | L0 Reviewer | L1 Reviewer | L2 Reviewer |
+| --- | --- | --- | --- | --- | --- |
+| Ritu | 30/09/2026 | 1.0 | Liyakhat/Anirudh  | Aman Raj | Sandeep Rawat/Ravindra |
 
 ---
 
 ## Pre-requisites
 
-| Tool         | Check Command   | Version |
-| ------------ | --------------- | ------- |
-| **Java JDK** | `java -version` | 17+     |
-| **Maven**    | `mvn -version`  | 3.6+    |
+| **Tool**        | **Check Command**   | 
+| ------------ | --------------- | 
+| **Java JDK** | `java -version` | 
+| **Maven**    | `mvn -version`  |
 
 
 ---
@@ -96,11 +107,6 @@ This command:
 
 Expected result:
 
-```text
-Tests run: 6, Failures: 0, Errors: 0
-
-BUILD SUCCESS
-```
 
 ---
 
@@ -170,7 +176,7 @@ This demonstrates that unit tests detect unexpected changes in application behav
 
 ---
 
-## POC Flow
+##  Flow
 
 ```text
 Java Source Code
@@ -194,16 +200,27 @@ Coverage Report
 
 ---
 
-## Summary
+## Conclusion
 
-This POC demonstrates local Java unit testing using **JUnit 5, Mockito, Maven, and JaCoCo**.
+This POC demonstrates local Java unit testing using JUnit 5, Mockito, Maven, and JaCoCo.
+It verifies code compilation, unit test execution, failure detection, and code coverage without using any CI/CD tool.
 
-The main commands are:
+---
+# 8. Contact Information
 
-```bash
-mvn clean compile
-mvn test
-mvn clean verify
-```
+| Name | Email Address                                                                 |
+| ---- | ----------------------------------------------------------------------------- |
+| Ritu | [ritu.dogra.snaatak@mygurukulam.co](mailto:ritu.dogra.snaatak@mygurukulam.co) |
 
-The POC validates compilation, unit test execution, test failure detection, and code coverage without requiring Jenkins or any other CI/CD tool.
+---
+
+## References
+
+| **Source**                           | **Reference Link**                                                                    |
+| ------------------------------------ | ------------------------------------------------------------------------------------- |
+| **JUnit 5 – User Guide**             | [JUnit 5 Official Documentation](https://docs.junit.org/5.10.0/user-guide/index.html) |
+| **Mockito – Official Documentation** | [Mockito Official Documentation](https://site.mockito.org/)                           |
+| **Maven – Official Documentation**   | [Apache Maven Documentation](https://maven.apache.org/guides/)                        |
+| **JaCoCo – Official Documentation**  | [JaCoCo Official Documentation](https://www.jacoco.org/jacoco/trunk/doc/)             |
+
+
