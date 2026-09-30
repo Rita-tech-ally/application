@@ -50,6 +50,7 @@ Verify:
 java -version
 mvn -version
 ```
+<img width="856" height="240" alt="Screenshot from 2026-09-30 22-40-05" src="https://github.com/user-attachments/assets/18a990f4-1a08-41b9-890b-205910d61ff0" />
 
 ---
 
@@ -63,11 +64,10 @@ mvn clean compile
 
 This compiles the application code without running tests.
 
-Expected result:
+<img width="1626" height="201" alt="Screenshot from 2026-09-30 22-49-27" src="https://github.com/user-attachments/assets/74552c0f-c04a-4436-90a7-54c4a665fa97" />
+<img width="1626" height="201" alt="Screenshot from 2026-09-30 22-50-03" src="https://github.com/user-attachments/assets/4d3cc4b6-9e16-4f5d-b0c5-2a72600a2f1a" />
 
-```text
-BUILD SUCCESS
-```
+
 
 ---
 
@@ -85,19 +85,18 @@ The POC uses:
 * **Mockito** — for mocking `SalaryRepository`.
 * **Maven Surefire** — for executing tests.
 
-Expected result:
+<img width="1661" height="193" alt="Screenshot from 2026-09-30 22-51-20" src="https://github.com/user-attachments/assets/5216a026-a975-44c2-aadb-3c1c21dff80a" />
+<img width="1833" height="382" alt="Screenshot from 2026-09-30 22-52-07" src="https://github.com/user-attachments/assets/77c6588a-37c3-4196-b185-569d86c3f43e" />
+<img width="1828" height="432" alt="Screenshot from 2026-09-30 22-52-51" src="https://github.com/user-attachments/assets/1012d3aa-1774-42bb-a913-0be490fc535f" />
 
-```text
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
-
-BUILD SUCCESS
-```
 
 Test reports are generated under:
 
 ```text
 target/surefire-reports/
 ```
+<img width="1151" height="162" alt="Screenshot from 2026-09-30 22-58-00" src="https://github.com/user-attachments/assets/277feb65-47e6-46a3-8f9f-a56fb1a81a92" />
+
 
 ---
 
@@ -116,7 +115,8 @@ This command:
 3. Generates the JaCoCo coverage report.
 4. Checks the configured **70% coverage threshold**.
 
-Expected result:
+<img width="1836" height="793" alt="Screenshot from 2026-09-30 23-00-52" src="https://github.com/user-attachments/assets/a09659e4-3e51-4d1e-bc52-de31b1167622" />
+<img width="1839" height="260" alt="Screenshot from 2026-09-30 23-01-19" src="https://github.com/user-attachments/assets/ea66eda2-92d3-4dcf-a866-f0afd36a70cd" />
 
 
 ---
@@ -128,6 +128,7 @@ The report is generated at:
 ```text
 target/site/jacoco/index.html
 ```
+<img width="1832" height="258" alt="Screenshot from 2026-09-30 23-37-20" src="https://github.com/user-attachments/assets/f7540b38-9577-482a-86a3-194a159a7e9b" />
 
 On a machine with a graphical browser:
 
@@ -163,25 +164,17 @@ Run:
 mvn test
 ```
 
-The test should fail:
+<img width="1840" height="788" alt="Screenshot from 2026-09-30 23-14-23" src="https://github.com/user-attachments/assets/d6e80eee-0cdc-4d2f-a595-487f73faaa2b" />
+<img width="1839" height="768" alt="Screenshot from 2026-09-30 23-14-55" src="https://github.com/user-attachments/assets/6a0e3004-b663-418e-b6ff-5379050ec010" />
 
-```text
-Tests run: 6, Failures: 1, Errors: 0
-
-BUILD FAILURE
-```
 
 Restore the correct code and run:
 
 ```bash
 mvn test
 ```
+<img width="1835" height="784" alt="image" src="https://github.com/user-attachments/assets/11fb7c73-40c1-4dff-a35d-49fb7b7025e2" />
 
-Expected result:
-
-```text
-BUILD SUCCESS
-```
 
 This demonstrates that unit tests detect unexpected changes in application behavior.
 
