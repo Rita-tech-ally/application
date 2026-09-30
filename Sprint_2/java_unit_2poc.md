@@ -36,7 +36,7 @@ The POC helps verify that the application works as expected and that its code is
 
 ---
 
-## Step 1 — Install
+## Step 1 — Set Up the Environment
 
 Install if required:
 
@@ -54,7 +54,28 @@ mvn -version
 
 ---
 
-## Step 2 — Compile the Application
+## Step 2 — Clone and Verify Project Structure
+
+Clone the Java Unit Testing POC repository:
+
+```bash
+git clone <repository-url>
+```
+
+<img width="847" height="141" alt="git clone _" src="https://github.com/user-attachments/assets/68bc8c98-670a-4635-be30-6ede6347b127" />
+
+**Verify the project structure:**
+
+```bash
+tree
+```
+<img width="854" height="383" alt="tree_java" src="https://github.com/user-attachments/assets/e5ef4881-ffe2-43e1-9109-10db71775e6b" />
+
+
+The project contains the application source code, unit test code, and `pom.xml` configuration file required to build and test the application.
+
+
+## Step 3 — Compile the Application
 
 Run:
 
@@ -71,20 +92,13 @@ This compiles the application code without running tests.
 
 ---
 
-## Step 3 — Run Unit Tests
+## Step 4 — Run Unit Tests
 
 Run:
 
 ```bash
 mvn test
 ```
-
-The POC uses:
-
-* **JUnit 5** — for writing and running unit tests.
-* **Mockito** — for mocking `SalaryRepository`.
-* **Maven Surefire** — for executing tests.
-
 <img width="1661" height="193" alt="Screenshot from 2026-09-30 22-51-20" src="https://github.com/user-attachments/assets/5216a026-a975-44c2-aadb-3c1c21dff80a" />
 <img width="1833" height="382" alt="Screenshot from 2026-09-30 22-52-07" src="https://github.com/user-attachments/assets/77c6588a-37c3-4196-b185-569d86c3f43e" />
 <img width="1828" height="432" alt="Screenshot from 2026-09-30 22-52-51" src="https://github.com/user-attachments/assets/1012d3aa-1774-42bb-a913-0be490fc535f" />
@@ -97,31 +111,22 @@ target/surefire-reports/
 ```
 <img width="1151" height="162" alt="Screenshot from 2026-09-30 22-58-00" src="https://github.com/user-attachments/assets/277feb65-47e6-46a3-8f9f-a56fb1a81a92" />
 
-
 ---
 
-## Step 4 — Generate JaCoCo Coverage
+## Step 5 — Generate JaCoCo Coverage
 
 Run:
 
 ```bash
 mvn clean verify
 ```
-
-This command:
-
-1. Compiles the application.
-2. Runs the unit tests.
-3. Generates the JaCoCo coverage report.
-4. Checks the configured **70% coverage threshold**.
-
 <img width="1836" height="793" alt="Screenshot from 2026-09-30 23-00-52" src="https://github.com/user-attachments/assets/a09659e4-3e51-4d1e-bc52-de31b1167622" />
 <img width="1839" height="260" alt="Screenshot from 2026-09-30 23-01-19" src="https://github.com/user-attachments/assets/ea66eda2-92d3-4dcf-a866-f0afd36a70cd" />
 
 
 ---
 
-## Step 5 — View JaCoCo Coverage Report
+## Step 6 — View JaCoCo Coverage Report
 
 The report is generated at:
 
@@ -150,7 +155,7 @@ The report shows:
 
 ---
 
-## Step 6 — Test Failure Scenario
+## Step 7 — Test Failure Scenario
 
 To verify that the tests detect incorrect behavior, temporarily modify the salary calculation in:
 
