@@ -14,11 +14,22 @@
 | Ritu | 30/09/2026 | 1.0 | Liyakhat/Anirudh  | Aman Raj | Sandeep Rawat/Ravindra |
 
 ---
+## Introduction
+
+This POC demonstrates how to perform Java unit testing locally using **JUnit 5, Mockito, Maven, and JaCoCo**. It covers application compilation, unit test execution, test failure detection, and code coverage generation.
+
+The POC helps verify that the application works as expected and that its code is adequately tested before further development or deployment.
+
+---
 
 ## Pre-requisites
 
-| **Tool**        | **Check Command**   | 
-| ------------ | --------------- | 
+
+| Requirement      | Configuration        |
+| ---------------- | -------------------- |
+| **Cloud Platform**   | AWS                  |
+| **Service**          | Amazon EC2           |
+| **Operating System** | Ubuntu 24.04 LTS     |
 | **Java JDK** | `java -version` | 
 | **Maven**    | `mvn -version`  |
 
