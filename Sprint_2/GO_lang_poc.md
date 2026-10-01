@@ -203,18 +203,7 @@ Run the tests:
 ```bash
 go test ./...
 ```
-
-Expected failure:
-
-```text
---- FAIL: TestCreateEmployee_EmptyID (0.00s)
-    employee_test.go:49:
-        Error Trace: employee_test.go:49
-        Error:       An error is expected but got nil.
-FAIL
-FAIL    employee-ci-poc/service    0.004s
-FAIL
-```
+<img width="964" height="498" alt="Screenshot from 2026-10-02 00-23-47" src="https://github.com/user-attachments/assets/338299ce-4473-4e08-b39c-ab67fc38b0e7" />
 
 Restore the original valid code and run:
 
@@ -224,9 +213,8 @@ go test ./...
 
 The test suite will return:
 
-```text
-PASS
-```
+<img width="959" height="65" alt="Screenshot from 2026-10-02 00-26-03" src="https://github.com/user-attachments/assets/e704161a-b4f2-41cd-9b9c-d4bc57bd2e7e" />
+
 
 This demonstrates that unit tests detect unexpected changes in application behavior.
 
@@ -260,7 +248,7 @@ coverage.html
 
 # 6. Conclusion
 
-This POC demonstrates local Golang unit testing using the **Go standard testing package, Testify, and Go coverage tools**.
+This POC demonstrates local Golang unit testing using the Go standard testing package, Testify, and Go coverage tools.
 
 It verifies code compilation, unit test execution, mock-based isolation, failure detection, and code coverage without requiring external services or Jenkins CI.
 
