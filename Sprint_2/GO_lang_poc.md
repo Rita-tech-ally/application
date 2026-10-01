@@ -73,6 +73,7 @@ Verify the installation:
 ```bash
 go version
 ```
+<img width="481" height="76" alt="Screenshot from 2026-10-01 23-51-01" src="https://github.com/user-attachments/assets/5f844b68-a13c-4444-996e-738656062d6f" />
 
 ---
 
@@ -84,23 +85,15 @@ Clone the Golang Unit Testing POC repository:
 git clone <repository-url>
 cd employee-ci-poc
 ```
+<img width="989" height="193" alt="Screenshot from 2026-10-01 23-52-26" src="https://github.com/user-attachments/assets/fc667554-a3b2-4c0b-929a-16a9cce08a5f" />
 
 **Verify the project structure:**
 
 ```bash
 tree
 ```
+<img width="990" height="206" alt="Screenshot from 2026-10-01 23-53-36" src="https://github.com/user-attachments/assets/4a4355cd-ae78-4cc8-b12a-40cd72fa6d50" />
 
-Expected structure:
-
-```text
-employee-ci-poc/
-├── go.mod
-├── go.sum
-└── service/
-    ├── employee.go
-    └── employee_test.go
-```
 
 The project contains the application logic, interface definitions, unit test code, mocked test cases using Testify, and Go module dependency files.
 
@@ -116,7 +109,8 @@ go build ./...
 
 This compiles all packages within the repository without running tests.
 
-Expected result:
+<img width="987" height="52" alt="Screenshot from 2026-10-01 23-57-29" src="https://github.com/user-attachments/assets/14ea7a01-a0a6-4318-acc2-55034d9388f0" />
+
 
 ```text
 Exits cleanly with status code 0 and no compilation errors.
@@ -131,25 +125,8 @@ Run:
 ```bash
 go test -v ./...
 ```
+<img width="757" height="489" alt="Screenshot from 2026-10-02 00-03-28" src="https://github.com/user-attachments/assets/e503eb65-42ee-4f6d-8cf3-83414207750b" />
 
-Expected result:
-
-```text
-=== RUN   TestCreateEmployee_Success
---- PASS: TestCreateEmployee_Success (0.00s)
-=== RUN   TestCreateEmployee_EmptyID
---- PASS: TestCreateEmployee_EmptyID (0.00s)
-=== RUN   TestCreateEmployee_EmptyName
---- PASS: TestCreateEmployee_EmptyName (0.00s)
-=== RUN   TestGetEmployee_Success
---- PASS: TestGetEmployee_Success (0.00s)
-=== RUN   TestGetEmployee_NotFound
---- PASS: TestGetEmployee_NotFound (0.00s)
-=== RUN   TestGetEmployee_EmptyID
---- PASS: TestGetEmployee_EmptyID (0.00s)
-PASS
-ok      employee-ci-poc/service 0.004s
-```
 
 All **6 test cases** pass without requiring an active database because the repository layer is mocked.
 
@@ -163,15 +140,7 @@ Run:
 go test -coverprofile=cover.out ./...
 go tool cover -func=cover.out
 ```
-
-Expected result:
-
-```text
-employee-ci-poc/service/employee.go:27:  NewEmployeeService  100.0%
-employee-ci-poc/service/employee.go:32:  CreateEmployee      100.0%
-employee-ci-poc/service/employee.go:43:  GetEmployee         100.0%
-total:                                  (statements)        100.0%
-```
+<img width="963" height="164" alt="Screenshot from 2026-10-02 00-05-52" src="https://github.com/user-attachments/assets/2775f5c7-e259-402d-8bb7-f573b296a1d0" />
 
 The unit test suite provides **100% statement coverage** for the application code.
 
@@ -206,6 +175,9 @@ The report can also be accessed using:
 ```bash
 python3 -m http.server 8000
 ```
+http://<YOUR_EC2_PUBLIC_IP>:8000/coverage.html
+
+<img width="961" height="886" alt="Screenshot from 2026-10-02 00-10-27" src="https://github.com/user-attachments/assets/5b8f7800-85bc-4019-8d92-edffcb0c1fac" />
 
 ---
 
