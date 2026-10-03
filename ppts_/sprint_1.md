@@ -60,3 +60,50 @@ golang-migrate sirf schema create karne tak limited nahi hai — ye poora migrat
 - **Forward migration (`up`)** — naya schema apply karta hai (table create, column add, etc.)
 - **Rollback (`down`)** — agar koi change galat ho ya revert karna ho, to us migration ko undo kar sakta hai, `.down.sql` file ke through
 - **Sequential ordering** — migration files ko number se naam diya jata hai (`000001_...`, `000002_...`), taaki tool ko pata rahe kaunsi migration pehle aur kaunsi baad me chalani hai
+
+## Run Migrations — What Happens
+
+`make run-migrations` chalane par golang-migrate tool:
+
+1. `migration.json` se database connection string leta hai
+2. `migration/` folder ki `.sql` files ko **sequence me** (`000001`, `000002`...) padhta hai
+3. Database me check karta hai kaunsi migrations **already apply ho chuki hain** (version tracking se)
+4. Jo migrations **pending hain**, unka schema (table create/alter) database pe **apply** kar deta hai
+5. Version table update kar deta hai, taaki agli baar same migration dobara na chale
+
+Result: `employee_info` table ScyllaDB me ban jati hai, application ke use ke liye ready.
+
+## Run Migrations — What Happens
+
+### Pre-requisite — Keyspace Creation (Manual Step)
+
+Migration chalane se **pehle**, ek keyspace (`employee_db`) manually create karna padta hai, kyunki migration `.sql` files sirf `CREATE TABLE` contain karti hain, `CREATE KEYSPACE` nahi:
+
+```sql
+CREATE KEYSPACE employee_db WITH replication = {
+    'class': 'NetworkTopologyStrategy',
+    'replication_factor': 1
+};
+```
+
+Ye step is liye manual rakha gaya hai kyunki replication settings **environment ke hisab se alag** hoti hain (dev me `1`, production me `3` ya zyada) — isliye isse code/migration se decouple rakha gaya, taaki har environment apni zarurat ke hisab se decide kare.
+
+### `make run-migrations` Chalane Par Kya Hota Hai
+
+1. `migration.json` se database connection string leta hai (jisme `employee_db` keyspace ka naam already hai — jo upar manually bana chuke hain)
+2. `migration/` folder ki `.sql` files ko **sequence me** (`000001`, `000002`...) padhta hai
+3. Database me check karta hai kaunsi migrations **already apply ho chuki hain** (version tracking se)
+4. Jo migrations **pending hain**, unka schema (table create/alter) database pe **apply** kar deta hai
+5. Version table update kar deta hai, taaki agli baar same migration dobara na chale
+
+## Result: `employee_info` table ScyllaDB me ban jati hai, application ke use ke liye ready.
+
+1. make run-migrations chalate ho
+        ↓
+2. migrate tool "migration.json" se ADDRESS (connection string) leta hai
+        ↓
+3. "migration/" folder se TABLE KA STRUCTURE (.sql files) leta hai
+        ↓
+4. Dono ko combine karke ScyllaDB me jata hai
+        ↓
+5. SCHEMA CREATE ho jata hai (table ban jati hai)
