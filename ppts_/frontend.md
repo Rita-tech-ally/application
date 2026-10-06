@@ -140,4 +140,9 @@ Kyunki har API alag port par chal rahi hoti hai (e.g., Go on 8080, Java on 8081)
   - `/employee/*` → Employee API (Golang)
   - `/salary/*` → Salary API (Java)
   - `/attendance/*` → Attendance API (Python)
+
+
+
+  <img width="937" height="668" alt="Screenshot from 2026-10-06 18-40-25" src="https://github.com/user-attachments/assets/c3a86ffe-8461-40aa-8421-be80f763df2a" />
+
  
