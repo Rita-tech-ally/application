@@ -75,4 +75,69 @@ Is problem ko solve karne ke liye aapke architecture me do tarike use hue hain:
 - **Production Environment Me (Reverse Proxy / API Gateway):** Production me, ek NGINX server ya API Gateway (jaise Kubernetes Ingress) frontend aur backends ke beech me baithta hai aur URL ke hisaab se traffic route karta hai:
   - Agar request `/employee/*` aati hai → Go API (Employee) ko bhej do.
   - Agar request `/salary/*` aati hai → Java API (Salary) ko bhej do.
+
+
+  ## 5. Frontend & Backend Connection (API Integration)
+
+Frontend web application (React) aur backend APIs (Golang, Java, Python) ke beech communication **REST APIs (HTTP Requests)** ke through hota hai. Frontend kabhi bhi database se direct baat nahi karta; wo sirf HTTP requests bhejta hai.
+
+### Kaise Kaam Karta Hai? (Connection Flow)
+
+1. **User Action:** Jab admin UI par koi button dabata hai (jaise "Submit" par click karna ek naya employee banate waqt), toh React app me ek function trigger hota hai.
+2. **`fetch()` API Call:** React app JavaScript ke inbuilt `fetch()` function ko use karke backend API ke endpoint par ek request (GET ya POST) bhejta hai. Data hamesha **JSON** format me bheja aur receive kiya jata hai.
+3. **Backend Processing:** Backend API us request ko process karti hai (jaise database me save karna ya read karna) aur wapas ek JSON response bhejti hai.
+4. **UI Update:** Frontend us JSON response ko read karta hai aur apni "State" update karta hai, jisse UI automatically re-render ho jata hai (jaise table me naya employee dikhne lagta hai).
+
+### Code Example: Data Fetch Karna (Employee List)
+
+Jab hum Employee List ka page kholte hain, toh frontend automatically saare employees ka data backend se maang leta hai:
+
+**JavaScript**
+
+```javascript
+// EmployeeList.js ka ek hissa
+loadData() {
+    // Frontend seedha Golang API ke is endpoint ko call karta hai
+    fetch('/employee/search/all')
+        .then(response => response.json()) // Backend se aaya data JSON me convert hota hai
+        .then(data => {
+            this.setState({data: data })  // Data milte hi Table update ho jati hai
+    })
+}
+```
+
+### Code Example: Ek Saath Do Services Ko Call Karna (Add Employee)
+
+Microservices architecture ki sabse khaas baat ye hai ki frontend ek hi time par multiple independent services se connect ho sakta hai. Jaise naya employee add karte time:
+
+**JavaScript**
+
+```javascript
+// EmployeeForm.js ka ek hissa
+handleSubmit(values) {
+    // 1. Pehli request: Golang (Employee API) ko jati hai database me employee save karne ke liye
+    fetch('/employee/create', { 
+        method: 'POST', 
+        body: JSON.stringify(values),
+        headers: { 'Content-Type': 'application/json' }
+    })
+    
+    // 2. Dusri request: Python (Notification API) ko jati hai welcome email bhejne ke liye
+    fetch('/notification/send', { 
+        method: 'POST', 
+        body: JSON.stringify(values),
+        headers: { 'Content-Type': 'application/json' }
+    })
+}
+```
+
+### Ports aur CORS Handle Karna (Reverse Proxy)
+
+Kyunki har API alag port par chal rahi hoti hai (e.g., Go on 8080, Java on 8081), browser direct request block kar deta hai (CORS Error). Isey solve karne ke liye do tareeke use hote hain:
+
+- **Development Me:** `package.json` file me `"proxy": "http://localhost:3000"` set kiya gaya hai. Iska matlab hai ki frontend (port 3000) se nikli koi bhi API request automatically proxy ho jati hai backend par, bina kisi error ke.
+- **Production Me:** Ek **API Gateway / NGINX Server** lagaya jata hai. Frontend sabhi requests gateway par bhejta hai, aur gateway URL ke hisaab se unhein sahi service tak pahunchata hai:
+  - `/employee/*` → Employee API (Golang)
+  - `/salary/*` → Salary API (Java)
+  - `/attendance/*` → Attendance API (Python)
  
