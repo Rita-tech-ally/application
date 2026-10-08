@@ -73,3 +73,17 @@ Microservices ka ek aur rule hai ki har team/service apni tech-stack ke hisaab s
 > **Conclusion:** Attendance API me humein PostgreSQL jaise relational database ke schemas manage karne the, jiske liye Liquibase ka XML-based structure aur strict tracking zyada reliable approach thi. Wahi ScyllaDB (NoSQL) ke raw queries ke liye `golang-migrate` perfect fit tha.
 
 
+
+### ACID-Compliant aur Reliable Database
+
+**ACID-compliant** ka simple matlab hai ki database transactions ko **reliable aur safe way** se handle karta hai. ACID ke 4 important rules hote hain:
+
+- **A - Atomicity (Pura ya Kuch Nahi):** Koi bhi transaction ya toh completely save hoga, ya bilkul nahi hoga. Beech me aadha transaction nahi rahega.
+- **C - Consistency (Rules ki Pabandi):** Database hamesha defined rules follow karega. Agar employee ID invalid ya duplicate hai, toh database us entry ko reject kar sakta hai.
+- **I - Isolation (Bina Mix-up):** Agar 100 employees ek hi time par attendance mark kar rahe hain, toh unki transactions ek dusre ke data ko incorrectly affect nahi karengi.
+- **D - Durability (Ek Baar Save, Matlab Safe):** Transaction successfully commit hone ke baad, system crash ya power failure ke baad bhi committed data ko preserve kiya jata hai.
+
+**Reliable (Bharosemand):** PostgreSQL ACID transactions support karta hai, isliye attendance jaise important data ko consistent aur reliable way me manage kiya ja sakta hai.
+
+**Simple Example:** Agar employee ki attendance save karte waqt server crash ho jaye, toh database transaction ko incomplete state me chhodne ke bajaye rollback kar sakta hai. Aur agar transaction successfully commit ho gayi hai, toh committed data preserve rahega.
+
