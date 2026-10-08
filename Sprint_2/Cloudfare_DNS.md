@@ -22,7 +22,7 @@
 4. [DNS Configuration](#4-dns-configuration)
 5. [Configure Domain on Application](#5-configure-domain-on-application)
 6. [DNS Validation](#6-dns-validation)
-7. [POC Result](#7-poc-result)
+7. [Conclusion](#7-conclusion)
 8. [Contact Information](#8-contact-information)
 9. [References](#9-references)
 
@@ -30,13 +30,12 @@
 
 # 1. Introduction
 
-This POC demonstrates how to configure a custom domain for a frontend application hosted on an AWS EC2 instance.
 
-For this POC, the domain `devsecurity.shop` is registered through Hostinger and AWS Route 53 is used for DNS management.
+This POC demonstrates how to get a custom domain and configure it for an existing frontend application hosted on an AWS EC2 instance.
+In this POC, the domain `devsecurity.shop` is registered through Hostinger, and AWS Route 53 is used to manage DNS.
+The domain is configured with an **A record** that points to the EC2 public IP. NGINX is then configured to serve the existing frontend application using the custom domain.
 
-The frontend application is already hosted on an EC2 instance using NGINX.
-
-The domain `devsecurity.shop` is mapped directly to the EC2 public IP using an A record.
+Finally, the domain is validated by accessing the frontend application through `http://devsecurity.shop`.
 
 ---
 
@@ -44,35 +43,35 @@ The domain `devsecurity.shop` is mapped directly to the EC2 public IP using an A
 
 | Requirement | Purpose |
 |---|---|
-| Hostinger account | Domain registration |
-| Registered domain | Application domain |
-| AWS account | Route 53 and EC2 access |
-| Route 53 access | DNS management |
-| Running EC2 instance | Hosts the frontend |
-| EC2 Public IP | A record target |
-| NGINX | Serves the frontend |
-| SSH access | NGINX configuration |
-| Internet access | DNS and application validation |
+| **Hostinger account** | Domain registration |
+| **Registered domain** | Application domain |
+| **AWS account** | Route 53 and EC2 access |
+| **Route 53 access** | DNS management |
+| **Running EC2 instance** | Hosts the frontend |
+| **EC2 Public IP** | A record target |
+| **NGINX** | Serves the frontend |
+| **SSH access** | NGINX configuration |
+| **Internet access** | DNS and application validation |
 
 <img width="1593" height="583" alt="Screenshot from 2026-10-09 02-05-59" src="https://github.com/user-attachments/assets/12074397-1978-4731-8958-2850728fc88d" />
 
-### Domain Details
 
-| Configuration | Value |
-|---|---|
-| Domain Name | `devsecurity.shop` |
-| Domain Registrar | Hostinger |
-| DNS Service | AWS Route 53 |
-| EC2 Instance | `ot-poc` |
-| EC2 Public IP | `3.110.201.212` |
-| Web Server | NGINX |
-| HTTP Port | `80` |
+## Configure Security Group
 
-### Registered Domain Status
+Configure the EC2 Security Group to allow the required traffic.
 
-| Domain Name | Status | Expiration Date |  
-|---|---|---|---|
-| `devsecurity.shop` | Active | 2027-09-15 | 
+| **Type**  | **Port** | **Source**      |
+| --------- | -------: | --------------- |
+| **SSH**   |       22 | Your IP address |
+| **HTTP**  |       80 | `0.0.0.0/0`     |
+| **HTTPS** |      443 | `0.0.0.0/0`     |
+
+**Purpose:**
+
+* **Port 22** – Allows SSH access to the EC2 instance.
+* **Port 80** – Allows HTTP traffic to reach NGINX.
+* **Port 443** – Allows HTTPS traffic if SSL/TLS is configured later.
+ 
 
 ---
 
@@ -153,7 +152,7 @@ Since the domain is registered through Hostinger and DNS is managed using Route 
 
 # 4. DNS Configuration
 
-## 4.2 Create A Record
+##  Create A Record
 
 An A record maps a domain name to an IPv4 address.
 
@@ -171,7 +170,7 @@ devsecurity.shop
 | Record Type | `A` |
 | Routing Policy | `Simple` |
 | Alias | `No` |
-| Value | `3.110.201.212` |
+| Value | `15.252.181.35` |
 | TTL | `60` seconds |
 
 ### Steps
@@ -240,8 +239,6 @@ The frontend is served from:
 ```text
 /home/ubuntu/frontend/build
 ```
-
-<!-- Screenshot: NGINX configuration -->
 
 ---
 
@@ -329,6 +326,8 @@ The browser resolves the domain through DNS and sends the request to the EC2 ins
 
 NGINX receives the request and serves the frontend application.
 
+<img width="1773" height="972" alt="image" src="https://github.com/user-attachments/assets/bded158e-92a7-4d8a-9333-d19ee3931fb1" />
+
 ### Complete Request Flow
 
 ```text
@@ -340,7 +339,7 @@ AWS Route 53
      |
      | A Record
      v
-3.110.201.212
+15.252.181.35
      |
      v
 AWS EC2
@@ -354,13 +353,14 @@ Frontend Application
 
 # 7. Conclusion
 
-This POC successfully configured the custom domain `devsecurity.shop` for the frontend application.  
-The domain was registered through Hostinger and DNS was managed using AWS Route 53.  
-An A record was configured to point the domain to the EC2 public IP.  
-NGINX was configured to serve the frontend using the custom domain.  
-The application was successfully accessed and verified using `http://devsecurity.shop`.
 
+This POC successfully demonstrated how to get a custom domain and configure it for an existing frontend application.
+The domain `devsecurity.shop` was registered through Hostinger, and AWS Route 53 was configured to manage its DNS.
+An **A record** was created to point the domain to the EC2 public IP, and NGINX was configured to serve the existing frontend application using the custom domain.
 
+The DNS configuration was validated, and the frontend application was successfully accessed using `http://devsecurity.shop`.
+
+---
 
 # 8. Contact Information
 
