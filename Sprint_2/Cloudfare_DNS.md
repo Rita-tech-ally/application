@@ -30,7 +30,6 @@
 
 # 1. Introduction
 
-
 This POC demonstrates how to get a custom domain and configure it for an existing frontend application hosted on an AWS EC2 instance.
 In this POC, the domain `devsecurity.shop` is registered through Hostinger, and AWS Route 53 is used to manage DNS.
 The domain is configured with an **A record** that points to the EC2 public IP. NGINX is then configured to serve the existing frontend application using the custom domain.
@@ -55,8 +54,7 @@ Finally, the domain is validated by accessing the frontend application through `
 
 <img width="1593" height="583" alt="Screenshot from 2026-10-09 02-05-59" src="https://github.com/user-attachments/assets/12074397-1978-4731-8958-2850728fc88d" />
 
-
-## Configure Security Group
+## 2.1 Configure Security Group
 
 Configure the EC2 Security Group to allow the required traffic.
 
@@ -71,7 +69,6 @@ Configure the EC2 Security Group to allow the required traffic.
 * **Port 22** – Allows SSH access to the EC2 instance.
 * **Port 80** – Allows HTTP traffic to reach NGINX.
 * **Port 443** – Allows HTTPS traffic if SSL/TLS is configured later.
- 
 
 ---
 
@@ -81,7 +78,7 @@ Configure the EC2 Security Group to allow the required traffic.
 
 A domain is required to provide a custom hostname for the frontend application.
 
- The domain is:
+The domain is:
 
 ```text
 devsecurity.shop
@@ -141,18 +138,15 @@ Since the domain is registered through Hostinger and DNS is managed using Route 
 6. Replace the existing nameservers with the Route 53 nameservers.
 7. Save the changes.
 
-
-
 <img width="1571" height="363" alt="Screenshot from 2026-10-09 01-41-10" src="https://github.com/user-attachments/assets/0eab5d88-4b88-4c42-a4d5-2a73a638fd9e" />
 
 <img width="1161" height="329" alt="Screenshot from 2026-10-09 01-41-41" src="https://github.com/user-attachments/assets/450791a4-b096-4de9-8497-bb03734d0ee1" />
-
 
 ---
 
 # 4. DNS Configuration
 
-##  Create A Record
+## 4.1 Create A Record
 
 An A record maps a domain name to an IPv4 address.
 
@@ -166,7 +160,7 @@ devsecurity.shop
 
 | Configuration | Value |
 |---|---|
-| Record Name | `@` |
+| Record Name | *(blank, root domain)* |
 | Record Type | `A` |
 | Routing Policy | `Simple` |
 | Alias | `No` |
@@ -272,7 +266,6 @@ Frontend Application
 
 <img width="989" height="194" alt="Screenshot from 2026-10-09 01-57-45" src="https://github.com/user-attachments/assets/48bbaa41-672d-4767-bb7a-82f247d3cd59" />
 
-
 ---
 
 ## 5.3 Reload NGINX
@@ -282,8 +275,8 @@ Test the NGINX configuration:
 ```bash
 sudo nginx -t
 ```
-<img width="880" height="77" alt="image" src="https://github.com/user-attachments/assets/948a69d7-1f9c-4cc9-9844-1ed41eaa89b5" />
 
+<img width="880" height="77" alt="image" src="https://github.com/user-attachments/assets/948a69d7-1f9c-4cc9-9844-1ed41eaa89b5" />
 
 Reload NGINX:
 
@@ -291,8 +284,8 @@ Reload NGINX:
 sudo systemctl reload nginx
 sudo systemctl status nginx
 ```
-<img width="1298" height="566" alt="Screenshot from 2026-10-09 02-00-51" src="https://github.com/user-attachments/assets/8f15dd1c-c686-48a7-9ea4-1be1d95ad846" />
 
+<img width="1298" height="566" alt="Screenshot from 2026-10-09 02-00-51" src="https://github.com/user-attachments/assets/8f15dd1c-c686-48a7-9ea4-1be1d95ad846" />
 
 ---
 
@@ -309,8 +302,10 @@ Run:
 ```bash
 nslookup devsecurity.shop
 ```
-<img width="1297" height="172" alt="Screenshot from 2026-10-09 02-01-35" src="https://github.com/user-attachments/assets/ccbf5f4c-1929-4b7f-89d2-5ce8b162a6eb" />
 
+**Expected Result:** The domain resolves to `15.252.181.35`.
+
+<img width="1297" height="172" alt="Screenshot from 2026-10-09 02-01-35" src="https://github.com/user-attachments/assets/ccbf5f4c-1929-4b7f-89d2-5ce8b162a6eb" />
 
 ---
 
@@ -351,8 +346,9 @@ NGINX
 Frontend Application
 ```
 
-# 7. Conclusion
+---
 
+# 7. Conclusion
 
 This POC successfully demonstrated how to get a custom domain and configure it for an existing frontend application.
 The domain `devsecurity.shop` was registered through Hostinger, and AWS Route 53 was configured to manage its DNS.
@@ -364,7 +360,7 @@ The DNS configuration was validated, and the frontend application was successful
 
 # 8. Contact Information
 
-| Name | Email Address | 
+| Name | Email Address |
 |---|---|
 | Ritu | ritu.dogra.snaatak@mygurukulam.com |
 
@@ -374,10 +370,10 @@ The DNS configuration was validated, and the frontend application was successful
 
 | Reference | Description |
 |---|---|
-| AWS Route 53 Documentation | AWS DNS service documentation |
-| Hostinger Documentation | Domain and DNS management documentation |
-| NGINX Documentation | NGINX configuration reference |
-| DNS Basics | DNS concepts and working |
-| OT-Microservices Frontend | Frontend source repository |
+| **AWS Route 53 Documentation** | AWS DNS service documentation |
+| **Hostinger Documentation** | Domain and DNS management documentation |
+| **NGINX Documentation** | NGINX configuration reference |
+| **DNS Basics** | DNS concepts and working |
+| **OT-Microservices Frontend** | Frontend source repository |
 
 ---
