@@ -1,4 +1,8 @@
-# POC Of Frontend Deployment with DNS (Route 53)
+# POC Of Frontend Hosting with DNS
+
+<p align="center">
+  <img width="90" height="auto" alt="dns-icon" src="https://img.icons8.com/fluency/96/domain.png" />
+</p>
 
 ---
 
@@ -10,58 +14,60 @@
 
 ---
 
-# Table of Contents
+## Table of Contents
 
 1. [Introduction](#1-introduction)
 2. [Prerequisites](#2-prerequisites)
-3. [EC2 Setup](#3-ec2-setup)
+3. [Application Setup](#3-application-setup)
 4. [Frontend Setup](#4-frontend-setup)
-5. [Mock Data Setup](#5-mock-data-setup)
-6. [NGINX Configuration](#6-nginx-configuration)
-7. [Validate Using Public IP](#7-validate-using-public-ip)
-8. [Domain and DNS Setup (Route 53)](#8-domain-and-dns-setup-route-53)
-9. [DNS Validation](#9-dns-validation)
-10. [POC Result](#10-poc-result)
-11. [Issues Faced and Fixes](#11-issues-faced-and-fixes)
-12. [Contact Information](#12-contact-information)
-13. [References](#13-references)
+5. [Validate Using Public IP](#5-validate-using-public-ip)
+6. [Domain and DNS Setup](#6-domain-and-dns-setup)
+7. [DNS Validation](#7-dns-validation)
+8. [POC Result](#8-poc-result)
+9. [Contact Information](#9-contact-information)
+10. [References](#10-references)
 
 ---
 
 # 1. Introduction
 
-This document demonstrates hosting the **OT-Microservices React frontend** on an AWS EC2 instance and accessing it through a custom domain (`devsecurity.shop`) mapped using **AWS Route 53**.
-
-The backend services (Employee API, Attendance API, Salary API) are **not deployed** in this POC. Instead, NGINX serves **static mock JSON files** on the same paths the frontend calls (`/employee/...`, `/attendance/...`, `/salary/...`). This allows the dashboard to display data without running any backend service or database.
+This document demonstrates hosting the OT-Microservices React frontend on an AWS EC2 instance and accessing it through a custom domain, `ritu.sohandogra.com`, mapped using AWS Route 53.
 
 ---
 
 # 2. Prerequisites
 
+The following are required to perform this POC:
+
 * AWS account
 * AWS EC2 instance (Ubuntu 24.04 LTS)
-* SSH private key (`.pem`)
-* AWS Route 53 access (hosted zone for the domain)
-* Registered domain: `devsecurity.shop`
+* SSH private key
+* AWS Route 53 access
+* Cloudflare account with a registered domain
 * Internet access
-* Git, Node.js 16, NGINX
+* Git
+* Node.js 16 (installed using nvm)
+* NGINX
 
 ---
 
-# 3. EC2 Setup
+# 3. Application Setup
 
 ## 3.1 Create EC2 Instance
 
-| **Configuration**   | **Value**                                     |
-| ------------------- | --------------------------------------------- |
-| Instance Name       | `ot-poc`                                      |
-| Operating System    | Ubuntu 24.04.4 LTS                            |
-| Instance Type       | `<instance type used>` (4 GB+ RAM recommended) |
-| Storage             | 20 GB gp3 recommended                         |
-| Private IPv4        | `172.31.30.166`                               |
-| Public IPv4         | `3.110.51.28`                                 |
+Create an Ubuntu EC2 instance in AWS.
 
+The following EC2 instance was used for this POC:
 
+| **Configuration**    | **Value**              |
+| -------------------- | ---------------------- |
+| **Instance Name**    | `ot-poc`               |
+| **Instance Type**    | `t3.micro` |
+| **Operating System** | Ubuntu 24.04.4 LTS     |
+| **Private IPv4**     | `172.31.30.166`        |
+| **Public IPv4**      | `3.110.201.212`        |
+
+After the instance is running, note the **Public IPv4 address** because it will be used in the Route 53 A record.
 
 
 <img width="1302" height="542" alt="Screenshot from 2026-09-29 17-57-40" src="https://github.com/user-attachments/assets/523e180d-a2dd-46f8-af2a-9744a203ff3d" />
@@ -70,22 +76,27 @@ The backend services (Employee API, Attendance API, Salary API) are **not deploy
 
 ## 3.2 Configure Security Group
 
-| **Type** | **Port** | **Source**      |
-| -------- | -------: | --------------- |
-| SSH      |       22 | Your IP address |
-| HTTP     |       80 | `0.0.0.0/0`     |
-| HTTPS    |      443 | `0.0.0.0/0`     |
+Configure the EC2 Security Group to allow the required traffic.
 
+| **Type**  | **Port** | **Source**      |
+| --------- | -------: | --------------- |
+| **SSH**   |       22 | Your IP address |
+| **HTTP**  |       80 | `0.0.0.0/0`     |
+| **HTTPS** |      443 | `0.0.0.0/0`     |
 
+**Purpose:**
 
-## 3.3 Connect and Install Packages
+* **Port 22** – Allows SSH access to the EC2 instance.
+* **Port 80** – Allows HTTP traffic to reach NGINX.
+* **Port 443** – Allows HTTPS traffic if SSL/TLS is configured later.
 
+---
 
 # 4. Frontend Setup
 
 ## 4.1 Install Node.js 16 using nvm
 
-The frontend uses `react-scripts 2.x`, which works with Node 16 without OpenSSL errors.
+The frontend uses `react-scripts 2.x`, which builds without OpenSSL errors on Node 16.
 
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -95,52 +106,63 @@ nvm alias default 16
 node -v
 ```
 
-**Expected Result:** `v16.20.2`
+<img width="596" height="74" alt="Screenshot from 2026-10-01 10-25-48" src="https://github.com/user-attachments/assets/287aa02a-36ec-498e-a5d6-375de469429f" />
 
-<img width="1008" height="64" alt="Screenshot from 2026-09-29 17-59-20" src="https://github.com/user-attachments/assets/e13a3a28-e11c-4711-88de-359134b1e38b" />
+## 4.2 Install NGINX
 
+```bash
+sudo apt update
+sudo apt install -y nginx
+sudo systemctl status nginx
+```
 
+**Expected Result:** NGINX shows `active (running)`.
 
+<img width="1172" height="275" alt="Screenshot from 2026-09-29 19-54-46" src="https://github.com/user-attachments/assets/37fe4c7b-3afd-4f93-9b6d-b1d17e57a2d0" />
 
-## 4.2 Clone the Frontend Repository
+## 4.3 Clone the Frontend Repository
 
 ```bash
 cd ~
 git clone https://github.com/OT-MICROSERVICES/frontend.git
 cd frontend
-ls
 ```
 
+<img width="745" height="216" alt="Screenshot from 2026-09-30 14-12-02" src="https://github.com/user-attachments/assets/acd9a15d-5790-4e12-9574-d9df8e4f036a" />
 
-## 4.3 Install Dependencies and Build
+## 4.4 Install Dependencies and Build
 
 ```bash
-cd ~/frontend
 npm install --legacy-peer-deps
 export NODE_OPTIONS=--max-old-space-size=2048
 npm run build
 ls build/index.html
 ```
-
 ---
 
-# 5. Mock Data Setup
+## 4.5 Mock Data Setup
 
-The frontend calls these paths, so a matching JSON file is created for each:
+The backend services are not deployed in this POC. NGINX serves static JSON files on the same paths the frontend calls, so the dashboard can display data.
 
-| **Frontend Request**            | **Mock File**                                   |
-| ------------------------------- | ----------------------------------------------- |
-| `/employee/search/all`          | `/var/www/mock/employee/search/all.json`        |
-| `/employee/search/status`       | `/var/www/mock/employee/search/status.json`     |
-| `/employee/search/roles`        | `/var/www/mock/employee/search/roles.json`      |
-| `/employee/search/location`     | `/var/www/mock/employee/search/location.json`   |
-| `/attendance/search`            | `/var/www/mock/attendance/search.json`          |
-| `/salary/search/all`            | `/var/www/mock/salary/search/all.json`          |
+| **Frontend Request**        | **Mock File**                                 |
+| --------------------------- | --------------------------------------------- |
+| `/employee/search/all`      | `/var/www/mock/employee/search/all.json`      |
+| `/employee/search/status`   | `/var/www/mock/employee/search/status.json`   |
+| `/employee/search/roles`    | `/var/www/mock/employee/search/roles.json`    |
+| `/employee/search/location` | `/var/www/mock/employee/search/location.json` |
+| `/attendance/search`        | `/var/www/mock/attendance/search.json`        |
+| `/salary/search/all`        | `/var/www/mock/salary/search/all.json`        |
+
+**Create the folders:**
 
 ```bash
 sudo mkdir -p /var/www/mock/{employee/search,attendance,salary/search}
 cd /var/www/mock
+```
 
+**Create the JSON files:**
+
+```bash
 sudo tee employee/search/all.json >/dev/null <<'EOF'
 [
  {"id":"OT-001","name":"Rahul Sharma","email":"rahul@example.com","phone_number":"9999990001","job_role":"DevOps","location":"Delhi"},
@@ -158,19 +180,20 @@ echo '{"Delhi":2,"Bangalore":1,"Hyderabad":1,"Newyork":1}' | sudo tee employee/s
 echo '[{"id":"OT-001","status":"Present","date":"2026-09-29"},{"id":"OT-002","status":"Absent","date":"2026-09-29"},{"id":"OT-003","status":"Present","date":"2026-09-29"}]' | sudo tee attendance/search.json >/dev/null
 
 echo '[{"id":"OT-001","name":"Rahul Sharma","annual_package":1200000},{"id":"OT-002","name":"Priya Singh","annual_package":1000000},{"id":"OT-003","name":"Amit Verma","annual_package":1400000}]' | sudo tee salary/search/all.json >/dev/null
+```
 
+**Set permissions and verify:**
+
+```bash
 sudo chmod -R o+rX /var/www/mock
 ls -R /var/www/mock
 ```
 
-<img width="1567" height="329" alt="Screenshot from 2026-09-29 18-00-32" src="https://github.com/user-attachments/assets/063d7598-6104-4137-99ef-98643d4ef100" />
-
-
 ---
 
-# 6. NGINX Configuration
+## 4.6 NGINX Configuration
 
-## 6.1 Create the Configuration File
+**Create the configuration file:**
 
 ```bash
 sudo nano /etc/nginx/sites-available/ot-poc
@@ -197,12 +220,7 @@ server {
 }
 ```
 
-**Explanation:**
-
-* `location /` serves the React build and falls back to `index.html` for client-side routes.
-* The `location ~ ^/(employee|attendance|salary)/` block serves the static JSON files instead of a backend API.
-
-## 6.2 Enable the Configuration and Set Permissions
+## 4.7 Enable the Configuration and Set Permissions
 
 ```bash
 sudo ln -sf /etc/nginx/sites-available/ot-poc /etc/nginx/sites-enabled/ot-poc
@@ -218,65 +236,84 @@ sudo nginx -t && sudo systemctl reload nginx
 
 <img width="1073" height="69" alt="Screenshot from 2026-09-29 18-01-20" src="https://github.com/user-attachments/assets/d62e82c3-c491-4d9d-ac51-abd310ac0bab" />
 
-
 ---
 
-# 7. Validate Using Public IP
+# 5. Validate Using Public IP
 
-## 7.1 Local Checks on EC2
+## 5.1 Local Checks on EC2
 
 ```bash
 curl -I http://localhost
+curl http://localhost/employee/search/all
 ```
-
-**Expected Result:** `HTTP/1.1 200 OK` for the first command and the employee JSON for the second.
 
 <img width="643" height="173" alt="Screenshot from 2026-09-29 19-21-51" src="https://github.com/user-attachments/assets/38eb6b42-4b77-4c50-adf4-89d5ddda6506" />
 
 
+---
 
-
-## 7.2 Browser Check
-
-Open (type `http://` manually, SSL is not configured):
+## 5.2 Browser Check
 
 ```text
-http://3.110.51.28
+http://3.110.201.212
 ```
 
-**Expected Result:** The dashboard is displayed with stat cards (Total, Active, Ex-Employees, Office Locations) and the Role, Employee and Location donut charts. Employee List, Attendance List and Salary pages also show the mock data.
+**Expected Result:** The dashboard is displayed with stat cards (Total, Active, Ex-Employees, Office Locations) and the Role, Employee and Location donut charts. The Employee List, Attendance List and Salary pages also show the mock data.
 
 <img width="1417" height="883" alt="Screenshot from 2026-09-29 18-03-10" src="https://github.com/user-attachments/assets/8ff7bb01-042f-4c21-a103-bd7f85f0bd62" />
 <img width="1478" height="618" alt="Screenshot from 2026-09-29 18-03-34" src="https://github.com/user-attachments/assets/cbcf4642-ef73-4b05-9729-4ce02733e60e" />
 <img width="1478" height="618" alt="Screenshot from 2026-09-29 18-03-50" src="https://github.com/user-attachments/assets/54105a43-0e30-4d06-ad15-bf4b7313d815" />
 <img width="1490" height="500" alt="Screenshot from 2026-09-29 18-04-14" src="https://github.com/user-attachments/assets/ea9a2b67-fe70-46a1-8c91-0a5bd9fae86a" />
 
+---
+
+# 6. Domain and DNS Setup
+
+## 6.1 Domain Details
+
+The domain `sohandogra.com` is registered through **Cloudflare**.
+
+The hostname used for this POC is:
+
+```text
+ritu.sohandogra.com
+```
+
+Here, `ritu.sohandogra.com` is a **subdomain** of the registered domain `sohandogra.com`.
+
+```text
+Registered Domain:
+sohandogra.com
+
+Subdomain:
+ritu.sohandogra.com
+```
+
+Cloudflare is used for the **domain registration**, while AWS Route 53 is used for the **DNS management** of the subdomain in this POC.
 
 ---
 
-# 8. Domain and DNS Setup (Route 53)
 
-## 8.1 Create A Record
+## 6.2 Create A Record
 
 Route 53, Hosted zones, `ritu.sohandogra.com`, **Create record**:
 
-| **Configuration** | **Value**                                    |
-| ----------------- | -------------------------------------------- |
-| Record Name       | *(leave blank for root domain)*              |
-| Record Type       | `A`                                          |
-| Routing Policy    | `Simple`                                     |
-| Alias             | `No`                                         |
-| Value             | `3.110.51.28` (EC2 Elastic IP)               |
+| **Configuration** | **Value**                                   |
+| ----------------- | ------------------------------------------- |
+| Record Name       | *(leave blank, the hosted zone name is added automatically)* |
+| Record Type       | `A`                                         |
+| Routing Policy    | `Simple`                                    |
+| Alias             | `No`                                        |
+| Value             | `3.110.201.212`                             |
 | TTL               | `60` seconds                                |
 
 <img width="1517" height="354" alt="Screenshot from 2026-09-29 18-05-25" src="https://github.com/user-attachments/assets/c0ebbe26-1d0d-47b0-ba4b-bd10d74a4493" />
 
-
 ---
 
-# 9. DNS Validation
+# 7. DNS Validation
 
-## 9.1 Verify DNS Resolution
+## 7.1 Verify DNS Resolution
 
 ```bash
 nslookup ritu.sohandogra.com
@@ -286,23 +323,28 @@ nslookup ritu.sohandogra.com
 
 <img width="707" height="191" alt="Screenshot from 2026-09-29 18-06-39" src="https://github.com/user-attachments/assets/b076d66a-7cdd-4c33-b251-7524f6b0d14e" />
 
+---
 
+## 7.2 Access the Application Using the Domain
 
-## 9.2 Access the Application Using the Domain
 
 ```text
 http://ritu.sohandogra.com
 ```
 
-<img width="1920" height="1080" alt="dasboard" src="https://github.com/user-attachments/assets/3e0e6213-b1a5-482c-a73f-579fe7a08e47" />
+**Expected Result:** The dashboard, Employee List, Attendance List and Salary pages open through the domain.
+
+<img width="1920" height="1080" alt="dashoard_fr" src="https://github.com/user-attachments/assets/622cecbd-1b4e-49de-a6ad-e4bef5afa77c" />
 <img width="1920" height="1080" alt="employ" src="https://github.com/user-attachments/assets/29a46535-7412-4851-8a89-b237806a5bac" />
+<img width="1920" height="1080" alt="salary" src="https://github.com/user-attachments/assets/67bfb577-5a97-4043-b0ab-fcbb6a7b11c5" />
+<img width="1920" height="1080" alt="salary" src="https://github.com/user-attachments/assets/a2f0716c-3fe6-4a9f-bb8c-5734b71617e0" />
 <img width="1920" height="1080" alt="SALARY" src="https://github.com/user-attachments/assets/6812d96e-e1bf-4fad-9cbc-76a02a1d62ff" />
 
 ---
 
-# 10. POC Result
+# 8. POC Result
 
-The POC was completed successfully. The React frontend is hosted on an AWS EC2 instance with NGINX, and the dashboard shows data through static mock JSON, without any backend service. The domain `devsecurity.shop` is mapped to the EC2 public IP using an **A record in AWS Route 53**.
+The POC was completed successfully. The React frontend is hosted on an AWS EC2 instance with NGINX, and the dashboard shows data through static mock JSON, without any backend service. The subdomain `ritu.sohandogra.com` is mapped to the EC2 public IP using an A record in AWS Route 53, with the subdomain delegated from Cloudflare to Route 53 through NS records.
 
 ### Final Request Flow
 
@@ -313,36 +355,38 @@ User Browser
 ritu.sohandogra.com
      |
      v
+Cloudflare (domain registrar, NS delegation for "ritu")
+     |
+     v
 AWS Route 53 (A Record)
      |
      v
-EC2 Public / Elastic IP
+EC2 Public IP (3.110.201.212)
      |
      v
 NGINX
-     |------------------------------------|
-     v                                    v
-React Build (/home/ubuntu/frontend/build)   Mock JSON (/var/www/mock)
- (dashboard UI)                             (/employee, /attendance, /salary)
+     |---------------------------------------|
+     v                                       v
+React Build                         Mock JSON files
+(/home/ubuntu/frontend/build)       (/var/www/mock)
+Dashboard UI                        /employee, /attendance, /salary
 ```
 
+---
 
-
-# 12. Contact Information
+# 9. Contact Information
 
 | Name | Email Address                                                                 |
 | ---- | ----------------------------------------------------------------------------- |
-| Ritu | [ritu.dogra.snaatak@mygurukulam.co](mailto:ritu.dogra.snaatak@mygurukulam.co) |
+| Ritu | [ritu.dogra.snaatak@mygurukulam.co](mailto:ritu.dogra.snaatak@mygurukulam.com) |
 
 ---
 
-# 13. References
+# 10. References
 
-| **Reference** | **Description** |
-| ------------- | --------------------------------------------- |
-| [OT-Microservices Frontend](https://github.com/OT-MICROSERVICES/frontend) | Frontend source repository |
-| [AWS Route 53](https://aws.amazon.com/route53/) | Managed DNS service by AWS |
-| [NGINX Documentation](https://nginx.org/en/docs/) | NGINX configuration reference |
-| [DNS Basics](https://www.cloudflare.com/learning/dns/what-is-dns/) | Basic explanation of how DNS works |
-
----
+| **Reference**                                                              | **Description**                    |
+| -------------------------------------------------------------------------- | ---------------------------------- |
+| [OT-Microservices Frontend](https://github.com/OT-MICROSERVICES/frontend)  | Frontend source repository         |
+| [AWS Route 53](https://aws.amazon.com/route53/)                            | Managed DNS service by AWS         |
+| [NGINX Documentation](https://nginx.org/en/docs/)                          | NGINX configuration reference      |
+| [DNS Basics](https://www.cloudflare.com/learning/dns/what-is-dns/)         | Basic explanation of how DNS works |
