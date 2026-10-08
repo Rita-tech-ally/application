@@ -41,11 +41,11 @@
 
 # 1. Introduction
 
-This document demonstrates how to configure a custom domain for a frontend application hosted on an AWS EC2 instance.
+This POC demonstrates how to configure a custom domain for a frontend application hosted on an AWS EC2 instance.
 
-For this POC, the domain `sohandogra.com` is registered through Cloudflare, while AWS Route 53 is used for DNS management.
+For this POC, `sohandogra.com` is registered through Cloudflare and AWS Route 53 is used for DNS management.
 
-The frontend application is already hosted on an AWS EC2 instance using NGINX. The purpose of this POC is to configure the subdomain `ritu.sohandogra.com`, map it to the EC2 public IP using an A record, and configure NGINX to serve the frontend using the domain name.
+The frontend application is already hosted on an EC2 instance using NGINX. The subdomain `ritu.sohandogra.com` is mapped to the EC2 public IP using an A record.
 
 ### Final Flow
 
@@ -75,8 +75,6 @@ Frontend Application
 
 # 2. Prerequisites
 
-The following requirements are needed for this POC:
-
 | Requirement | Purpose |
 |---|---|
 | Cloudflare account | Domain registration |
@@ -84,10 +82,10 @@ The following requirements are needed for this POC:
 | AWS account | Route 53 and EC2 access |
 | Route 53 access | DNS management |
 | Running EC2 instance | Hosts the frontend |
-| EC2 Public IP | Target of the A record |
+| EC2 Public IP | A record target |
 | NGINX | Serves the frontend |
-| SSH access | Configure NGINX |
-| Internet access | DNS and application validation |
+| SSH access | NGINX configuration |
+| Internet access | Validation |
 
 ### POC Environment
 
@@ -118,41 +116,20 @@ sohandogra.com
 
 was registered through Cloudflare.
 
-The application uses the following subdomain:
+The application uses:
 
 ```text
 ritu.sohandogra.com
 ```
 
-Here:
-
-```text
-sohandogra.com
-```
-
-is the registered domain and:
-
-```text
-ritu
-```
-
-is the subdomain label.
-
-Therefore:
-
-```text
-ritu.sohandogra.com
-```
-
-is the complete hostname used to access the application.
+Here, `sohandogra.com` is the registered domain and `ritu` is the subdomain label.
 
 ### Steps
 
-1. Log in to the Cloudflare account.
+1. Log in to Cloudflare.
 2. Search for the required domain.
 3. Register the domain if it is not already registered.
 4. Verify that the domain is active.
-5. Use the registered domain for DNS configuration.
 
 <!-- Screenshot: Cloudflare domain registration / domain overview -->
 
@@ -160,7 +137,7 @@ is the complete hostname used to access the application.
 
 ## 3.2 Create Route 53 Hosted Zone
 
-After obtaining the domain, create a public hosted zone in AWS Route 53.
+Create a public hosted zone in AWS Route 53 for the registered domain.
 
 ### Steps
 
@@ -177,41 +154,24 @@ sohandogra.com
 6. Select **Public hosted zone**.
 7. Click **Create hosted zone**.
 
-Route 53 creates the hosted zone and automatically provides NS and SOA records.
-
-The NS record contains the name servers that are used for DNS delegation.
+Route 53 creates the hosted zone along with NS and SOA records.
 
 <!-- Screenshot: Route 53 hosted zone -->
-
-<!-- Screenshot: Route 53 NS records -->
 
 ---
 
 ## 3.3 Configure Name Servers / Delegation
 
-The domain is registered through Cloudflare, while DNS management for this POC is performed through AWS Route 53.
-
-Therefore, the Route 53 name servers need to be configured for the domain's DNS delegation.
-
-Route 53 provides four name servers similar to:
-
-```text
-ns-xxx.awsdns-xx.org
-ns-xxx.awsdns-xx.com
-ns-xxx.awsdns-xx.net
-ns-xxx.awsdns-xx.co.uk
-```
+Since the domain is registered through Cloudflare and DNS is managed through Route 53, the Route 53 name servers need to be configured for DNS delegation.
 
 ### Steps
 
 1. Open the Route 53 hosted zone.
 2. Locate the **NS record**.
-3. Copy the Route 53 name servers.
+3. Copy the four Route 53 name servers.
 4. Open the domain DNS/name-server settings in Cloudflare.
-5. Configure the required Route 53 name-server delegation.
-6. Save the configuration.
-
-After delegation, DNS queries for the configured domain can be handled through Route 53.
+5. Configure the Route 53 name servers.
+6. Save the changes.
 
 ### Delegation Flow
 
@@ -225,14 +185,11 @@ sohandogra.com
     | DNS Delegation
     v
 AWS Route 53
-    |
-    v
-DNS Records
 ```
 
 <!-- Screenshot: Route 53 NS records -->
 
-<!-- Screenshot: Cloudflare nameserver configuration -->
+<!-- Screenshot: Cloudflare name-server configuration -->
 
 ---
 
@@ -240,7 +197,7 @@ DNS Records
 
 ## 4.1 Create Subdomain
 
-The application is exposed through the following subdomain:
+The frontend application is accessed using:
 
 ```text
 ritu.sohandogra.com
@@ -252,27 +209,21 @@ The subdomain label is:
 ritu
 ```
 
-and the registered domain is:
+The registered domain is:
 
 ```text
 sohandogra.com
 ```
 
-The complete hostname is therefore:
-
-```text
-ritu.sohandogra.com
-```
-
-This hostname will be mapped to the public IP address of the EC2 instance.
-
-### DNS Structure
+Therefore:
 
 ```text
 sohandogra.com
       |
       +---- ritu.sohandogra.com
 ```
+
+This subdomain will be mapped to the EC2 public IP.
 
 <!-- Screenshot: Route 53 hosted zone -->
 
@@ -282,7 +233,7 @@ sohandogra.com
 
 An A record maps a hostname to an IPv4 address.
 
-For this POC, an A record is created for:
+Create an A record for:
 
 ```text
 ritu.sohandogra.com
@@ -305,10 +256,9 @@ ritu.sohandogra.com
 2. Click **Create record**.
 3. Enter `ritu` as the record name.
 4. Select record type `A`.
-5. Enter the EC2 public IP as the value.
+5. Enter `3.110.201.212` as the value.
 6. Set TTL to `60` seconds.
-7. Keep the routing policy as `Simple`.
-8. Click **Create records**.
+7. Click **Create records**.
 
 <!-- Screenshot: Route 53 Create A Record -->
 
@@ -316,9 +266,7 @@ ritu.sohandogra.com
 
 ## 4.3 Point A Record to EC2 Public IP
 
-The A record points the application subdomain to the EC2 public IPv4 address.
-
-For this POC:
+The A record maps the subdomain to the public IP of the EC2 instance.
 
 ```text
 ritu.sohandogra.com
@@ -331,62 +279,31 @@ ritu.sohandogra.com
 EC2 Instance: ot-poc
 ```
 
-When a user enters:
+When the user accesses:
 
 ```text
 http://ritu.sohandogra.com
 ```
 
-DNS resolves the hostname to:
+DNS resolves the hostname to the EC2 public IP.
 
-```text
-3.110.201.212
-```
-
-The request is then sent to the EC2 instance.
-
-### Request Flow
-
-```text
-Browser
-   |
-   | ritu.sohandogra.com
-   v
-DNS
-   |
-   | A Record
-   v
-3.110.201.212
-   |
-   v
-EC2
-```
-
-<!-- Screenshot: Route 53 A record showing ritu → 3.110.201.212 -->
+<!-- Screenshot: Route 53 A record -->
 
 ---
 
 # 5. Configure Domain on Application
 
-Once DNS is configured, the application web server must be configured to respond to the domain.
+After configuring DNS, NGINX must be configured to respond to the domain.
 
 The frontend is already hosted on the EC2 instance.
 
-NGINX is used as the web server and serves the existing frontend build.
-
-The purpose of this step is to tell NGINX that:
-
-```text
-ritu.sohandogra.com
-```
-
-should be served by the frontend application.
+NGINX serves the existing frontend build.
 
 ---
 
 ## 5.1 Configure NGINX server_name
 
-Connect to the EC2 instance using SSH and open the NGINX configuration:
+Connect to the EC2 instance and open the NGINX configuration:
 
 ```bash
 sudo nano /etc/nginx/sites-available/ot-poc
@@ -408,21 +325,19 @@ server {
 }
 ```
 
-The important configuration is:
+The important directive is:
 
 ```nginx
 server_name ritu.sohandogra.com;
 ```
 
-This tells NGINX to handle requests made for the configured domain.
+This tells NGINX to handle requests for the configured domain.
 
-The frontend build is served from:
+The frontend is served from:
 
-```nginx
-root /home/ubuntu/frontend/build;
+```text
+/home/ubuntu/frontend/build
 ```
-
-The `try_files` configuration allows the React frontend to handle client-side routes.
 
 <!-- Screenshot: NGINX configuration -->
 
@@ -432,25 +347,19 @@ The `try_files` configuration allows the React frontend to handle client-side ro
 
 The frontend application is already available on the EC2 instance.
 
-The NGINX configuration points to the existing frontend build:
-
-```text
-/home/ubuntu/frontend/build
-```
-
-Verify that the build directory contains the application files:
+Verify the existing frontend build:
 
 ```bash
 ls -la /home/ubuntu/frontend/build
 ```
 
-The directory should contain:
+The build directory should contain:
 
 ```text
 index.html
 ```
 
-The application request flow is:
+The application flow is:
 
 ```text
 ritu.sohandogra.com
@@ -474,7 +383,7 @@ React Frontend
 
 ## 5.3 Reload NGINX
 
-Before applying the configuration, test the NGINX configuration:
+Test the NGINX configuration:
 
 ```bash
 sudo nginx -t
@@ -493,7 +402,7 @@ Reload NGINX:
 sudo systemctl reload nginx
 ```
 
-Verify the NGINX service:
+Verify the service:
 
 ```bash
 sudo systemctl status nginx
@@ -513,19 +422,19 @@ active (running)
 
 # 6. DNS Validation
 
-After configuring the DNS record and NGINX, validate that the domain resolves to the correct EC2 public IP and that the application is accessible through the domain.
+After configuring the A record and NGINX, verify DNS resolution and application access.
 
 ---
 
 ## 6.1 Verify DNS Resolution
 
-Use `nslookup` to verify the DNS resolution:
+Run:
 
 ```bash
 nslookup ritu.sohandogra.com
 ```
 
-The response should contain:
+The result should contain:
 
 ```text
 3.110.201.212
@@ -538,9 +447,7 @@ Name:    ritu.sohandogra.com
 Address: 3.110.201.212
 ```
 
-This confirms that the DNS A record is resolving the subdomain to the EC2 public IP.
-
-### DNS Mapping
+This confirms that the subdomain resolves to the EC2 public IP.
 
 ```text
 ritu.sohandogra.com
@@ -561,9 +468,9 @@ Open the following URL in a browser:
 http://ritu.sohandogra.com
 ```
 
-The browser first resolves the domain through DNS.
+The browser resolves the domain through DNS and sends the request to the EC2 instance.
 
-After DNS resolution, the request reaches the EC2 instance, where NGINX serves the frontend application.
+NGINX receives the request and serves the frontend application.
 
 ### Complete Request Flow
 
@@ -571,9 +478,6 @@ After DNS resolution, the request reaches the EC2 instance, where NGINX serves t
 User Browser
      |
      | http://ritu.sohandogra.com
-     v
-DNS Resolution
-     |
      v
 AWS Route 53
      |
@@ -593,13 +497,11 @@ React Frontend
 
 ### Expected Result
 
-The frontend application opens successfully using:
+The frontend application opens successfully through:
 
 ```text
 http://ritu.sohandogra.com
 ```
-
-The application dashboard and configured frontend pages should be accessible through the domain.
 
 <!-- Screenshot: Application dashboard using domain -->
 
@@ -611,94 +513,20 @@ The application dashboard and configured frontend pages should be accessible thr
 
 The POC was completed successfully.
 
-The domain `sohandogra.com` was obtained through Cloudflare and DNS management was configured using AWS Route 53.
+The domain `sohandogra.com` was registered through Cloudflare and DNS management was configured using AWS Route 53.
 
-A Route 53 hosted zone was created and the required DNS delegation was configured.
-
-The application subdomain:
+The subdomain:
 
 ```text
 ritu.sohandogra.com
 ```
 
-was configured with an A record pointing to:
+was configured with an A record pointing to the EC2 public IP:
 
 ```text
 3.110.201.212
 ```
 
-the public IP address of the EC2 instance.
+NGINX was configured with the same domain using the `server_name` directive.
 
-NGINX was configured with the same hostname using the `server_name` directive and serves the existing frontend application.
-
-The domain was successfully validated using `nslookup`, and the frontend application was accessed through:
-
-```text
-http://ritu.sohandogra.com
-```
-
-### Final Architecture
-
-```text
-                    Cloudflare
-                 Domain Registration
-                         |
-                         v
-                 sohandogra.com
-                         |
-                  DNS Delegation
-                         |
-                         v
-                   AWS Route 53
-                         |
-                     A Record
-                         |
-                         v
-                  3.110.201.212
-                         |
-                         v
-                    AWS EC2
-                    ot-poc
-                         |
-                         v
-                      NGINX
-                         |
-                         v
-                React Frontend
-```
-
-### Final Configuration
-
-| Component | Configuration |
-|---|---|
-| Registered Domain | `sohandogra.com` |
-| Domain Registrar | Cloudflare |
-| DNS Management | AWS Route 53 |
-| Application Subdomain | `ritu.sohandogra.com` |
-| DNS Record | A |
-| EC2 Public IP | `3.110.201.212` |
-| Web Server | NGINX |
-| Application | React Frontend |
-| Application URL | `http://ritu.sohandogra.com` |
-
----
-
-# 8. Contact Information
-
-| Name | Email Address |
-|---|---|
-| Ritu | ritu.dogra.snaatak@mygurukulam.com |
-
----
-
-# 9. References
-
-| Reference | Description |
-|---|---|
-| [AWS Route 53 Documentation](https://docs.aws.amazon.com/route53/) | AWS managed DNS service documentation |
-| [Cloudflare Documentation](https://developers.cloudflare.com/) | Domain and DNS documentation |
-| [NGINX Documentation](https://nginx.org/en/docs/) | NGINX configuration reference |
-| [DNS Basics](https://www.cloudflare.com/learning/dns/what-is-dns/) | Basic explanation of DNS |
-| [OT-Microservices Frontend](https://github.com/OT-MICROSERVICES/frontend) | Frontend source repository |
-
----
+DNS resolution was verified
