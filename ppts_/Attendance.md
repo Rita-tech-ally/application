@@ -87,3 +87,23 @@ Microservices ka ek aur rule hai ki har team/service apni tech-stack ke hisaab s
 
 **Simple Example:** Agar employee ki attendance save karte waqt server crash ho jaye, toh database transaction ko incomplete state me chhodne ke bajaye rollback kar sakta hai. Aur agar transaction successfully commit ho gayi hai, toh committed data preserve rahega.
 
+
+
+### Liquibase me Auto-Rollback Kaise Kaam Karta Hai?
+
+Liquibase me **auto-rollback** isliye kaam karta hai kyunki uske andar common database operations ke **opposite actions pre-defined** hote hain.
+
+Isko simple example se samajhiye:
+
+- **Action and Reaction:** Agar XML me `<createTable tableName="records">` likha hai, toh Liquibase ko pata hota hai ki iska opposite action `DROP TABLE` hai. Isliye rollback ke time Liquibase automatically table ko remove karne ka rollback operation generate kar sakta hai.
+- **Pre-mapped Commands:** Isi tarah agar aap `<addColumn>` use karte hain, toh Liquibase uska opposite operation `dropColumn` samajh sakta hai. Aapko har baar manually rollback likhne ki zaroorat nahi padti.
+
+### Lekin Ek Catch Hai
+
+Liquibase **sirf un changes ke liye auto-rollback provide kar sakta hai jinka reverse operation reliably determine kiya ja sakta hai**.
+
+Example ke liye, agar aap XML me `<dropTable>` likhte hain, toh Liquibase ko automatically ye nahi pata ho sakta ki deleted table me:
+
+- kaunse columns the,
+- unke data types kya the,
+- constraints kya the,
