@@ -8,9 +8,9 @@
 
 ## Document Information
 
-| Author | Created On | Version | L0 Reviewer | L1 Reviewer | L2 Reviewer |
-| ------ | ---------- | ------- | ---------- | ---------- | ---------- |
-| Ritu | 29/09/2026 | 1.0 | Liyakhat/Anirudh | Aman Raj | Sandeep Rawat/Ravindra |
+| Author | Created On | Version | L0 Reviewer      | L1 Reviewer | L2 Reviewer            |
+| ------ | ---------- | ------- | ---------------- | ----------- | ---------------------- |
+| Ritu   | 29/09/2026 | 1.0     | Liyakhat/Anirudh | Aman Raj    | Sandeep Rawat/Ravindra |
 
 ---
 
@@ -23,12 +23,12 @@
    - [3.2 Create Route 53 Hosted Zone](#32-create-route-53-hosted-zone)
    - [3.3 Configure Name Servers / Delegation](#33-configure-name-servers--delegation)
 4. [DNS Configuration](#4-dns-configuration)
-   - [4.1 Create Subdomain](#41-create-subdomain)
+   - [4.1 Configure Domain](#41-configure-domain)
    - [4.2 Create A Record](#42-create-a-record)
    - [4.3 Point A Record to EC2 Public IP](#43-point-a-record-to-ec2-public-ip)
 5. [Configure Domain on Application](#5-configure-domain-on-application)
    - [5.1 Configure NGINX server_name](#51-configure-nginx-server_name)
-   - [5.2 Configure Frontend](#52-configure-frontend)
+   - [5.2 Verify Frontend](#52-verify-frontend)
    - [5.3 Reload NGINX](#53-reload-nginx)
 6. [DNS Validation](#6-dns-validation)
    - [6.1 Verify DNS Resolution](#61-verify-dns-resolution)
@@ -43,9 +43,11 @@
 
 This POC demonstrates how to configure a custom domain for a frontend application hosted on an AWS EC2 instance.
 
-For this POC, `sohandogra.com` is registered through Cloudflare and AWS Route 53 is used for DNS management.
+For this POC, the domain `devsecurity.shop` is registered through Hostinger and AWS Route 53 is used for DNS management.
 
-The frontend application is already hosted on an EC2 instance using NGINX. The subdomain `ritu.sohandogra.com` is mapped to the EC2 public IP using an A record.
+The frontend application is already hosted on an EC2 instance using NGINX.
+
+The domain `devsecurity.shop` is mapped directly to the EC2 public IP using an A record.
 
 ### Final Flow
 
@@ -53,7 +55,7 @@ The frontend application is already hosted on an EC2 instance using NGINX. The s
 User Browser
      |
      v
-ritu.sohandogra.com
+devsecurity.shop
      |
      v
 AWS Route 53
@@ -77,28 +79,33 @@ Frontend Application
 
 | Requirement | Purpose |
 |---|---|
-| Cloudflare account | Domain registration |
-| Registered domain | Base domain |
+| Hostinger account | Domain registration |
+| Registered domain | Application domain |
 | AWS account | Route 53 and EC2 access |
 | Route 53 access | DNS management |
 | Running EC2 instance | Hosts the frontend |
 | EC2 Public IP | A record target |
 | NGINX | Serves the frontend |
 | SSH access | NGINX configuration |
-| Internet access | Validation |
+| Internet access | DNS and application validation |
 
-### POC Environment
+### Domain Details
 
 | Configuration | Value |
 |---|---|
-| Registered Domain | `sohandogra.com` |
-| Domain Registrar | Cloudflare |
+| Domain Name | `devsecurity.shop` |
+| Domain Registrar | Hostinger |
 | DNS Service | AWS Route 53 |
-| Application Subdomain | `ritu.sohandogra.com` |
 | EC2 Instance | `ot-poc` |
 | EC2 Public IP | `3.110.201.212` |
 | Web Server | NGINX |
 | HTTP Port | `80` |
+
+### Registered Domain Status
+
+| Domain Name | Status | Expiration Date | Auto-Renewal |
+|---|---|---|---|
+| `devsecurity.shop` | Active | As shown in Hostinger | As configured in Hostinger |
 
 ---
 
@@ -106,38 +113,45 @@ Frontend Application
 
 ## 3.1 Register/Get Domain
 
-A domain is required to provide a custom hostname for the application.
+A domain is required to provide a custom hostname for the frontend application.
 
-For this POC, the domain:
-
-```text
-sohandogra.com
-```
-
-was registered through Cloudflare.
-
-The application uses:
+For this POC, the domain is:
 
 ```text
-ritu.sohandogra.com
+devsecurity.shop
 ```
 
-Here, `sohandogra.com` is the registered domain and `ritu` is the subdomain label.
+The domain was registered through Hostinger.
 
 ### Steps
 
-1. Log in to Cloudflare.
-2. Search for the required domain.
-3. Register the domain if it is not already registered.
-4. Verify that the domain is active.
+1. Log in to Hostinger.
+2. Open the domain registration section.
+3. Search for the required domain.
+4. Register `devsecurity.shop`.
+5. Verify that the domain status is **Active**.
+6. Confirm that the domain is available in the Hostinger domain management section.
 
-<!-- Screenshot: Cloudflare domain registration / domain overview -->
+### Domain Information
+
+```text
+Domain:
+devsecurity.shop
+
+Registrar:
+Hostinger
+
+Status:
+Active
+```
+
+<!-- Screenshot: Hostinger domain overview -->
 
 ---
 
 ## 3.2 Create Route 53 Hosted Zone
 
-Create a public hosted zone in AWS Route 53 for the registered domain.
+AWS Route 53 is used to manage the DNS records for the domain.
 
 ### Steps
 
@@ -148,13 +162,13 @@ Create a public hosted zone in AWS Route 53 for the registered domain.
 5. Enter:
 
 ```text
-sohandogra.com
+devsecurity.shop
 ```
 
 6. Select **Public hosted zone**.
 7. Click **Create hosted zone**.
 
-Route 53 creates the hosted zone along with NS and SOA records.
+Route 53 creates the hosted zone with the required NS and SOA records.
 
 <!-- Screenshot: Route 53 hosted zone -->
 
@@ -162,25 +176,26 @@ Route 53 creates the hosted zone along with NS and SOA records.
 
 ## 3.3 Configure Name Servers / Delegation
 
-Since the domain is registered through Cloudflare and DNS is managed through Route 53, the Route 53 name servers need to be configured for DNS delegation.
+Since the domain is registered through Hostinger and DNS is managed using Route 53, the Route 53 name servers need to be configured in Hostinger.
 
 ### Steps
 
 1. Open the Route 53 hosted zone.
 2. Locate the **NS record**.
-3. Copy the four Route 53 name servers.
-4. Open the domain DNS/name-server settings in Cloudflare.
-5. Configure the Route 53 name servers.
-6. Save the changes.
+3. Copy the Route 53 name servers.
+4. Open Hostinger.
+5. Open the DNS or nameserver settings for `devsecurity.shop`.
+6. Replace the existing nameservers with the Route 53 nameservers.
+7. Save the changes.
 
 ### Delegation Flow
 
 ```text
-Cloudflare
+Hostinger
     |
     | Domain Registration
     v
-sohandogra.com
+devsecurity.shop
     |
     | DNS Delegation
     v
@@ -189,61 +204,48 @@ AWS Route 53
 
 <!-- Screenshot: Route 53 NS records -->
 
-<!-- Screenshot: Cloudflare name-server configuration -->
+<!-- Screenshot: Hostinger nameserver configuration -->
 
 ---
 
 # 4. DNS Configuration
 
-## 4.1 Create Subdomain
+## 4.1 Configure Domain
 
-The frontend application is accessed using:
-
-```text
-ritu.sohandogra.com
-```
-
-The subdomain label is:
+The frontend application will be accessed directly using:
 
 ```text
-ritu
+devsecurity.shop
 ```
 
-The registered domain is:
+No separate application subdomain is used in this POC.
+
+The domain is mapped directly to the EC2 public IP.
 
 ```text
-sohandogra.com
+devsecurity.shop
+        |
+        v
+EC2 Public IP
 ```
-
-Therefore:
-
-```text
-sohandogra.com
-      |
-      +---- ritu.sohandogra.com
-```
-
-This subdomain will be mapped to the EC2 public IP.
-
-<!-- Screenshot: Route 53 hosted zone -->
 
 ---
 
 ## 4.2 Create A Record
 
-An A record maps a hostname to an IPv4 address.
+An A record maps a domain name to an IPv4 address.
 
 Create an A record for:
 
 ```text
-ritu.sohandogra.com
+devsecurity.shop
 ```
 
 ### Record Configuration
 
 | Configuration | Value |
 |---|---|
-| Record Name | `ritu` |
+| Record Name | `@` |
 | Record Type | `A` |
 | Routing Policy | `Simple` |
 | Alias | `No` |
@@ -252,11 +254,16 @@ ritu.sohandogra.com
 
 ### Steps
 
-1. Open the Route 53 hosted zone for `sohandogra.com`.
+1. Open the Route 53 hosted zone for `devsecurity.shop`.
 2. Click **Create record**.
-3. Enter `ritu` as the record name.
+3. Keep the record name empty for the root domain.
 4. Select record type `A`.
-5. Enter `3.110.201.212` as the value.
+5. Enter:
+
+```text
+3.110.201.212
+```
+
 6. Set TTL to `60` seconds.
 7. Click **Create records**.
 
@@ -266,10 +273,10 @@ ritu.sohandogra.com
 
 ## 4.3 Point A Record to EC2 Public IP
 
-The A record maps the subdomain to the public IP of the EC2 instance.
+The A record connects the domain with the EC2 instance.
 
 ```text
-ritu.sohandogra.com
+devsecurity.shop
         |
         | A Record
         v
@@ -279,23 +286,21 @@ ritu.sohandogra.com
 EC2 Instance: ot-poc
 ```
 
-When the user accesses:
+When a user accesses:
 
 ```text
-http://ritu.sohandogra.com
+http://devsecurity.shop
 ```
 
-DNS resolves the hostname to the EC2 public IP.
-
-<!-- Screenshot: Route 53 A record -->
+DNS resolves the domain to the EC2 public IP.
 
 ---
 
 # 5. Configure Domain on Application
 
-After configuring DNS, NGINX must be configured to respond to the domain.
+After configuring DNS, NGINX needs to be configured to respond to the domain.
 
-The frontend is already hosted on the EC2 instance.
+The frontend application is already hosted on the EC2 instance.
 
 NGINX serves the existing frontend build.
 
@@ -314,7 +319,7 @@ Configure the server block:
 ```nginx
 server {
     listen 80;
-    server_name ritu.sohandogra.com;
+    server_name devsecurity.shop;
 
     root /home/ubuntu/frontend/build;
     index index.html;
@@ -328,10 +333,10 @@ server {
 The important directive is:
 
 ```nginx
-server_name ritu.sohandogra.com;
+server_name devsecurity.shop;
 ```
 
-This tells NGINX to handle requests for the configured domain.
+This tells NGINX to handle requests received for `devsecurity.shop`.
 
 The frontend is served from:
 
@@ -343,7 +348,7 @@ The frontend is served from:
 
 ---
 
-## 5.2 Configure Frontend
+## 5.2 Verify Frontend
 
 The frontend application is already available on the EC2 instance.
 
@@ -362,7 +367,7 @@ index.html
 The application flow is:
 
 ```text
-ritu.sohandogra.com
+devsecurity.shop
         |
         v
 NGINX
@@ -374,7 +379,7 @@ NGINX
 index.html
         |
         v
-React Frontend
+Frontend Application
 ```
 
 <!-- Screenshot: Frontend build directory -->
@@ -431,7 +436,7 @@ After configuring the A record and NGINX, verify DNS resolution and application 
 Run:
 
 ```bash
-nslookup ritu.sohandogra.com
+nslookup devsecurity.shop
 ```
 
 The result should contain:
@@ -443,14 +448,14 @@ The result should contain:
 ### Expected Result
 
 ```text
-Name:    ritu.sohandogra.com
+Name:    devsecurity.shop
 Address: 3.110.201.212
 ```
 
-This confirms that the subdomain resolves to the EC2 public IP.
+This confirms that the domain resolves to the EC2 public IP.
 
 ```text
-ritu.sohandogra.com
+devsecurity.shop
         |
         v
 3.110.201.212
@@ -465,7 +470,7 @@ ritu.sohandogra.com
 Open the following URL in a browser:
 
 ```text
-http://ritu.sohandogra.com
+http://devsecurity.shop
 ```
 
 The browser resolves the domain through DNS and sends the request to the EC2 instance.
@@ -477,7 +482,7 @@ NGINX receives the request and serves the frontend application.
 ```text
 User Browser
      |
-     | http://ritu.sohandogra.com
+     | http://devsecurity.shop
      v
 AWS Route 53
      |
@@ -492,7 +497,7 @@ AWS EC2
 NGINX
      |
      v
-React Frontend
+Frontend Application
 ```
 
 ### Expected Result
@@ -500,12 +505,12 @@ React Frontend
 The frontend application opens successfully through:
 
 ```text
-http://ritu.sohandogra.com
+http://devsecurity.shop
 ```
 
 <!-- Screenshot: Application dashboard using domain -->
 
-<!-- Screenshot: Browser address bar showing ritu.sohandogra.com -->
+<!-- Screenshot: Browser address bar showing devsecurity.shop -->
 
 ---
 
@@ -513,20 +518,88 @@ http://ritu.sohandogra.com
 
 The POC was completed successfully.
 
-The domain `sohandogra.com` was registered through Cloudflare and DNS management was configured using AWS Route 53.
-
-The subdomain:
+The domain:
 
 ```text
-ritu.sohandogra.com
+devsecurity.shop
 ```
 
-was configured with an A record pointing to the EC2 public IP:
+was registered through Hostinger.
+
+AWS Route 53 was configured for DNS management.
+
+The root domain was configured with an A record pointing to the EC2 public IP:
 
 ```text
 3.110.201.212
 ```
 
-NGINX was configured with the same domain using the `server_name` directive.
+NGINX was configured with the domain using the `server_name` directive.
 
-DNS resolution was verified
+DNS resolution was verified using `nslookup`, and the frontend application was successfully accessed using the custom domain.
+
+### Final Architecture
+
+```text
+                    Hostinger
+                Domain Registration
+                         |
+                         v
+                  devsecurity.shop
+                         |
+                  DNS Delegation
+                         |
+                         v
+                   AWS Route 53
+                         |
+                      A Record
+                         |
+                         v
+                  3.110.201.212
+                         |
+                         v
+                    AWS EC2
+                    ot-poc
+                         |
+                         v
+                      NGINX
+                         |
+                         v
+                Frontend Application
+```
+
+### Final Configuration
+
+| Component | Configuration |
+|---|---|
+| Registered Domain | `devsecurity.shop` |
+| Domain Registrar | Hostinger |
+| DNS Management | AWS Route 53 |
+| DNS Record | A |
+| Record Name | `@` |
+| EC2 Public IP | `3.110.201.212` |
+| Web Server | NGINX |
+| Application | Frontend Application |
+| Application URL | `http://devsecurity.shop` |
+
+---
+
+# 8. Contact Information
+
+| Name | Email Address |
+|---|---|
+| Ritu | ritu.dogra.snaatak@mygurukulam.com |
+
+---
+
+# 9. References
+
+| Reference | Description |
+|---|---|
+| AWS Route 53 Documentation | AWS DNS service documentation |
+| Hostinger Documentation | Domain and DNS management documentation |
+| NGINX Documentation | NGINX configuration reference |
+| DNS Basics | DNS concepts and working |
+| OT-Microservices Frontend | Frontend source repository |
+
+---
