@@ -49,30 +49,6 @@ The frontend application is already hosted on an EC2 instance using NGINX.
 
 The domain `devsecurity.shop` is mapped directly to the EC2 public IP using an A record.
 
-### Final Flow
-
-```text
-User Browser
-     |
-     v
-devsecurity.shop
-     |
-     v
-AWS Route 53
-     |
-     v
-A Record
-     |
-     v
-EC2 Public IP
-     |
-     v
-NGINX
-     |
-     v
-Frontend Application
-```
-
 ---
 
 # 2. Prerequisites
@@ -103,9 +79,9 @@ Frontend Application
 
 ### Registered Domain Status
 
-| Domain Name | Status | Expiration Date | Auto-Renewal |
+| Domain Name | Status | Expiration Date |  
 |---|---|---|---|
-| `devsecurity.shop` | Active | As shown in Hostinger | As configured in Hostinger |
+| `devsecurity.shop` | Active | 2027-09-15 | 
 
 ---
 
@@ -115,7 +91,7 @@ Frontend Application
 
 A domain is required to provide a custom hostname for the frontend application.
 
-For this POC, the domain is:
+ The domain is:
 
 ```text
 devsecurity.shop
@@ -500,93 +476,19 @@ NGINX
 Frontend Application
 ```
 
-### Expected Result
+# 7. Conclusion
 
-The frontend application opens successfully through:
+This POC successfully configured the custom domain `devsecurity.shop` for the frontend application.  
+The domain was registered through Hostinger and DNS was managed using AWS Route 53.  
+An A record was configured to point the domain to the EC2 public IP.  
+NGINX was configured to serve the frontend using the custom domain.  
+The application was successfully accessed and verified using `http://devsecurity.shop`.
 
-```text
-http://devsecurity.shop
-```
 
-<!-- Screenshot: Application dashboard using domain -->
-
-<!-- Screenshot: Browser address bar showing devsecurity.shop -->
-
----
-
-# 7. POC Result
-
-The POC was completed successfully.
-
-The domain:
-
-```text
-devsecurity.shop
-```
-
-was registered through Hostinger.
-
-AWS Route 53 was configured for DNS management.
-
-The root domain was configured with an A record pointing to the EC2 public IP:
-
-```text
-3.110.201.212
-```
-
-NGINX was configured with the domain using the `server_name` directive.
-
-DNS resolution was verified using `nslookup`, and the frontend application was successfully accessed using the custom domain.
-
-### Final Architecture
-
-```text
-                    Hostinger
-                Domain Registration
-                         |
-                         v
-                  devsecurity.shop
-                         |
-                  DNS Delegation
-                         |
-                         v
-                   AWS Route 53
-                         |
-                      A Record
-                         |
-                         v
-                  3.110.201.212
-                         |
-                         v
-                    AWS EC2
-                    ot-poc
-                         |
-                         v
-                      NGINX
-                         |
-                         v
-                Frontend Application
-```
-
-### Final Configuration
-
-| Component | Configuration |
-|---|---|
-| Registered Domain | `devsecurity.shop` |
-| Domain Registrar | Hostinger |
-| DNS Management | AWS Route 53 |
-| DNS Record | A |
-| Record Name | `@` |
-| EC2 Public IP | `3.110.201.212` |
-| Web Server | NGINX |
-| Application | Frontend Application |
-| Application URL | `http://devsecurity.shop` |
-
----
 
 # 8. Contact Information
 
-| Name | Email Address |
+| Name | Email Address | 
 |---|---|
 | Ritu | ritu.dogra.snaatak@mygurukulam.com |
 
