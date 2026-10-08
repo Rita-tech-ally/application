@@ -98,3 +98,35 @@ Iska matlab hai ki architecture me **Instant Welcome Emails** bhejne ke liye Fro
 ### Fayda kya hua iska?
 
 ScyllaDB data ko permanently safe rakhne ke liye best hai, lekin usme se hazaron emails search karna slow ho sakta hai. Elasticsearch specially **fast searching** ke liye hi bana hai. Data ko sync karke Elasticsearch me rakhne se Notification Worker milliseconds me hazaron emails nikal kar mails bhej sakta hai, bina main Employee database ko slow kiye.
+
+
+
+### Logstash Tool Kaise Kaam Karta Hai?
+
+Logstash ek **"Data Bridge"** ya **"Postman"** ki tarah kaam karta hai. Iska main kaam ek jagah se data uthana, use thoda saaf ya format karna, aur doosri jagah bhej dena hai. Is poore process ko tech ki bhasha me **ETL (Extract, Transform, Load)** kehte hain.
+
+Isko OT-Microservices ke example se samajhiye:
+
+### The 3-Step Pipeline (Input → Filter → Output)
+
+Logstash ka kaam karne ka tareeka in 3 main steps par based hota hai:
+
+1. **Input (Data Extract Karna):**  
+   Logstash source se data read karta hai. OT-Microservices ke example me, jab Employee API naya employee add karti hai, toh synchronization pipeline us naye record ko Logstash tak pahunchati hai.
+
+2. **Filter (Data Transform Karna):**  
+   Logstash data ko process karta hai. Jaise agar hume sirf `email_id` aur `name` chahiye, toh Logstash required fields ko filter karke data ko Elasticsearch ke liye suitable JSON format me prepare kar sakta hai.
+
+3. **Output (Data Load Karna):**  
+   Finally, Logstash processed data ko **Elasticsearch** ke `employee-management` index me push karta hai. Uske baad Notification Worker Elasticsearch se required employee emails read karke notifications send kar sakta hai.
+
+### Lekin Ek Catch Hai — Logstash Ki Zaroorat Kyun Padi?
+
+Aap soch sakte hain ki Notification Worker seedha ScyllaDB se emails kyun nahi nikal leta? Beech me Logstash kyun lagaya?
+
+- **The Problem:** Agar Notification Worker baar-baar primary database se large search queries kare, toh database par additional load aa sakta hai aur application performance affect ho sakti hai.
+- **The Solution:** Elasticsearch searching aur filtering ke liye optimized hai. Logstash source data ko Elasticsearch me synchronize karta rehta hai. Isse Notification Worker search-related work ke liye Elasticsearch ko use kar sakta hai aur primary database par unnecessary read load kam ho jata hai.
+
+**Simple Flow:**
+
+`ScyllaDB → Logstash → Elasticsearch → Notification Worker → Email`
