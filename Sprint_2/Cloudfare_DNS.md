@@ -54,6 +54,8 @@ The domain `devsecurity.shop` is mapped directly to the EC2 public IP using an A
 | SSH access | NGINX configuration |
 | Internet access | DNS and application validation |
 
+<img width="1593" height="583" alt="Screenshot from 2026-10-09 02-05-59" src="https://github.com/user-attachments/assets/12074397-1978-4731-8958-2850728fc88d" />
+
 ### Domain Details
 
 | Configuration | Value |
