@@ -97,20 +97,7 @@ The domain was registered through Hostinger.
 5. Verify that the domain status is **Active**.
 6. Confirm that the domain is available in the Hostinger domain management section.
 
-### Domain Information
-
-```text
-Domain:
-devsecurity.shop
-
-Registrar:
-Hostinger
-
-Status:
-Active
-```
-
-<!-- Screenshot: Hostinger domain overview -->
+<img width="1202" height="252" alt="Screenshot from 2026-10-09 01-38-00" src="https://github.com/user-attachments/assets/09077a08-a184-446c-a3d9-3435beea7d09" />
 
 ---
 
@@ -135,7 +122,7 @@ devsecurity.shop
 
 Route 53 creates the hosted zone with the required NS and SOA records.
 
-<!-- Screenshot: Route 53 hosted zone -->
+<img width="1534" height="153" alt="Screenshot from 2026-10-09 01-40-14" src="https://github.com/user-attachments/assets/7932aa55-8643-4ccd-812b-7be606eea350" />
 
 ---
 
@@ -153,48 +140,16 @@ Since the domain is registered through Hostinger and DNS is managed using Route 
 6. Replace the existing nameservers with the Route 53 nameservers.
 7. Save the changes.
 
-### Delegation Flow
 
-```text
-Hostinger
-    |
-    | Domain Registration
-    v
-devsecurity.shop
-    |
-    | DNS Delegation
-    v
-AWS Route 53
-```
 
-<!-- Screenshot: Route 53 NS records -->
+<img width="1571" height="363" alt="Screenshot from 2026-10-09 01-41-10" src="https://github.com/user-attachments/assets/0eab5d88-4b88-4c42-a4d5-2a73a638fd9e" />
 
-<!-- Screenshot: Hostinger nameserver configuration -->
+<img width="1161" height="329" alt="Screenshot from 2026-10-09 01-41-41" src="https://github.com/user-attachments/assets/450791a4-b096-4de9-8497-bb03734d0ee1" />
+
 
 ---
 
 # 4. DNS Configuration
-
-## 4.1 Configure Domain
-
-The frontend application will be accessed directly using:
-
-```text
-devsecurity.shop
-```
-
-No separate application subdomain is used in this POC.
-
-The domain is mapped directly to the EC2 public IP.
-
-```text
-devsecurity.shop
-        |
-        v
-EC2 Public IP
-```
-
----
 
 ## 4.2 Create A Record
 
@@ -226,38 +181,13 @@ devsecurity.shop
 5. Enter:
 
 ```text
-3.110.201.212
+15.252.181.35
 ```
 
 6. Set TTL to `60` seconds.
 7. Click **Create records**.
 
-<!-- Screenshot: Route 53 Create A Record -->
-
----
-
-## 4.3 Point A Record to EC2 Public IP
-
-The A record connects the domain with the EC2 instance.
-
-```text
-devsecurity.shop
-        |
-        | A Record
-        v
-3.110.201.212
-        |
-        v
-EC2 Instance: ot-poc
-```
-
-When a user accesses:
-
-```text
-http://devsecurity.shop
-```
-
-DNS resolves the domain to the EC2 public IP.
+<img width="339" height="548" alt="Screenshot from 2026-10-09 01-42-43" src="https://github.com/user-attachments/assets/52085700-a7f1-4172-9a17-f2abd6bcfb84" />
 
 ---
 
@@ -323,12 +253,6 @@ Verify the existing frontend build:
 ls -la /home/ubuntu/frontend/build
 ```
 
-The build directory should contain:
-
-```text
-index.html
-```
-
 The application flow is:
 
 ```text
@@ -347,7 +271,8 @@ index.html
 Frontend Application
 ```
 
-<!-- Screenshot: Frontend build directory -->
+<img width="989" height="194" alt="Screenshot from 2026-10-09 01-57-45" src="https://github.com/user-attachments/assets/48bbaa41-672d-4767-bb7a-82f247d3cd59" />
+
 
 ---
 
@@ -358,35 +283,17 @@ Test the NGINX configuration:
 ```bash
 sudo nginx -t
 ```
+<img width="880" height="77" alt="image" src="https://github.com/user-attachments/assets/948a69d7-1f9c-4cc9-9844-1ed41eaa89b5" />
 
-### Expected Result
-
-```text
-syntax is ok
-test is successful
-```
 
 Reload NGINX:
 
 ```bash
 sudo systemctl reload nginx
-```
-
-Verify the service:
-
-```bash
 sudo systemctl status nginx
 ```
+<img width="1298" height="566" alt="Screenshot from 2026-10-09 02-00-51" src="https://github.com/user-attachments/assets/8f15dd1c-c686-48a7-9ea4-1be1d95ad846" />
 
-### Expected Result
-
-```text
-active (running)
-```
-
-<!-- Screenshot: nginx -t result -->
-
-<!-- Screenshot: NGINX service status -->
 
 ---
 
@@ -403,30 +310,8 @@ Run:
 ```bash
 nslookup devsecurity.shop
 ```
+<img width="1297" height="172" alt="Screenshot from 2026-10-09 02-01-35" src="https://github.com/user-attachments/assets/ccbf5f4c-1929-4b7f-89d2-5ce8b162a6eb" />
 
-The result should contain:
-
-```text
-3.110.201.212
-```
-
-### Expected Result
-
-```text
-Name:    devsecurity.shop
-Address: 3.110.201.212
-```
-
-This confirms that the domain resolves to the EC2 public IP.
-
-```text
-devsecurity.shop
-        |
-        v
-3.110.201.212
-```
-
-<!-- Screenshot: nslookup result -->
 
 ---
 
