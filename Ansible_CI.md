@@ -1,4 +1,4 @@
-# POC | Domain and DNS Setup for Frontend Application
+# DNS POC | Detailed Documentation
 
 <p align="center">
   <img width="90" height="auto" alt="dns-icon" src="https://img.icons8.com/fluency/96/domain.png" />
@@ -14,6 +14,7 @@
 | Vikas  | 29-09-2026 | v1.1    | Vikas           | 29-09-2026     | Deepak Kushwaha/Ayushi | Faisal/Mohit K | Mahesh Kumar/Varun |
 
 ---
+
 # Table of Contents
 
 1. [Introduction](#1-introduction)
