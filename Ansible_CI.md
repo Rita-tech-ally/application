@@ -118,7 +118,7 @@ An existing EC2 instance was used to host the frontend application. Creating the
 |---|---|
 | **Domain** | `devsecurity.shop` |
 | **EC2 Public IP (documented)** | `15.252.181.35` |
-| **Web Server** | NGINX** |
+| **Web Server** | NGINX |
 | **Frontend Build Path** | `/home/ubuntu/frontend/build` |
 | **HTTP URL** | [http://devsecurity.shop](http://devsecurity.shop) |
 
