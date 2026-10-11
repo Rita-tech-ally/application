@@ -205,3 +205,22 @@ Aapka React frontend bahut gracefully react karega. Dashboard par Employee Profi
 ## Interview Summary: Python as an Interpreted Language
 
 "Python ek interpreted language hai kyunki iska execution line-by-line hota hai. Code pehle platform-independent bytecode me convert hota hai, aur fir Python Virtual Machine (PVM) us bytecode ko runtime par machine code me interpret karke execute karti hai, jiske karan ye compiled languages (jaise Go) se slow hoti hai par developer-friendly hoti hai."
+
+# Python Execution, Compiler vs Interpreter, and Database Drivers
+
+## Interview ke liye "The Architect Answer"
+
+"Sir/Ma'am, technically Python purely interpreted nahi hai, ye **Compiled aur Interpreted ka mixture** hai. Jab hum script run karte hain, toh Python pehle source code ko automatically ek intermediate 'Bytecode' (`.pyc`) me compile karta hai, aur uske baad Python Virtual Machine (PVM) us bytecode ko runtime par line-by-line interpret karti hai."
+
+## Compiler vs Interpreter
+
+| **Feature** | **Compiler** | **Interpreter** |
+|---|---|---|
+| **Execution Style** | Poore code ko ek hi baar (bulk) me scan karta hai aur translate karta hai. | Code ko line-by-line padhta hai aur turant execute karta hai. |
+| **Speed** | Runtime par bahut fast hota hai kyunki translation pehle hi ho chuka hota hai. | Runtime par slow hota hai kyunki execution ke sath-sath translation (translation-on-the-fly) chal raha hota hai. |
+| **Error Handling (Debugging)** | Saare errors ek sath end me dikhata hai. Agar 10 errors hain, toh poora scan hone ke baad hi pata chalega. | Jaise hi kisi line me error aata hai, ye wahi ruk jata hai. Isliye line-by-line debugging aasan hoti hai. |
+| **Output File** | Ek binary executable file (`.exe` ya machine code) generate karta hai jise aap bina compiler ke bhi run kar sakte hain. | Koi standalone executable file generate nahi karta. Ise run karne ke liye hamesha interpreter ki zaroorat padti hai. |
+| **Memory (RAM)** | Memory zyada leta hai kyunki poore program ka object/machine code RAM me load hota hai. | Memory kam leta hai kyunki ek baar me sirf ek line ka code process hota hai. |
+| **Best Examples** | C, C++, Golang (Employee API), Rust. | JavaScript, Ruby, PHP. |
+
+## 1. Go
