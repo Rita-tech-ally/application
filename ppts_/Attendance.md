@@ -107,3 +107,24 @@ Example ke liye, agar aap XML me `<dropTable>` likhte hain, toh Liquibase ko aut
 - kaunse columns the,
 - unke data types kya the,
 - constraints kya the,
+
+
+# Why PostgreSQL Was Chosen for the Attendance API
+
+## Aapka Jawab (Interview Answer)
+
+"Sir/Ma'am, maine Attendance API ke liye PostgreSQL isliye chuna kyunki **Attendance ka data transactional, time-dependent aur purely relational hota hai**, jiske liye NoSQL (jaise ScyllaDB) theek nahi hai. Iske 4 main reasons hain:
+
+### 1. Complex Reporting aur Math (Aggregations)
+
+ScyllaDB me simple 'Read/Write' bahut fast hota hai, par jab mujhe aisi queries chalani hon—*'Pichle 6 mahine me kis employee ne kitni chhutti li?'* ya *'Aaj total kitne log 9 baje se pehle aaye?'*—toh isme complex filtering, `GROUP BY`, aur counting ki zaroorat hoti hai. PostgreSQL (SQL) in mathematical queries aur aggregations ke liye champion hai.
+
+### 2. Date aur Time Functions
+
+Attendance poora khel Dates aur Times ka hai (In-time, Out-time, Duration). PostgreSQL ke paas industry me sabse best inbuilt Date/Time functions hain. Timezones handle karna, do dates ke beech ka difference (working hours) nikalna SQL me ek line ka code hai, jabki NoSQL me ye saara logic mujhe Python code me likhna padta.
+
+### 3. ACID Compliance (Strict Rules)
+
+Attendance system me 'Data Integrity' speed se zyada zaroori hai. Agar ek employee galti se do baar 'Mark Attendance' button daba de, toh PostgreSQL ka **ACID (Isolation aur Consistency)** rule turant duplicate entry ko rok dega aur database ko corrupt hone se bacha lega.
+
+### 4.
