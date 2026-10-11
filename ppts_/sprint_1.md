@@ -191,3 +191,33 @@ Routes batate hain **kaunsa URL kaunse handler function ko call karega**. `route
 ```
 Request → Middleware (Recovery, Logging, Metrics) → Route match → Handler → Response
 ```
+
+### `go.mod` Me Replace Directive Kya Karta Hai?
+
+**One-liner:** `go.mod` me `replace` directive ka matlab hai: *“Jab bhi code `gocql` driver use kare, toh original module ki jagah ScyllaDB wala fork use karo.”*
+
+```go
+replace github.com/gocql/gocql => github.com/scylladb/gocql v1.10.0
+```
+
+### Simple Matlab
+
+- **`github.com/gocql/gocql`:** Cassandra-compatible Go driver hai, jo Cassandra aur ScyllaDB ke saath kaam kar sakta hai.
+- **`github.com/scylladb/gocql`:** `gocql` driver ka ScyllaDB-maintained fork hai, jisme ScyllaDB-specific optimizations ho sakti hain.
+- **`replace` directive:** Go build ko batata hai ki original module ki jagah specified fork aur version use karna hai.
+
+### Example
+
+Code me import statement pehle jaisa hi reh sakta hai:
+
+```go
+import "github.com/gocql/gocql"
+```
+
+Lekin `go.mod` ke `replace` directive ki wajah se Go is module ke liye `github.com/scylladb/gocql` ka `v1.10.0` version use karega.
+
+**Simple Flow:**
+
+`Code Import → go.mod Replace Directive → ScyllaDB Fork (v1.10.0)`
+
+**Note:** `replace` directive module ko substitute karta hai. Sirf is line se shard-aware connections ya token-aware routing jaise features automatically enable hone ki guarantee nahi hoti; ye driver implementation aur configuration par depend karte hain.
