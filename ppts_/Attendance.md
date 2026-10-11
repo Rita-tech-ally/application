@@ -125,6 +125,14 @@ Attendance poora khel Dates aur Times ka hai (In-time, Out-time, Duration). Post
 
 ### 3. ACID Compliance (Strict Rules)
 
-Attendance system me 'Data Integrity' speed se zyada zaroori hai. Agar ek employee galti se do baar 'Mark Attendance' button daba de, toh PostgreSQL ka **ACID (Isolation aur Consistency)** rule turant duplicate entry ko rok dega aur database ko corrupt hone se bacha lega.
+Attendance system me 'Data Integrity' speed se zyada zaroori hai. Agar ek employee galti se do baar 'Mark Attendance' button daba de, toh PostgreSQL ka **ACID (Isolation aur Consistency)** rule turant duplicate entry ko rok dega aur database ko corrupt hone se bacha lega
 
-### 4.
+### Interview ke liye "The Perfect Answer"
+
+Agar interviewer aapse pooche: *"Kya hum Attendance ke liye bhi ScyllaDB use kar sakte the?"*
+
+**Aapka Jawab:**
+
+"Haan Sir/Ma'am, hum bilkul kar sakte the. Lekin agar hum Attendance ke liye ScyllaDB use karte, toh humein API layer (Python) me bahut saara extra logic likhna padta—jaise manual duplicate checking aur report aggregations—kyunki ScyllaDB me Joins aur complex SQL functions nahi hote.
+
+PostgreSQL use karne ka fayda ye hua ki data strictness (ACID) aur complex reporting ka saara load database ne khud utha liya, aur humari Python API ekdum lightweight aur fast rahi. Isliye humne **'Polyglot Architecture'** chuna—taki right tool for the right job use ho sake."
