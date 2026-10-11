@@ -166,3 +166,19 @@ Jab frontend se koi request aati hai (jaise "Employee 123 ki details dikhao"), t
 Aapke alag-alag microservices me Redis ka use aur uski Expiry (TTL) alag tareeke se set ki gayi hai:
 
 - **Employee API (Golang):** Yahan Redis me data save karne ke liye `HSet` (Hash) command ka
+
+## Redis Caching in OT-Microservices
+
+### 1. Employee API (Golang)
+
+Sahi bola. Yahan aapka **API Handler** manually Redis client ko call karta hai (jaise `client.HSet(...)`) aur data daalta hai.
+
+### 2. Attendance API (Python/Flask)
+
+Sahi bola. Yahan bhi aapka **Flask ka route function** manually Redis se connect karke cache set karta hai.
+
+### 3. Salary API (Java/Spring Boot)
+
+Yahan ye kaam **Spring Boot Framework** karta hai. Aapko manually handler me kuch nahi likhna padta, bas function ke upar `@Cacheable` laga diya, aur Spring Boot ka internal proxy (guard) background me apne aap Redis me data daal deta hai.
+
+### Technical
