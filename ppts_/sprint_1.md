@@ -107,3 +107,87 @@ Ye step is liye manual rakha gaya hai kyunki replication settings **environment 
 4. Dono ko combine karke ScyllaDB me jata hai
         ↓
 5. SCHEMA CREATE ho jata hai (table ban jati hai)
+
+## Build Process
+
+1. **`go mod tidy`** — dependencies ko sync karta hai (missing packages download, unused remove)
+
+   Example:
+   - Pehle: code me `go-redis` import hai, lekin `go.mod` me nahi; `gorilla/mux` listed hai, lekin use nahi ho raha
+   - Baad me: `go-redis` add ho gaya, `gorilla/mux` remove ho gaya
+
+2. **`make build`** — do steps execute karta hai:
+   - `go fmt ./...` — code ko standard Go format me arrange karta hai
+   - `go build -o employee-api` — saara Go source code compile karke ek single executable binary (`employee-api`) banata hai
+
+   **Kaun si files compile hoti hain:**
+
+   | Folder / File | Files | Kaam |
+   |---|---|---|
+   | `main.go` | `main.go` | Entry point, router aur server setup |
+   | `api/` | `api.go`, `health.go` | Request handlers (search, create, health) |
+   | `client/` | `redis.go`, `scylladb.go` | Redis aur ScyllaDB connection |
+   | `config/` | `viper.go` | `config.yaml` read karna |
+   | `middleware/` | `logging.go` | Request logging |
+   | `model/` | `config.go`, `employee.go`, `health.go` | Data structs |
+   | `routes/` | `routes.go` | Endpoints register karna |
+   | `docs/` | `docs.go` | Swagger documentation (auto-generated) |
+
+   Note: `*_test.go` files build me compile nahi hoti, ye sirf `go test` ke time chalti hain.
+
+   **`go.mod` / `go.sum` me jo dependencies use ho rahi hain:**
+
+   | Dependency | Kaam |
+   |---|---|
+   | `gin-gonic/gin` | REST API framework (routing, middleware) |
+   | `scylladb/gocql` (`gocql` ko replace karta hai) | ScyllaDB se connect hone ka driver |
+   | `redis/go-redis/v9` | Redis client (caching) |
+   | `spf13/viper` | `config.yaml` parse karna |
+   | `sirupsen/logrus` | JSON logging |
+   | `penglongli/gin-metrics` | `/metrics` endpoint (Prometheus) |
+   | `swaggo/swag`, `swaggo/gin-swagger`, `swaggo/files` | Swagger documentation aur UI |
+   | `stretchr/testify` | Sirf testing ke liye (binary me shamil nahi hota) |
+
+   - **`go.mod`** — in direct dependencies aur unke versions ki list
+   - **`go.sum`** — in sab dependencies (aur unki indirect dependencies) ka checksum, taaki downloaded code verify ho sake
+
+Build hone ke baad, binary ko directly run kiya ja sakta hai:
+```bash
+./employee-api
+```
+
+
+## Middleware and Routes
+
+### Middleware
+
+Middleware wo code hai jo **har request pe handler se pehle/baad automatically chalta hai**. `main.go` me ye register hote hain:
+
+| Middleware | Kaam |
+|---|---|
+| `gin-metrics` | `/metrics` endpoint banata hai (Prometheus monitoring ke liye) |
+| `gin.Recovery()` | Agar koi handler crash (panic) ho jaye, to poori application band nahi hoti, error response milta hai |
+| `LoggingMiddleware()` | Har request ka record rakhta hai (method, URL, status code, latency, client IP) JSON format me |
+
+### Routes
+
+Routes batate hain **kaunsa URL kaunse handler function ko call karega**. `routes.go` me:
+
+- Base path `/api/v1` ke andar `/employee` group banta hai
+- Har endpoint ek handler (`api.go`, `health.go`) se map hota hai
+
+| Route | Handler |
+|---|---|
+| `GET /api/v1/employee/health` | `HealthCheckAPI` |
+| `GET /api/v1/employee/health/detail` | `DetailedHealthCheckAPI` |
+| `POST /api/v1/employee/create` | `CreateEmployeeData` |
+| `GET /api/v1/employee/search` | `ReadEmployeeData` |
+| `GET /api/v1/employee/search/all` | `ReadCompleteEmployeesData` |
+| `GET /api/v1/employee/search/location` | `ReadEmployeesLocation` |
+| `GET /api/v1/employee/search/designation` | `ReadEmployeesDesignation` |
+
+### Flow
+
+```
+Request → Middleware (Recovery, Logging, Metrics) → Route match → Handler → Response
+```
