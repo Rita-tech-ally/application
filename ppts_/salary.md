@@ -102,3 +102,6 @@ wapas bhejte hain. Lekin technically, Tomcat ek heavy Servlet Container hai jo O
 
 
 "Java ka Tomcat OS Threads (Thread-per-request model) use karta hai. Ek OS thread bhari (heavyweight) hota hai aur ~1MB RAM leta hai. Isliye heavy traffic aane par Tomcat slow ho jata hai ya memory full ho jati hai.Jabki Golang Goroutines use karta hai jo bahut lightweight hote hain (~2KB RAM). Go me Go-scheduler un hazaron goroutines ko kuch OS threads ke upar efficiently run karta hai, jisse wo same hardware par hazaron-lakhon requests bina crash hue handle kar leta hai."
+
+## Salary API (Java): Salary calculate karna sirf data read/write karna nahi hai. Isme Tax (TDS), PF deductions, leaves, aur complex 
+financial formulas hote hain. Paison ke mamle me humein "Raw Speed" se zyada "100% Accuracy aur Security" chahiye. Java ek highly strict (strongly typed) language hai jo aisi complex calculations ko bina kisi galti ke handle karne ke liye banayi gayi hai.
