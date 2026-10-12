@@ -95,3 +95,10 @@ Spring Boot itself is not a web server; it is a framework that structures your c
 The major innovation of Spring Boot is that it provides an embedded web server. In the past, developers had to manually install a standalone web server (like Tomcat), package their application into a WAR (Web Application Archive) file, and deploy it to that server. Spring Boot revolutionized this by embedding the server directly into the application. When you run a Spring Boot app, the embedded server starts automatically and hosts the application.
 
 Apache Tomcat is the default embedded server in Spring Boot. It is used because it is a highly reliable, widely adopted, and robust servlet container. It manages TCP connections, handles network I/O, and uses a thread pool to process incoming HTTP requests efficiently.
+
+# Interview ke liye Short Summary:
+"Sir/Ma'am, concept wise dono same hain. Dono APIs ke liye HTTP Requests ko receive karke JSON response 
+wapas bhejte hain. Lekin technically, Tomcat ek heavy Servlet Container hai jo OS threads use karta hai. Jabki Gin ek lightweight web framework hai jo Go ke inbuilt net/http server aur fast Goroutines ka use karke requests handle karta hai."
+
+
+"Java ka Tomcat OS Threads (Thread-per-request model) use karta hai. Ek OS thread bhari (heavyweight) hota hai aur ~1MB RAM leta hai. Isliye heavy traffic aane par Tomcat slow ho jata hai ya memory full ho jati hai.Jabki Golang Goroutines use karta hai jo bahut lightweight hote hain (~2KB RAM). Go me Go-scheduler un hazaron goroutines ko kuch OS threads ke upar efficiently run karta hai, jisse wo same hardware par hazaron-lakhon requests bina crash hue handle kar leta hai."
