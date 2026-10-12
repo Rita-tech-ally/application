@@ -87,3 +87,23 @@ Logstash purely **Centralized Logging (System Monitoring)** ke liye use hota hai
 **Simple Flow (Business Data):** `Frontend → Go API → (Dual-Write) → ScyllaDB & Elasticsearch → Notification Worker → Email`
 
 **Simple Flow (System Logs/Errors):** `Go/Java/Python API (Console Logs) → Logstash → Elasticsearch → Kibana (Dashboard)`
+
+# Notification Worker: Important Notes
+
+### 1. Data Sirf Employee API se jata hai, Salary se nahi
+
+- **Kyun?** Notification bhejne ke liye sabse zaroori cheez hai `email_id`. Jab koi naya employee company me aata hai, toh uska profile aur email sirf **Employee API** create karti hai.
+- **Salary API ka Role:** Salary API ka kaam sirf math (calculation) karna aur tax/PF kaatna hai. Wo naye users create nahi karti.
+- **Conclusion:** Elasticsearch me naya data daalne (Dual-Write) ki zimmedari sirf aur sirf Employee API ki hai.
+
+### 2. Full Stack (DB + ES + APIs) ka UP hona zaroori hai
+
+Microservices akele (standalone) theek se kaam nahi kar sakti agar unke databases down hon.
+
+- **Agar sirf Employee API chalai (ES down hai):** Toh data ScyllaDB me toh save ho jayega, par Elasticsearch me daalte waqt error aayega (Dual-Write Fail). Notification Worker ko wo banda kabhi nahi milega.
+- **Agar sirf Notification Worker chalaya (ES down hai):** Toh script Elasticsearch se connect nahi kar payegi aur crash ho jayegi.
+- **Conclusion:** Poora data flow tabhi complete hota hai jab parde ke peeche ka infra (ScyllaDB aur Elasticsearch) aur dono APIs ek sath (Full Stack) run ho rahe hon.
+
+### Aapke Notes (Diary) ke liye ek "Golden Quote"
+
+> *"Notification Worker ek 'Dumb Reader' hai jo sirf time aane par email bhejta hai. Data ko dual-write karne ka asli Master **Employee API** hai, aur ye poora flow tabhi chalta hai jab poora architecture ek sath UP ho."
