@@ -208,3 +208,11 @@ Kuch saal pehle tak ScyllaDB Python 2 use karta tha. Lekin 2020 me Python 2 offi
 ## 4. Interview ke liye "The Architect Answer"
 
 "Sir/Ma'am, ScyllaDB ka core data-plane (read/write engine) strictly **C++** me bana hai maximum speed ke liye. Lekin uska control-plane (installation, `scylla_setup` hardware tuning, aur `nodetool` management scripts) **Python 3** me likha gaya hai. C++ system management ke liye bahut complex ho jata hai, isliye unhone DevOps automation aur ease-of-use ke liye Python 3 ka use kiya hai."
+
+# wget vs curl in DevOps
+
+`wget` ek **"Download Manager"** hai, jabki `curl` ek **"API Tester"** (Data Messenger) hai.
+
+| **Feature** | **wget (The Downloader)** | **curl (The API Master)** |
+|---|---|---|
+| **Main Kaam** | Files ko internet se download karke save karna. | APIs se baat karna (requests bhejna aur response de
