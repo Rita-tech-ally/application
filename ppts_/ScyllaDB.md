@@ -181,4 +181,30 @@ Sahi bola. Yahan bhi aapka **Flask ka route function** manually Redis se connect
 
 Yahan ye kaam **Spring Boot Framework** karta hai. Aapko manually handler me kuch nahi likhna padta, bas function ke upar `@Cacheable` laga diya, aur Spring Boot ka internal proxy (guard) background me apne aap Redis me data daal deta hai.
 
-### Technical
+# Why Does ScyllaDB Use Python 3 If Its Core Engine Is Written in C++?
+
+Ye ek bahut hi sharp DevOps question hai! Aksar log confuse ho jate hain ki: *"Agar ScyllaDB C++ me bana hai taaki wo lightning-fast chal sake, toh isme Python ka kya kaam?"*
+
+Iska jawab system architecture ke **"Separation of Concerns" (kaam ka batwara)** me chupa hai.
+
+Aaiye dekhte hain ki ScyllaDB ko install karte waqt Python 3 ki zaroorat kyun padti hai:
+
+## 1. The Core Engine vs. The Helpers
+
+Sabse pehle ye clear kar lijiye ki ScyllaDB ka **asli database engine (jo data read/write karta hai) 100% C++ me hi likha hai**. Usme Python ka zero use hai. Lekin, database ke aas-paas jo "Helper Tools" aur "Management Scripts" hote hain, unhe banane ke liye ScyllaDB walo ne Python ka use kiya hai kyunki Python me scripting aur automation likhna aasan hota hai.
+
+## 2. Python 3 Kis Kaam Aata Hai?
+
+Jab aap ScyllaDB install karte hain, toh Python 3 in 3 main kaamo ke liye use hota hai:
+
+- **`scylla_setup` (Hardware Tuning):** Install hone ke baad ScyllaDB aapke AWS EC2 server ka test leta hai (Disk speed, Network, CPU check karta hai) aur apne aap ko us hardware ke hisaab se tune kar leta hai. Ye poori tuning script Python me likhi gayi hai.
+- **`nodetool` aur Management:** Database ka backup lene, cluster ki health check karne, ya naye nodes add karne ke liye jo commands hum terminal me chalate hain, wo parde ke peeche Python scripts hi trigger karte hain.
+- **Error Reporting:** Agar database crash hota hai, toh uski report generate karke logs me properly dikhane ka kaam bhi Python scripts karti hain.
+
+## 3. Python 2 Kyun Nahi? (Python 3 Hi Kyun?)
+
+Kuch saal pehle tak ScyllaDB Python 2 use karta tha. Lekin 2020 me Python 2 officially dead (End of Life) ho gaya. Sath hi, jo modern Operating Systems hum use karte hain (jaise aapke POC me **Ubuntu 22.04**), unme default roop se Python 3 hi aata hai. Isliye ScyllaDB ne apne saare tools Python 3 me upgrade kar diye.
+
+## 4. Interview ke liye "The Architect Answer"
+
+"Sir/Ma'am, ScyllaDB ka core data-plane (read/write engine) strictly **C++** me bana hai maximum speed ke liye. Lekin uska control-plane (installation, `scylla_setup` hardware tuning, aur `nodetool` management scripts) **Python 3** me likha gaya hai. C++ system management ke liye bahut complex ho jata hai, isliye unhone DevOps automation aur ease-of-use ke liye Python 3 ka use kiya hai."
