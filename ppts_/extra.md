@@ -11,6 +11,13 @@ Yahan har specific language ko chunne ka exact technical reason hai:
 - **Kaam:** Ye system ki core API hai jahan sabse zyada traffic aata hai (Read/Write operations).
 - **Reason (Speed & Concurrency):** Golang ko Google ne specifically high-performance aur cloud ke liye banaya hai. Isme **"Goroutines"** hote hain. Agar ek saath 10,000 log employee data search karein, toh Java ya Python memory crash kar sakti hain, lekin Go un hazaron requests ko sirf kuch Megabytes (MB) RAM use karke concurrently (ek saath) handle kar leti hai. Ye extremely lightweight aur lightning-fast hai.
 
+
+(Goroutines Go language ki sabse badi strength hain. Ye OS-level threads nahi hain, balki Go runtime dwara manage kiye jane wale lightweight user-space threads hain.
+
+Jahan ek traditional OS thread lagbhag 1MB RAM consume karta hai, wahi ek Goroutine sirf 2KB RAM se start hota hai. Is extreme lightweight nature ki wajah se hum apne backend par ek sath lakho concurrent requests handle kar sakte hain bina server memory ko exhaust kiye.
+Hamare architecture me, Go Scheduler (M:N scheduling) hazaron goroutines ko efficiently kuch hi OS threads par map karta hai. Yahi main reason hai ki hamari Employee API (jo highly concurrent aur read-heavy hai) ko Java ki jagah Go me likha gaya hai taaki wo maximum throughput de sake.")
+
+
 ## 2. Salary API ke liye Java (Spring Boot) Kyun?
 
 - **Kaam:** Employee ki salary, payroll, aur financial data handle karna.
