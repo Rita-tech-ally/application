@@ -75,19 +75,6 @@ ScyllaDB ek bada Godaam (Warehouse) hai jahan saara original data safe rakha jat
 
 ScyllaDB data ko permanently safe rakhne ke liye best hai, lekin usme se hazaron emails search karna slow ho sakta hai. Elasticsearch specially **fast searching** ke liye hi bana hai. Data ko dual-write karke Elasticsearch me rakhne se Notification Worker milliseconds me hazaron emails nikal kar mails bhej sakta hai, bina main Employee database ko slow kiye.
 
-### 🚨 Important Clarification: Phir Logstash Kaam Kahan Aata Hai?
-
-Aksar log confuse ho jate hain ki Logstash data sync kar raha hai. **OT-Microservices me Logstash ka Notification ya Salary business logic se koi lena-dena nahi hai.**
-
-Logstash purely **Centralized Logging (System Monitoring)** ke liye use hota hai:
-
-1. **Asli Kaam:** Jab aapki Go, Java, ya Python API me koi code error aata hai, server crash hota hai, ya koi user login karta hai, toh jo "Logs" (Terminal messages) generate hote hain, Logstash unhe ikattha karta hai.
-2. **Kahan Bhejta Hai:** Logstash un system logs ko Elasticsearch me alag index me save karta hai, taaki DevOps team **Kibana** dashboard par un errors ko dekh sake.
-
-**Simple Flow (Business Data):** `Frontend → Go API → (Dual-Write) → ScyllaDB & Elasticsearch → Notification Worker → Email`
-
-**Simple Flow (System Logs/Errors):** `Go/Java/Python API (Console Logs) → Logstash → Elasticsearch → Kibana (Dashboard)`
-
 # Notification Worker: Important Notes
 
 ### 1. Data Sirf Employee API se jata hai, Salary se nahi
