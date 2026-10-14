@@ -358,4 +358,25 @@ Nginx as an **API Gateway** is problem ko solve karta hai:
 
 ## 3. Interview ke liye "The Architect Answer"
 
-"Sir/Ma'am, humne **Polyglot Microservices Architecture** apnaya hai, jiska rule hai *'Right Tool for the Right Job'*. Go speed ke liye, Java strict financial transactions ke liye, aur Python fast development ke liye. Kyunki alag-alag tech-stack hone ki wajah se ports aur routing complex ho jati hai, humne **Nginx ko as an API Gateway (Reverse Proxy)** use kiya hai. N
+**Polyglot Microservices Architecture** apnaya hai, jiska rule hai *'Right Tool for the Right Job'*. Go speed ke liye, Java strict financial transactions ke liye, aur Python fast development ke liye. Kyunki alag-alag tech-stack hone ki wajah se ports aur routing complex ho jati hai, humne **Nginx ko as an API Gateway (Reverse Proxy)** use kiya hai. N
+
+
+The Easy & Accurate Interview Script (Hinglish)
+## 1. The 1-Line Intro (Project kya hai):
+"Sir/Ma'am, OT-Microservices ek Polyglot HRMS (Employee Management System) hai. Iska matlab isme alag-alag languages aur databases use hue hain taaki har feature apne best performance par kaam kare."
+
+## 2. The Architecture (Kaise bana hai):
+"Isme har service ko uski zaroorat ke hisaab se banaya gaya hai:
+
+**Employee API:** Extreme speed aur high traffic ke liye ye Go aur ScyllaDB (NoSQL) me bani hai.
+
+**Attendance API:** Daily time-tracking (punch-in/out) aur relational records ke liye ye Python aur PostgreSQL (SQL) par chalati hai.
+
+**Salary API:** Financial logic aur zero-error calculations (ACID properties) ke liye isme Java Spring Boot use hua hai.
+
+**Notification Worker:** Background me asynchronous bulk emails bhejne ke liye Python aur Elasticsearch use hua hai.
+
+Aur in sabhi APIs ke aage Nginx laga hai, jo 'API Gateway' ki tarah traffic route karta hai."
+
+## 3. The DevOps Angle (Aapka role):
+"As a DevOps Engineer, mera main kaam is multi-language architecture ko production me manage karna hai. Main in sabhi APIs ko EC2 par deploy karti hu, Elasticsearch ke sath database sync (Dual-Write pattern) manage karti hu, aur ELK stack ke through centralized logging handle karti hu taaki system fault-tolerant rahe."
