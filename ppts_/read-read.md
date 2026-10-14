@@ -10,12 +10,15 @@
 - **Alternative Kya Tha?** Apache Cassandra.
 - **Humne Ise Kyun Reject Kiya?** ScyllaDB actually Cassandra ka hi naya version hai. Cassandra Java me bana tha isliye usme 'Garbage Collection' delays aate the. ScyllaDB C++ me hai isliye ye Cassandra se 10-guna fast hai.
 
-### 2. Redis (For Salary API Caching)
 
-- **Humne Kyun Chuna?** Salary API ko calculations ke waqt kuch data baar-baar chahiye hota hai (jaise tax rules, PF percentages, ya common company policies). Agar iske liye baar-baar ScyllaDB par query lagayenge toh system slow hoga. Isliye humne beech me **Redis (In-Memory Database)** lagaya hai. Ye data ko direct RAM me rakhta hai, jisse Salary API ka response time hazaron guna fast ho jata hai.
+### 2. Redis (Distributed Cache For All 3 APIs)
+
+- **Humne Kyun Chuna?** Hamare architecture me Redis kisi ek API tak limited nahi hai, balki ye ek centralized **In-Memory Caching Layer** ki tarah kaam karta hai jise teeno core APIs (Employee, Attendance, Salary) use karti hain taaki primary databases par load 80% tak kam ho jaye.
+  - **Employee API me use:** Frequently accessed employee profiles ko RAM me rakhne ke liye, taaki ScyllaDB par baar-baar read queries na jayen.
+  - **Attendance API me use:** Employees ka "Active Punch-in" status (ya session) cache karne ke liye, taaki har refresh par PostgreSQL hit na ho.
+  - **Salary API me use:** Static data jaise tax rules, PF percentages, aur common company policies ko cache karne ke liye.
 - **Alternative Kya Tha?** Memcached.
-- **Humne Ise Kyun Reject Kiya?** Memcached bhi RAM me data rakhta hai, lekin server restart hone par usme saara data udd jata hai. Redis ke paas data ko disk par save (persist) karne ka feature hai, plus ye complex data structures (Lists, Hashes) support karta hai.
-
+- **Humne Ise Kyun Reject Kiya?** Memcached bhi RAM me data rakhta hai, lekin server restart hone par usme saara data udd jata hai. Redis ke paas data ko disk par save (persist) karne ka feature hai, plus ye complex data structures (Lists, Hashes) support karta hai jo teeno alag-alag languages (Go, Python, Java) ke sath easily integrate ho jate hain.
 ### 3. PostgreSQL (Only For Attendance API)
 
 - **Humne Kyun Chuna?** Employee aur Salary ka data flat/NoSQL me fit ho jata hai, lekin Attendance ka data purely relational hota hai. Ek employee ke daily punch-in, punch-out, aur monthly leave records me aapas me relations hote hain. Is data par complex JOINs, filters, aur SQL queries chalani padti hain, jiske liye NoSQL achha nahi hai. Isliye sirf is API ke liye humne 100% ACID compliant SQL database (PostgreSQL) use kiya.
