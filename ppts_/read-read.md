@@ -2,7 +2,7 @@
 
 **Interviewer ke samne Pitch (Shuruwat):**
 
-> *"Sir/Ma'am, Microservices ka pehla rule hai 'Database-per-service'. Isliye humne ek hi database sabke liye use nahi kiya, balki har service ki speed aur data-structure ke hisaab se uski best technology chuni hai..."*
+> Microservices ka pehla rule hai 'Database-per-service'. Isliye humne ek hi database sabke liye use nahi kiya, balki har service ki speed aur data-structure ke hisaab se uski best technology chuni hai..."*
 
 ### 1. ScyllaDB (For Employee & Salary APIs)
 
