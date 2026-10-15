@@ -154,3 +154,97 @@ In tools ki configuration files repository mein commit ki ja sakti hain, jisse t
 | `commit-msg` | Message prepare hone ke baad, commit se pehle | Message validate karna |
 | `post-commit` | Commit create hone ke baad | Notifications aur logging |
 
+
+# Git Hooks: DevOps Perspective — Pre-Commit vs CI/CD Pipeline
+
+Haan, bilkul! Ek `pre-commit` hook ke andar aap multiple checks add kar sakti hain. Kyunki ye ek executable script hoti hai, ismein aap terminal commands chala sakti hain.
+
+Lekin as a DevOps Engineer, aapko ye samajhna zaroori hai ki **kaunsa task `pre-commit` hook mein rakhna chahiye aur kaunsa CI/CD pipeline (jaise Jenkins ya GitLab CI) mein chalana chahiye.**
+
+## 1. Linting & Formatting — Perfect for Pre-Commit
+
+Ye Git Hooks ka sabse common use case hai. Code commit hone se pehle formatting check karna aur common coding mistakes pakadna iska main purpose hai.
+
+**Examples:**
+- Go API ke liye `golangci-lint`
+- Python ke liye `flake8` ya `black`
+- Ansible playbooks ke liye `ansible-lint`
+
+Agar configured check fail hota hai, toh hook non-zero exit status return karke commit ko rok sakta hai.
+
+## 2. Security Scanners — Lightweight Checks in Pre-Commit
+
+Security checks ko lightweight aur heavy checks mein divide kar sakte hain.
+
+### Pre-Commit Mein Kya Karein?
+
+Secret scanners, jaise `gitleaks`, ko pre-commit hook mein configure kiya ja sakta hai. Ye developers ko AWS keys, database passwords ya API tokens accidentally commit karne se rokne mein help karta hai.
+
+### CI/CD Mein Kya Karein?
+
+Heavy security checks, jaise comprehensive SAST aur DAST scans, ko aam taur par CI/CD pipeline mein chalana behtar hota hai.
+
+Examples:
+- SonarQube analysis
+- Comprehensive SAST scans
+- DAST scans against a running application
+
+Ye checks zyada time aur resources le sakte hain. Isliye inhe Jenkins ya GitLab CI pipeline mein run karna practical hota hai.
+
+**Important:** Local hooks ko bypass kiya ja sakta hai. Isliye security checks ke liye CI/CD pipeline mein bhi validation honi chahiye.
+
+## 3. Unit Tests — Fast Tests in Pre-Commit
+
+- Agar unit tests chhote hain aur kuch seconds mein complete ho jaate hain, toh unhe pre-commit hook mein rakhna useful ho sakta hai.
+- Examples: selected Go tests ke liye `go test` ya fast Python tests ke liye `pytest`.
+- Agar tests ko 2–3 minutes ya usse zyada lagte hain, toh har commit par unhe run karna developers ke workflow ko slow kar sakta hai.
+
+Aise cases mein fast checks local hook mein aur complete test suite CI/CD pipeline mein run karna behtar hota hai.
+
+## 4. Logging & Notifications — Post-Commit or CI/CD
+
+### Logging
+
+Local commit-related information log karne ke liye hook use kiya ja sakta hai.
+
+Example:
+
+```bash
+echo "Commit at $(date)" >> commit.log
+```
+
+Lekin `commit.log` ko repository mein add karne se har commit par extra changes aa sakte hain. Isliye local logs ko aam taur par repository ke bahar rakhna behtar hai.
+
+### Notifications
+
+Commit hone se pehle Slack ya email notification bhejna generally avoid karna chahiye. Agar network ya notification service fail ho jaaye, toh commit unnecessarily block ho sakta hai.
+
+**Sahi approach:**
+- Local notification ke liye `post-commit` hook use kiya ja sakta hai.
+- Team-wide notifications ke liye CI/CD pipeline use karna zyada reliable hota hai.
+
+Dhyan rahe, `post-commit` hook commit create hone ke baad chalta hai. Isliye ye commit ko undo ya abort nahi kar sakta.
+
+## Quick Comparison Table
+
+| Task | Pre-Commit Hook | CI/CD Pipeline |
+|---|---|---|
+| Linting & Formatting | Recommended | Recommended |
+| Secret Scanning | Fast checks | Additional validation |
+| Fast Unit Tests | Suitable | Recommended |
+| Full Test Suite | Usually avoid | Recommended |
+| SonarQube Analysis | Usually avoid | Recommended |
+| Heavy SAST/DAST Scans | Usually avoid | Recommended |
+| Local Logging | Possible | Pipeline logs |
+| Team Notifications | Usually avoid | Recommended |
+
+## DevOps Best Practice
+
+Ek effective workflow mein **local Git Hooks fast feedback dete hain, jabki CI/CD pipeline comprehensive validation karti hai.**
+
+- **Pre-commit:** Fast linting, formatting aur secret checks.
+- **Pre-push (optional):** Kuch additional local checks.
+- **CI/CD pipeline:** Full tests, SonarQube analysis, security scans aur deployment validations.
+- **Post-commit:** Optional local logging ya notification.
+
+Is tarah developers ko jaldi feedback milta hai aur CI/CD pipeline code ko merge ya deploy karne se pehle additional checks perform kar sakti hai.
