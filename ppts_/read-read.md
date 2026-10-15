@@ -31,3 +31,7 @@
 - **Alternative Kya Tha?** Apache Solr.
 - **Humne Ise Kyun Reject Kiya?** Solr bhi achha hai, par DevOps me **ELK Stack (Elasticsearch, Logstash, Kibana)** ka integration sabse best hai. System logs aur search dono ek hi tool (ES) sambhal leta hai.
 
+## interview ke liye "The Architect Answer" (Aapki Script)
+"Sir/Ma'am, dono NoSQL hone ke bawajood alag architecture follow karte hain. MongoDB ek Document database hai jo Master-Slave model par chalta hai, jabki ScyllaDB ek Wide-Column store hai jo Masterless (Peer-to-Peer) architecture par based hai.
+Humne apne Employee API ke liye ScyllaDB isliye chuna kyunki humein extreme high availability aur ultra-low latency chahiye thi. ScyllaDB C++ aur Seastar framework par bana hai jo CPU cores ko perfectly utilize karta hai. Iske Masterless hone ki wajah se hamare database layer me No Single Point of Failure hai. Agar ek node down bhi ho jaye, toh API ka read/write bina kisi delay ke doosre nodes se chalta rehta hai, jo ki enterprise microservices ke liye sabse zaroori hai."
+
