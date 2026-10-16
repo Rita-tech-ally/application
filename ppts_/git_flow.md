@@ -139,7 +139,7 @@ Darasal, **Git Flow sabka starting point nahi hai.** Starting point Git hai. Aai
 2. **GitHub, GitLab, Bitbucket (The Parking Lot):** Ye online platforms hain jahan repositories host hoti hain, taaki team members code share aur collaborate kar saken.
 
 3. **Git Flow, Trunk-Based Development, GitHub Flow, GitLab Flow (The Traffic Rules):** Ye code ko branches mein organize aur integrate karne ke alag-alag workflows hain. Ye batate hain ki team code changes ko kaise develop, review, merge aur release karegi.
-
+(())Haan, bilkul! ✅ Git Flow, Trunk-Based Development, GitHub Flow aur GitLab Flow — in branching strategies ko aap GitHub, GitLab ya Bitbucket kisi bhi platform ke saath use kar sakte ho.(())
 ### Toh Git Flow Alag Kyun Hai?
 
 Git use karne ke liye **Git Flow follow karna zaroori nahi hai.** Git Flow ek branching model hai, jise Vincent Driessen ne 2010 mein describe kiya tha.
