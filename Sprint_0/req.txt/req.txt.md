@@ -1,16 +1,21 @@
-# Jenkins Shared Library for React CI Pipeline
+# Jenkins Shared Library for Golang Dependency Scanning (SCA)
 
 <p align="center">
-  <img width="333" height="155" alt="React CI Pipeline" src="https://github.com/user-attachments/assets/be9907e0-f42a-4213-af2f-15eb5e0aacd7" />
+  <img width="333" height="155" alt="Golang SCA Pipeline" src="https://github.com/user-attachments/assets/be9907e0-f42a-4213-af2f-15eb5e0aacd7" />
 </p>
 
 ---
 
 ## Document Information
 
-| **Author** | **Created On** | **Version** | **L0 Reviewer** | **L1 Reviewer** | **L2 Reviewer** |
-|---|---|---|---|---|---|
-| Ritu | 25/10/2026 | 1.0 | Liyakhat/Anirudh | Aman Raj | Sandeep Rawat/Ravindra |
+| **Property** | **Details** |
+|---|---|
+| **Author** | Ritu |
+| **Created On** | 24/10/2026 |
+| **Version** | 1.0 |
+| **L0 Reviewer** | Liyakhat / Anirudh |
+| **L1 Reviewer** | Aman Raj |
+| **L2 Reviewer** | Sandeep Rawat / Ravindra |
 
 ---
 
@@ -31,20 +36,21 @@
 
 ## 1. Introduction
 
-This Jenkins Shared Library automates CI for React applications using Node.js and npm. It installs dependencies, runs tests, publishes reports, builds the application, archives artifacts, and sends Slack and email notifications.
+This Jenkins Shared Library automates Software Composition Analysis (SCA) for Go applications using `govulncheck`. It prepares dependencies, scans source code for known vulnerabilities, generates and archives reports, and sends Slack and email notifications.
 
 ## 2. Library Type
 
 | **Property** | **Details** |
 |---|---|
-| **Type** | Jenkins Shared Library |
+| **Library Type** | Jenkins Shared Library |
 | **Language** | Groovy |
-| **Application** | React |
-| **Runtime** | Node.js 18 |
-| **Package Manager** | npm |
-| **Reports** | JUnit XML and HTML Coverage |
+| **Application** | Go |
+| **Analysis Type** | Software Composition Analysis (SCA) |
+| **Scanning Tool** | `govulncheck` |
+| **Dependency Management** | Go Modules |
 | **Source Control** | GitHub |
 | **Notifications** | Slack and Email |
+| **Report Storage** | Jenkins Artifacts |
 
 ## 3. Library Workflow
 
@@ -52,22 +58,22 @@ This Jenkins Shared Library automates CI for React applications using Node.js an
 Start Pipeline
       |
       v
-Checkout Frontend Repository
+Checkout Employee API
       |
       v
-Load Shared Library
+Call goDependencyScan()
       |
       v
-Install Dependencies
+Install govulncheck
       |
       v
-Run Tests and Publish Reports
+Prepare Go Dependencies
       |
       v
-Build React Application
+Scan Source Code
       |
       v
-Archive Artifacts
+Generate and Archive Report
       |
       v
 Send Notifications
@@ -83,30 +89,28 @@ End Pipeline
 
 ### 4.1 Jenkins Requirements
 
-| **Plugin** | **Purpose** |
+| **Requirement** | **Purpose** |
 |---|---|
-| **Pipeline Plugin** | Pipeline execution |
+| **Jenkins Pipeline Plugin** | Pipeline execution |
 | **Git Plugin** | Repository checkout |
-| **NodeJS Plugin** | Node.js setup |
-| **JUnit Plugin** | Test reports |
-| **HTML Publisher Plugin** | Coverage reports |
-| **Slack Plugin** | Slack notifications |
-| **Email Extension Plugin** | Email notifications |
-| **Workspace Cleanup Plugin** | Workspace cleanup |
+| **Configured Shared Library** | Reusable scanning functions |
+| **Slack Plugin** | `slackSend()` notifications |
+| **Email Extension Plugin** | `emailext()` notifications |
+| **Workspace Cleanup Plugin** | `cleanWs()` cleanup |
 
 ### 4.2 Build Agent Requirements
 
-- Node.js 18 and npm configured as `NodeJS_18`.
-- Git installed on the agent.
-- Network access to GitHub and npm.
-- Shared Library and GitHub credentials configured in Jenkins.
+- Go and Git installed.
+- Network access to GitHub and Go module repositories.
+- GitHub credentials configured in Jenkins.
+- Permission to create reports and archive build artifacts.
 
 ## 5. Implementation Details
 
-### 5.1 Load Shared Library
+### 5.1 Configure Shared Library
 
 ```groovy
-library identifier: 'allstars-shared-library@SCRUM-258-RITU',
+library identifier: 'Shared_Library@SCRUM-296-RITU',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         remote: 'https://github.com/SnaatakAllStars/Shared_Library.git',
@@ -114,7 +118,7 @@ library identifier: 'allstars-shared-library@SCRUM-258-RITU',
     ])
 ```
 
-This loads reusable pipeline functions from the configured GitHub branch.
+Loads reusable functions from the configured shared library branch.
 
 ### 5.2 Checkout Application Repository
 
@@ -130,154 +134,117 @@ stage('Checkout Code') {
 }
 ```
 
-Repository URL, branch, and credentials are supplied through environment variables.
-
-### 5.3 Execute React CI
-
-```groovy
-reactCI(
-    appDir: env.APP_REPO_NAME,
-    nodeTool: 'NodeJS_18',
-    runTests: true
-)
-```
-
-| **Parameter** | **Purpose** |
+| **Variable** | **Value** |
 |---|---|
-| **`appDir`** | Application directory |
-| **`nodeTool`** | Configured Node.js installation |
-| **`runTests`** | Enables test execution |
+| **`APP_REPO_NAME`** | `Employee-api` |
+| **`APP_REPO_URL`** | `https://github.com/SnaatakAllStars/employee-api.git` |
+| **`APP_BRANCH`** | `main` |
+| **`GIT_CREDS_ID`** | `Github-cred` |
 
-### 5.4 Configure Node.js and Install Dependencies
+### 5.3 Execute Dependency Scan
 
 ```groovy
-dir(appDir) {
-    nodejs(nodeTool) {
-        sh '''
-            set -eu
-            node --version
-            npm --version
-
-            export DISABLE_OPENCOLLECTIVE=true
-            export ADBLOCK=true
-            export SUPPRESS_SUPPORT=true
-
-            echo "ignore-scripts=true" > .npmrc
-            echo "fund=false" >> .npmrc
-
-            if [ -f package-lock.json ]; then
-                npm ci --loglevel=error
-            else
-                npm install --loglevel=error
-            fi
-
-            rm -f .npmrc
-        '''
+stage('Dependency Scanning (SCA)') {
+    steps {
+        goDependencyScan(
+            appDir: env.APP_REPO_NAME
+        )
     }
 }
 ```
 
-- `npm ci` installs dependencies from the lockfile.
-- `npm install` is used when `package-lock.json` is absent.
-- `ignore-scripts=true` disables dependency lifecycle scripts and may affect packages that require them.
+The `goDependencyScan()` function runs the shared scanning workflow for the application directory.
 
-### 5.5 Run Tests and Generate Reports
-
-```bash
-export CI=true
-export JEST_JUNIT_OUTPUT_DIR="./test-results"
-export JEST_JUNIT_OUTPUT_NAME="junit.xml"
-
-npm test -- \
-  --coverage \
-  --coverageReporters="html" \
-  --coverageReporters="text" \
-  --reporters=default \
-  --reporters=jest-junit \
-  --passWithNoTests
-```
-
-This requests JUnit XML and HTML coverage reports.
-
-**Note:** Removing `|| true` ensures test failures are not silently ignored. The `jest-junit` reporter must be installed and configured in the application.
-
-### 5.6 Publish Test and Coverage Reports
-
-**JUnit report:**
-
-```groovy
-junit(
-    testResults: 'test-results/junit.xml',
-    allowEmptyResults: true
-)
-```
-
-**HTML coverage report:**
-
-```groovy
-publishHTML(target: [
-    allowMissing: true,
-    alwaysLinkToLastBuild: true,
-    keepAll: true,
-    reportDir: 'coverage/lcov-report',
-    reportFiles: 'index.html',
-    reportName: 'HTML Coverage Report'
-])
-```
-
-Jenkins publishes reports when the configured output files are generated.
-
-### 5.7 Build React Application
+### 5.4 Install govulncheck
 
 ```bash
 set -eu
-export CI=false
-export NODE_OPTIONS=--openssl-legacy-provider
-npm run build
+mkdir -p "$GO_BIN"
+export GOBIN="$GO_BIN"
+go install golang.org/x/vuln/cmd/govulncheck@latest
+"$GO_BIN/govulncheck" -version
 ```
 
-This executes the application's build script and expects output in the `build` directory. The legacy OpenSSL option should only be retained if required by the project's tooling.
+Installs `govulncheck` in the configured binary directory and verifies the installation. Using `@latest` may install a different version over time.
 
-### 5.8 Archive Build Artifacts
+### 5.5 Prepare Dependencies
+
+```bash
+set -eu
+go mod tidy
+go mod download
+```
+
+- `go mod tidy` updates module definitions and checksums as needed.
+- `go mod download` downloads project dependencies.
+
+**Note:** `go mod tidy` may modify `go.mod` and `go.sum`.
+
+### 5.6 Run Vulnerability Scan
+
+```bash
+"$GO_BIN/govulncheck" \
+    -scan package \
+    -show verbose \
+    ./... > reports/govulncheck-report.txt 2>&1
+```
+
+Scans Go packages and saves the output and errors to the report file.
+
+| **Option** | **Purpose** |
+|---|---|
+| **`-scan package`** | Scans packages for relevant vulnerabilities |
+| **`-show verbose`** | Includes additional scan details |
+| **`./...`** | Targets packages in the current module |
+| **`> report 2>&1`** | Redirects output and errors to a file |
+
+The shared library handles the scanner exit status:
+
+- **Exit code `0`:** Scan completed without a scanner-reported vulnerability finding.
+- **Exit code `3`:** Treated by the script as a completed scan; review the report for findings.
+- **Other exit codes:** Treated as scan failures.
+
+A completed scan does not guarantee that the application is vulnerability-free.
+
+### 5.7 Archive Report
 
 ```groovy
 archiveArtifacts(
-    artifacts: 'build/**, coverage/**',
+    artifacts: 'reports/govulncheck-report.txt',
     allowEmptyArchive: true
 )
 ```
 
-Build and coverage files become accessible from the Jenkins build page.
+Archives the vulnerability report on the Jenkins build page for later review.
 
 ## 6. Notifications
 
-The `notifyStatus.groovy` function handles build notifications.
+The `notifyStatus.groovy` function handles Slack and email notifications.
 
 | **Notification** | **Details** |
 |---|---|
-| **Slack** | Build status, job name, build number, and console URL |
-| **Email** | Build details and Jenkins console URL |
+| **Slack** | Build status, job name, build number, and build URL |
+| **Email** | Build status, job details, console URL, and report link |
 
 - `slackSend()` sends Slack notifications.
 - `emailext()` sends email notifications.
-- Notifications are triggered through the Jenkinsfile's `post` section.
+- Separate error handling allows each notification attempt to be handled independently.
 
 ## 7. Error Handling and Cleanup
 
 | **Mechanism** | **Purpose** |
 |---|---|
 | **`set -eu`** | Stops shell execution on errors or unset variables |
-| **`allowEmptyResults`** | Allows missing JUnit results |
-| **`allowMissing`** | Allows missing HTML reports |
-| **`allowEmptyArchive`** | Allows an empty artifact archive |
-| **`post { success }`** | Handles successful builds |
-| **`post { failure }`** | Handles failed builds |
-| **`post { always }`** | Runs final actions |
+| **Exit-code handling** | Identifies accepted scan completion codes and failures |
+| **`try-catch`** | Handles scanning exceptions |
+| **`archiveArtifacts()`** | Archives the report when available |
+| **Notification error handling** | Handles Slack and email errors separately |
+| **`post { always }`** | Runs final pipeline actions |
 | **`cleanWs()`** | Cleans workspace files |
 
 ## 8. Conclusion
 
-The shared library standardizes React CI by reusing dependency installation, testing, report publishing, application building, artifact archiving, and notification functions.
+This shared library automates Go dependency scanning with `govulncheck`, report generation, artifact archiving, notifications, error handling, and workspace cleanup.
 
 ## 9. Contact Information
 
@@ -288,13 +255,8 @@ The shared library standardizes React CI by reusing dependency installation, tes
 
 ## 10. References
 
-- [Jenkins Pipeline](https://www.jenkins.io/doc/book/pipeline/)
 - [Jenkins Shared Libraries](https://www.jenkins.io/doc/book/pipeline/shared-libraries/)
-- [NodeJS Plugin](https://plugins.jenkins.io/nodejs/)
-- [npm Documentation](https://docs.npmjs.com/)
-- [Jest Documentation](https://jestjs.io/docs/getting-started)
-- [JUnit Plugin](https://plugins.jenkins.io/junit/)
-- [HTML Publisher Plugin](https://plugins.jenkins.io/htmlpublisher/)
-- [Slack Plugin](https://plugins.jenkins.io/slack/)
-- [Email Extension Plugin](https://plugins.jenkins.io/email-ext/)
-- [Workspace Cleanup Plugin](https://plugins.jenkins.io/ws-cleanup/)
+- [Go Documentation](https://go.dev/doc/)
+- [Go Modules Reference](https://go.dev/ref/mod)
+- [govulncheck Documentation](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck)
+- [Go Vulnerability Database](https://vuln.go.dev/)
