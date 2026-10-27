@@ -1,19 +1,23 @@
-# Jenkins Shared Library for Golang CI Pipeline
+# Jenkins Shared Library for Golang Dependency Scanning (SCA)
 
 <p align="center">
-  <img width="333" height="155" alt="Golang CI Pipeline" src="https://github.com/user-attachments/assets/be9907e0-f42a-4213-af2f-15eb5e0aacd7" />
+  <img width="333" height="155" alt="Golang SCA Pipeline" src="https://github.com/user-attachments/assets/be9907e0-f42a-4213-af2f-15eb5e0aacd7" />
 </p>
+
+---
 
 ## Document Information
 
 | Property | Details |
 |---|---|
 | **Author** | Ritu |
-| **Created On** | 27/10/2026 |
+| **Created On** | 24/10/2026 |
 | **Version** | 1.0 |
 | **L0 Reviewer** | Liyakhat / Anirudh |
 | **L1 Reviewer** | Aman Raj |
 | **L2 Reviewer** | Sandeep Rawat / Ravindra |
+
+---
 
 ## Table of Contents
 
@@ -28,9 +32,11 @@
 9. Contact Information
 10. References
 
+---
+
 ## 1. Introduction
 
-This Jenkins Shared Library automates the Continuous Integration (CI) process for Go-based applications. It downloads dependencies, runs tests, generates coverage reports, compiles the application, archives artifacts, and sends build notifications.
+This Jenkins Shared Library automates Software Composition Analysis (SCA) for Go-based applications. It uses `govulncheck` to scan Go source code for known vulnerabilities, prepares dependencies, generates a vulnerability report, archives the report in Jenkins, and sends Slack and email notifications.
 
 ## 2. Library Type
 
@@ -39,15 +45,13 @@ This Jenkins Shared Library automates the Continuous Integration (CI) process fo
 | **Library Type** | Jenkins Shared Library |
 | **Language** | Groovy |
 | **Application Type** | Go-based applications |
-| **CI Process** | Continuous Integration |
-| **Build Tool** | Go |
+| **Security Analysis** | Software Composition Analysis (SCA) |
+| **Scanning Tool** | `govulncheck` |
 | **Dependency Management** | Go Modules |
-| **Testing** | Go Test |
-| **Code Coverage** | Go Coverage |
 | **CI Platform** | Jenkins |
 | **Source Control** | GitHub |
 | **Notifications** | Slack and Email |
-| **Artifact Management** | Jenkins Archived Artifacts |
+| **Report Management** | Jenkins Archived Artifacts |
 
 ## 3. Library Workflow
 
@@ -58,28 +62,25 @@ Start Pipeline
 Checkout Employee API Repository
       |
       v
-Call goCI()
+Call goDependencyScan()
       |
       v
-Check Go Version
+Install govulncheck
       |
       v
-Download Dependencies
+Download Go Dependencies
       |
       v
-Run Tests and Generate Coverage
+Scan Go Source Code
       |
       v
-Archive Coverage Report
+Generate Vulnerability Report
       |
       v
-Compile Go Application
+Archive Scan Report
       |
       v
-Archive Compiled Binary
-      |
-      v
-Determine Pipeline Status
+Determine Build Status
       |
       v
 Send Slack and Email Notifications
@@ -97,31 +98,30 @@ End Pipeline
 
 | Requirement | Purpose |
 |---|---|
-| **Jenkins** | Runs the CI pipeline |
+| **Jenkins** | Executes the pipeline |
 | **Pipeline Plugin** | Supports pipeline execution |
-| **Git Plugin** | Checks out source code |
-| **Configured Shared Library** | Loads reusable CI functions |
-| **Slack Notification Plugin** | Sends Slack notifications |
-| **Email Extension Plugin** | Sends email notifications |
-| **Workspace Cleanup Plugin** | Removes workspace files |
-| **Artifact Archiving Support** | Stores build artifacts |
+| **Git Plugin** | Checks out application code |
+| **Configured Shared Library** | Provides reusable scanning functions |
+| **Slack Notification Plugin** | Provides the `slackSend()` step |
+| **Email Extension Plugin** | Provides the `emailext()` step |
+| **Workspace Cleanup Plugin** | Provides the `cleanWs()` step |
+| **Artifact Archiving Support** | Stores vulnerability reports |
 
 ### 4.2 Build Agent Requirements
 
 | Dependency | Purpose |
 |---|---|
-| **Go** | Builds and tests the application |
-| **Git** | Retrieves source code |
-| **Network Connectivity** | Downloads dependencies |
-
-Go must be installed and available in the agent's `PATH`. The pipeline uses the system-default Go installation.
+| **Go** | Executes Go commands and manages dependencies |
+| **Git** | Retrieves application source code |
+| **`govulncheck`** | Scans Go code for known vulnerabilities |
+| **Network Connectivity** | Accesses GitHub and Go module repositories |
 
 ## 5. Implementation Details
 
-### 5.1 Load the Shared Library
+### 5.1 Configure Shared Library
 
 ```groovy
-library identifier: 'Shared_Library@SCRUM-291-RITU',
+library identifier: 'Shared_Library@SCRUM-296-RITU',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         remote: 'https://github.com/SnaatakAllStars/Shared_Library.git',
@@ -129,34 +129,63 @@ library identifier: 'Shared_Library@SCRUM-291-RITU',
     ])
 ```
 
-This loads the shared library from GitHub using the configured Jenkins credentials.
+This loads reusable library functions from the `SCRUM-296-RITU` branch using the configured GitHub credentials.
 
-### 5.2 Execute Golang CI
+### 5.2 Checkout Application Repository
 
 ```groovy
-stage('Golang CI Process') {
+stage('Checkout Code') {
     steps {
-        goCI(
-            appDir: env.APP_REPO_NAME,
-            runTests: true
+        echo "[INFO] Cloning ${env.APP_REPO_NAME}..."
+        dir("${env.APP_REPO_NAME}") {
+            git branch: env.APP_BRANCH,
+                credentialsId: env.GIT_CREDS_ID,
+                url: env.APP_REPO_URL
+        }
+    }
+}
+```
+
+| Variable | Value |
+|---|---|
+| **`APP_REPO_NAME`** | `Employee-api` |
+| **`APP_REPO_URL`** | `https://github.com/SnaatakAllStars/employee-api.git` |
+| **`APP_BRANCH`** | `main` |
+| **`GIT_CREDS_ID`** | `Github-cred` |
+
+This checks out the Employee API repository into the `Employee-api` workspace directory.
+
+### 5.3 Run Go Dependency Scan
+
+```groovy
+stage('Dependency Scanning (SCA)') {
+    steps {
+        goDependencyScan(
+            appDir: env.APP_REPO_NAME
         )
     }
 }
 ```
 
-The `goCI()` function executes the reusable Go CI steps for the application directory.
+The `goDependencyScan()` function invokes the shared scanning workflow for the specified application directory.
 
-### 5.3 Check Go Version
+### 5.4 Install govulncheck
 
 ```bash
 set -eu
-echo "[INFO] Go version:"
-go version
+mkdir -p "$GO_BIN"
+export GOBIN="$GO_BIN"
+go install golang.org/x/vuln/cmd/govulncheck@latest
+"$GO_BIN/govulncheck" -version
 ```
 
-This verifies that Go is installed and available.
+- Creates a local Go binary directory.
+- Installs `govulncheck` in that directory.
+- Verifies the installed version.
 
-### 5.4 Download Dependencies
+**Note:** `@latest` installs the latest available version, so the installed version may change over time.
+
+### 5.5 Download Project Dependencies
 
 ```bash
 set -eu
@@ -164,98 +193,89 @@ go mod tidy
 go mod download
 ```
 
-- `go mod tidy` updates `go.mod` and `go.sum` as needed.
-- `go mod download` downloads the required Go modules.
+- `go mod tidy` updates module definitions and checksums as needed.
+- `go mod download` downloads Go modules required by the project.
 
-**Note:** `go mod tidy` may modify dependency files.
+**Note:** `go mod tidy` can modify `go.mod` and `go.sum` in the workspace.
 
-### 5.5 Run Tests and Generate Coverage
+### 5.6 Run Vulnerability Scan
 
 ```bash
-set -eu
-mkdir -p reports
-go test -v -coverprofile=reports/coverage.out ./... || true
+"$GO_BIN/govulncheck" \
+    -scan package \
+    -show verbose \
+    ./... > reports/govulncheck-report.txt 2>&1
 ```
 
-- `go test` runs tests across Go packages.
-- `-coverprofile` generates a coverage data file.
-- `|| true` prevents test failures from stopping this command. Therefore, failed tests may not fail the pipeline at this step.
+This scans the Go project packages and redirects standard output and error output to `reports/govulncheck-report.txt`.
 
-### 5.6 Archive Coverage Report
+| Option | Purpose |
+|---|---|
+| **`-scan package`** | Scans packages for relevant vulnerabilities |
+| **`-show verbose`** | Displays additional scan details |
+| **`./...`** | Targets packages in the current module |
+| **`> report 2>&1`** | Saves output and errors to the report file |
+
+The shared library handles the scanner's exit status:
+
+- Exit code `0`: scan completed without a scanner-reported vulnerability finding.
+- Exit code `3`: treated by the script as a completed scan; review the report for findings.
+- Other exit codes: treated as scan failures.
+
+A completed scan does not guarantee that the application is vulnerability-free. Review the generated report for findings.
+
+### 5.7 Archive Vulnerability Report
 
 ```groovy
 archiveArtifacts(
-    artifacts: 'reports/coverage.out',
+    artifacts: 'reports/govulncheck-report.txt',
     allowEmptyArchive: true
 )
 ```
 
-This archives the coverage report in Jenkins. `allowEmptyArchive: true` allows execution to continue if the report is missing.
-
-### 5.7 Compile the Go Application
-
-```bash
-set -eu
-go build -o app-binary main.go
-```
-
-This compiles `main.go` into an executable named `app-binary`. It assumes `main.go` can be built independently.
-
-### 5.8 Archive the Compiled Binary
-
-```groovy
-archiveArtifacts(
-    artifacts: 'app-binary',
-    allowEmptyArchive: true
-)
-```
-
-This stores the compiled binary as a Jenkins build artifact.
+This archives the vulnerability report in Jenkins so it can be accessed from the build page.
 
 ## 6. Notifications
 
-The shared library uses `notifyStatus.groovy` to send build notifications.
+The `notifyStatus.groovy` function sends build notifications through Slack and email.
 
 | Notification | Details |
 |---|---|
 | **Slack** | Build status, job name, build number, and build URL |
-| **Email** | Build status, pipeline stage, job/build number, console URL, and artifact URL |
+| **Email** | Build status, pipeline stage, job/build number, console URL, and report artifact URL |
 
-Notifications help the team track pipeline results and investigate failures.
+- `slackSend()` sends Slack notifications.
+- `emailext()` sends email notifications.
+- Separate error handling helps prevent notification failures from interfering with other notification attempts.
 
 ## 7. Error Handling and Cleanup
 
 | Mechanism | Purpose |
 |---|---|
-| **`set -eu`** | Stops shell execution on errors and unset variables |
-| **`|| true`** | Prevents the test command's failure from stopping execution |
-| **`archiveArtifacts()`** | Stores build outputs in Jenkins |
+| **`set -eu`** | Stops shell execution when a command fails or an unset variable is used |
+| **Scan exit-code handling** | Distinguishes accepted scan completion codes from scanner failures |
+| **`try-catch`** | Handles scanning exceptions |
+| **`archiveArtifacts()`** | Attempts to preserve the vulnerability report |
 | **Slack `try-catch`** | Handles Slack notification errors |
-| **Email `try-catch`** | Handles email notification errors |
-| **`post { always }`** | Executes cleanup regardless of the build result |
-| **`post { success }`** | Handles successful build actions |
-| **`post { failure }`** | Handles failed build actions |
-| **`cleanWs()`** | Cleans the Jenkins workspace |
-
-**Important:** Because `|| true` suppresses the test command's exit status, tests may fail while the pipeline continues. Remove it or explicitly capture test results if failed tests must fail the build.
+| **Email `try-catch`** | Handles email notification errors separately |
+| **`post { always }`** | Attempts cleanup after pipeline execution |
+| **`cleanWs()`** | Removes workspace files and directories |
 
 ## 8. Conclusion
 
-The Jenkins Shared Library standardizes the Go CI process by reusing common pipeline steps for dependency management, testing, coverage generation, compilation, artifact archiving, notifications, and cleanup.
+This Jenkins Shared Library standardizes Golang dependency scanning by automating dependency preparation, vulnerability detection with `govulncheck`, report generation, and artifact archiving. It also supports Slack and email notifications, error handling, and workspace cleanup.
 
 ## 9. Contact Information
 
 | Property | Details |
 |---|---|
 | **Name** | Ritu |
-| **Email** | ritu.dogra.snaatak@mygurukulam.co |
+| **Email** | [ritu.dogra.snaatak@mygurukulam.co](mailto:ritu.dogra.snaatak@mygurukulam.co) |
 
 ## 10. References
 
-- [Jenkins Pipeline](https://www.jenkins.io/doc/book/pipeline/)
 - [Jenkins Shared Libraries](https://www.jenkins.io/doc/book/pipeline/shared-libraries/)
 - [Go Documentation](https://go.dev/doc/)
-- [Go Modules](https://go.dev/ref/mod)
-- [Go Testing](https://pkg.go.dev/testing)
-- [Go Build Command](https://pkg.go.dev/cmd/go#hdr-Compile_packages_and_dependencies)
-- [Jenkins Slack Plugin](https://plugins.jenkins.io/slack/)
+- [Go Modules Reference](https://go.dev/ref/mod)
+- [govulncheck Documentation](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck)
+- [Go Vulnerability Database](https://vuln.go.dev/)
