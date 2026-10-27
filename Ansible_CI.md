@@ -1,16 +1,16 @@
-# Jenkins Shared Library for React CI Pipeline
+# Jenkins Shared Library for Golang CI Pipeline
 
 <p align="center">
-  <img width="333" height="155" alt="React CI Pipeline" src="https://github.com/user-attachments/assets/be9907e0-f42a-4213-af2f-15eb5e0aacd7" />
+  <img width="333" height="155" alt="Golang CI Pipeline" src="https://github.com/user-attachments/assets/be9907e0-f42a-4213-af2f-15eb5e0aacd7" />
 </p>
 
 ---
 
-## Document Information
+# Document Information
 
-| Author | Created On | Version | L0 Reviewer | L1 Reviewer | L2 Reviewer |
+| **Author** | **Created On** | **Version** | **L0 Reviewer** | **L1 Reviewer** | **L2 Reviewer** |
 |---|---|---|---|---|---|
-| Ritu | 25/10/2026 | 1.0 | Liyakhat/Anirudh | Aman Raj | Sandeep Rawat/Ravindra |
+| Ritu | 27/10/2026 | 1.0 | Liyakhat/Anirudh | Aman Raj | Sandeep Rawat/Ravindra |
 
 ---
 
@@ -31,20 +31,30 @@
 
 # 1. Introduction
 
-This Jenkins Shared Library automates CI for React applications using Node.js and npm. It installs dependencies, runs tests, generates reports, builds the application, archives artifacts, and sends Slack and email notifications.
+This project implements a Jenkins Shared Library to automate the Continuous Integration (CI) process for Go-based applications.
+
+The library uses Go tools to download project dependencies, run tests, generate a code coverage report, compile the application, and archive generated artifacts in Jenkins. It also sends build-status notifications through Slack and email.
+
+---
 
 # 2. Library Type
 
-| Property | Details |
+| **Property** | Details |
 |---|---|
-| Type | Jenkins Shared Library |
-| Language | Groovy |
-| Application | React |
-| Runtime | Node.js 18 |
-| Package Manager | npm |
-| Reports | JUnit XML and HTML Coverage |
-| Source Control | GitHub |
-| Notifications | Slack and Email |
+| **Library Type** | Jenkins Shared Library |
+| **Language** | Groovy |
+| **Application Type** | Go-based applications |
+| **CI Process** | Continuous Integration |
+| **Build Tool** | Go |
+| **Dependency Management** | Go Modules |
+| **Testing** | Go Test |
+| **Code Coverage** | Go Coverage |
+| **CI Platform** | Jenkins |
+| **Source Control** | GitHub |
+| **Notifications** | Slack and Email |
+| **Artifact Management** | Jenkins Archived Artifacts |
+
+---
 
 # 3. Library Workflow
 
@@ -52,61 +62,84 @@ This Jenkins Shared Library automates CI for React applications using Node.js an
 Start Pipeline
       |
       v
-Checkout Frontend Repository
+Checkout Employee API Repository
       |
       v
-Load Shared Library
+Call goCI()
       |
       v
-Install Dependencies
+Check Go Version
       |
       v
-Run Tests and Publish Reports
+Download Go Dependencies
       |
       v
-Build React Application
+Run Go Tests and Generate Coverage
       |
       v
-Archive Artifacts
+Archive Coverage Report
       |
       v
-Send Notifications
+Compile Go Application
       |
       v
-Clean Workspace
+Archive Compiled Binary
+      |
+      v
+Determine Pipeline Status
+      |
+      v
+Send Slack Notification
+      |
+      v
+Send Email Notification
+      |
+      v
+Clean Jenkins Workspace
       |
       v
 End Pipeline
 ```
 
+The Jenkins pipeline checks out the Employee API repository and invokes the reusable `goCI()` function. The library prepares dependencies, runs tests, generates coverage, compiles the application, and archives artifacts. Jenkins then sends notifications according to the pipeline result and cleans the workspace.
+
+---
+
 # 4. Prerequisites and Dependencies
 
 ## 4.1 Jenkins Requirements
 
-| Requirement | Purpose |
+| **Requirement** | Purpose |
 |---|---|
-| Jenkins Pipeline Plugin | Pipeline execution |
-| Git Plugin | Repository checkout |
-| NodeJS Plugin | Node.js setup |
-| JUnit Plugin | Test reports |
-| HTML Publisher Plugin | Coverage reports |
-| Slack Plugin | Slack notifications |
-| Email Extension Plugin | Email notifications |
-| Workspace Cleanup Plugin | Workspace cleanup |
+| **Jenkins** | Executes the CI pipeline |
+| **Pipeline Plugin** | Supports pipeline execution |
+| **Git Plugin** | Checks out the application repository |
+| **Configured Shared Library** | Provides reusable CI and notification functions |
+| **Slack Notification Plugin** | Provides the `slackSend()` step |
+| **Email Extension Plugin** | Provides the `emailext()` step |
+| **Workspace Cleanup Plugin** | Provides the `cleanWs()` step |
+| **Artifact Archiving Support** | Stores the coverage report and compiled binary |
 
 ## 4.2 Build Agent Requirements
 
-- Node.js 18 and npm configured as `NodeJS_18`.
-- Git installed on the agent.
-- Network access to GitHub and npm.
-- Shared Library and GitHub credentials configured in Jenkins.
+| **Dependency** | Purpose |
+|---|---|
+| **Go** | Downloads dependencies, runs tests, and compiles the application |
+| **Git** | Retrieves application source code |
+| **Network Connectivity** | Allows access to GitHub and Go module repositories |
+
+The Jenkins agent must have Go installed and available in its system `PATH`. The shared library uses the system-default Go installation.
+
+---
 
 # 5. Implementation Details
 
-## 5.1 Load Shared Library
+## 5.1 Configure Shared Library
+
+The Jenkinsfile loads the shared library from GitHub.
 
 ```groovy
-library identifier: 'allstars-shared-library@SCRUM-258-RITU',
+library identifier: 'Shared_Library@SCRUM-291-RITU',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         remote: 'https://github.com/SnaatakAllStars/Shared_Library.git',
@@ -114,192 +147,209 @@ library identifier: 'allstars-shared-library@SCRUM-258-RITU',
     ])
 ```
 
-This loads reusable pipeline functions from the configured GitHub branch.
+**Purpose:**
 
-## 5.2 Checkout Application Repository
+- Retrieves the shared library from GitHub.
+- Uses the `SCRUM-291-RITU` branch.
+- Uses `Github-cred` for repository authentication.
+- Makes reusable CI and notification functions available.
+
+## 5.2 Run Golang CI Process
+
+The Jenkins pipeline invokes the reusable `goCI()` function.
 
 ```groovy
-stage('Checkout Code') {
+stage('Golang CI Process') {
     steps {
-        dir("${env.APP_REPO_NAME}") {
-            git branch: env.APP_BRANCH,
-                credentialsId: env.GIT_CREDS_ID,
-                url: env.APP_REPO_URL
-        }
+        goCI(
+            appDir: env.APP_REPO_NAME,
+            runTests: true
+        )
     }
 }
 ```
 
-The repository URL, branch, and credentials are provided through environment variables.
+**Purpose:**
 
-## 5.3 Execute React CI
+- Calls `goCI.groovy`.
+- Passes the application directory through `appDir`.
+- Enables testing with `runTests: true`.
+- Executes dependency, testing, coverage, and compilation steps.
 
-```groovy
-reactCI(
-    appDir: env.APP_REPO_NAME,
-    nodeTool: 'NodeJS_18',
-    runTests: true
-)
-```
+## 5.3 Check Go Version
 
-| Parameter | Purpose |
-|---|---|
-| `appDir` | Application directory |
-| `nodeTool` | Node.js installation |
-| `runTests` | Enables testing |
-
-## 5.4 Configure Node.js
-
-```groovy
-dir(appDir) {
-    nodejs(nodeTool) {
-        sh '''
-            set -eu
-            node --version
-            npm --version
-        '''
-    }
-}
-```
-
-This activates Node.js and verifies Node.js and npm versions.
-
-## 5.5 Install Dependencies
-
-```bash
-export DISABLE_OPENCOLLECTIVE=true
-export ADBLOCK=true
-export SUPPRESS_SUPPORT=true
-
-echo "ignore-scripts=true" > .npmrc
-echo "fund=false" >> .npmrc
-
-if [ -f package-lock.json ]; then
-    npm ci --loglevel=error
-else
-    npm install --loglevel=error
-fi
-
-rm .npmrc
-```
-
-- `npm ci` installs dependencies from the lockfile.
-- `npm install` is used when the lockfile is absent.
-- `ignore-scripts=true` disables dependency lifecycle scripts and may affect packages that require them.
-
-## 5.6 Run Tests
-
-```bash
-export CI=true
-export JEST_JUNIT_OUTPUT_DIR="./test-results"
-export JEST_JUNIT_OUTPUT_NAME="junit.xml"
-
-npm test -- \
-    --coverage \
-    --coverageReporters="html" \
-    --coverageReporters="text" \
-    --reporters=default \
-    --reporters=jest-junit \
-    --passWithNoTests || true
-```
-
-This runs tests and requests JUnit XML and coverage reports.
-
-**Note:** `|| true` suppresses test failures, so failing tests may not fail the pipeline.
-
-## 5.7 Publish Reports
-
-**JUnit report:**
-
-```groovy
-junit(
-    testResults: 'test-results/junit.xml',
-    allowEmptyResults: true
-)
-```
-
-**HTML coverage report:**
-
-```groovy
-publishHTML(target: [
-    allowMissing: true,
-    alwaysLinkToLastBuild: true,
-    keepAll: true,
-    reportDir: 'coverage/lcov-report',
-    reportFiles: 'index.html',
-    reportName: 'HTML Coverage Report'
-])
-```
-
-Jenkins displays the reports when the configured output files exist.
-
-## 5.8 Build React Application
+The shared library checks the Go version installed on the Jenkins agent.
 
 ```bash
 set -eu
-export CI=false
-export NODE_OPTIONS=--openssl-legacy-provider
-npm run build
+echo "[INFO] Go version:"
+go version
 ```
 
-This runs the application build script and expects output in the `build` directory.
+**Purpose:**
 
-## 5.9 Archive Artifacts
+- Verifies that Go is available.
+- Displays the installed Go version in the Jenkins console.
+- Uses the system-default Go installation.
+
+## 5.4 Download Project Dependencies
+
+The shared library prepares dependencies using Go Modules.
+
+```bash
+set -eu
+go mod tidy
+go mod download
+```
+
+**Purpose:**
+
+- `go mod tidy` updates module definitions and dependency checksums as needed.
+- `go mod download` downloads required Go modules.
+- Prepares dependencies for testing and compilation.
+
+**Note:** `go mod tidy` can modify `go.mod` and `go.sum` in the workspace.
+
+## 5.5 Run Go Tests and Generate Coverage
+
+When `runTests` is enabled, the shared library executes:
+
+```bash
+set -eu
+mkdir -p reports
+go test -v -coverprofile=reports/coverage.out ./... || true
+```
+
+**Purpose:**
+
+- Creates the `reports` directory.
+- Runs tests across Go packages using `./...`.
+- Uses `-v` to display detailed test output.
+- Generates the coverage profile at `reports/coverage.out`.
+
+The `-coverprofile` option records coverage information for tested packages.
+
+**Important:** `|| true` suppresses test failures, so the pipeline may continue to compilation even if tests fail.
+
+## 5.6 Archive Coverage Report
+
+The shared library archives the coverage report in Jenkins.
 
 ```groovy
 archiveArtifacts(
-    artifacts: 'build/**, coverage/**',
+    artifacts: 'reports/coverage.out',
     allowEmptyArchive: true
 )
 ```
 
-The build and coverage files become available from the Jenkins build page.
+**Purpose:**
+
+- Archives `reports/coverage.out`.
+- Makes the coverage profile available from the Jenkins build.
+- Allows the team to review generated coverage data.
+
+## 5.8 Compile Go Application
+
+The shared library compiles the Go application.
+
+```bash
+set -eu
+go build -o app-binary main.go
+```
+
+**Purpose:**
+
+- Compiles the application using Go.
+- Uses `main.go` as the input file.
+- Generates a binary named `app-binary`.
+- Stops the shell step if compilation fails.
+
+This command assumes `main.go` exists in the application directory and can be built independently.
+
+## 5.7 Archive Compiled Binary
+
+After compilation, the library archives the generated binary.
+
+```groovy
+archiveArtifacts(
+    artifacts: 'app-binary',
+    allowEmptyArchive: true
+)
+```
+
+**Purpose:**
+
+- Archives the compiled `app-binary`.
+- Makes the binary available through Jenkins build artifacts.
+- Allows users to retrieve the compiled output from the build page.
+
+---
 
 # 6. Notifications
 
-The `notifyStatus.groovy` function handles notifications.
+The `notifyStatus.groovy` function sends build-status notifications through Slack and email.
 
-## 6.1 Slack
+The Jenkinsfile calls this function from its `post` section after the pipeline completes.
 
-The `slackSend()` step sends the build status, job name, build number, and console URL. Success and failure messages use different colors.
+**Slack message includes:**
 
-## 6.2 Email
+- Build status
+- Jenkins job name
+- Build number
+- Build URL
 
-The `emailext()` step sends build details and the Jenkins console URL. Notifications are triggered from the Jenkinsfile's `post` section.
+**Email includes:**
+
+- Build status in the subject
+- Pipeline stage name
+- Jenkins job name and build number
+- Jenkins console URL
+- Jenkins artifact URL
+
+---
 
 # 7. Error Handling and Cleanup
 
-| Mechanism | Purpose |
+The Jenkins pipeline and shared library use shell error handling, notification exception handling, artifact archiving, and workspace cleanup.
+
+| **Mechanism** | Purpose |
 |---|---|
-| `set -eu` | Stops shell execution on errors or unset variables |
-| `|| true` | Suppresses test command failure |
-| `allowEmptyResults` | Allows missing JUnit results |
-| `allowMissing` | Allows missing HTML reports |
-| `allowEmptyArchive` | Allows an empty archive |
-| `post { success }` | Handles successful builds |
-| `post { failure }` | Handles failed builds |
-| `post { always }` | Runs final actions |
-| `cleanWs()` | Cleans workspace files |
+| **`set -eu`** | Stops shell execution when a command fails or an unset variable is used |
+| **`|| true`** | Allows execution to continue even if the Go test command fails |
+| **`archiveArtifacts()`** | Archives the coverage report and compiled binary |
+| **Slack `try-catch`** | Handles Slack notification errors separately |
+| **Email `try-catch`** | Handles email notification errors separately |
+| **`post { always }`** | Attempts workspace cleanup after pipeline execution |
+| **`post { success }`** | Sends success notifications |
+| **`post { failure }`** | Sends failure notifications |
+| **`cleanWs()`** | Removes workspace files and directories |
+
+---
 
 # 8. Conclusion
 
-The shared library standardizes React CI by reusing dependency installation, testing, report publishing, build, artifact archiving, and notification functions.
+This document describes the Jenkins Shared Library implemented for Go application CI automation.
+
+The library automates dependency preparation, Go testing, coverage report generation, application compilation, and artifact archiving. It also provides reusable Slack and email notifications, error handling, and workspace cleanup.
+
+This approach reduces duplicated pipeline code and provides a consistent CI workflow for Go-based applications.
+
+---
 
 # 9. Contact Information
 
-| Name | Email |
+| **Name** | **Email** |
 |---|---|
 | Ritu | [ritu.dogra.snaatak@mygurukulam.co](mailto:ritu.dogra.snaatak@mygurukulam.co) |
 
+---
+
 # 10. References
 
-- [Jenkins Pipeline](https://www.jenkins.io/doc/book/pipeline/)
+- [Jenkins Pipeline Documentation](https://www.jenkins.io/doc/book/pipeline/)
 - [Jenkins Shared Libraries](https://www.jenkins.io/doc/book/pipeline/shared-libraries/)
-- [NodeJS Plugin](https://plugins.jenkins.io/nodejs/)
-- [npm Documentation](https://docs.npmjs.com/)
-- [Jest Documentation](https://jestjs.io/docs/getting-started)
-- [JUnit Plugin](https://plugins.jenkins.io/junit/)
-- [HTML Publisher Plugin](https://plugins.jenkins.io/htmlpublisher/)
-- [Slack Plugin](https://plugins.jenkins.io/slack/)
-- [Email Extension Plugin](https://plugins.jenkins.io/email-ext/)
-- [Workspace Cleanup Plugin](https://plugins.jenkins.io/ws-cleanup/)
+- [Go Documentation](https://go.dev/doc/)
+- [Go Modules Reference](https://go.dev/ref/mod)
+- [Go Testing Package](https://pkg.go.dev/testing)
+- [Go Build Command](https://pkg.go.dev/cmd/go#hdr-Compile_packages_and_dependencies)
+- [Slack Notification Plugin](https://plugins.jenkins.io/slack/)
