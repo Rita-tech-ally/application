@@ -31,11 +31,11 @@
 
 # 1. Introduction
 
-This project implements a Jenkins Shared Library to automate the Continuous Integration (CI) process for React-based applications.
+This project implements a Jenkins Shared Library to automate Continuous Integration (CI) for React applications.
 
-The library uses Node.js and npm to install dependencies, execute tests, generate test and coverage reports, and build the React application. It also archives build artifacts, publishes reports in Jenkins, and sends notifications through Slack and email.
+The library uses Node.js and npm to install dependencies, execute tests, generate reports, build the application, and archive artifacts. It also publishes reports in Jenkins and sends Slack and email notifications.
 
-The shared library provides reusable CI functions, reducing duplicate pipeline code and simplifying maintenance.
+Reusable functions reduce duplicate pipeline code and simplify maintenance.
 
 ---
 
@@ -45,8 +45,7 @@ The shared library provides reusable CI functions, reducing duplicate pipeline c
 |---|---|
 | Library Type | Jenkins Shared Library |
 | Language | Groovy |
-| Application Type | React |
-| CI Process | Continuous Integration |
+| Application | React |
 | Runtime | Node.js 18 |
 | Package Manager | npm |
 | Testing | Project-configured test runner with Jest options |
@@ -55,7 +54,7 @@ The shared library provides reusable CI functions, reducing duplicate pipeline c
 | CI Platform | Jenkins |
 | Source Control | GitHub |
 | Notifications | Slack and Email |
-| Artifact Management | Jenkins Archived Artifacts |
+| Artifacts | Jenkins Archived Artifacts |
 
 ---
 
@@ -68,10 +67,10 @@ Start Pipeline
 Checkout Frontend Repository
       |
       v
-Call reactCI()
+Load Shared Library and Call reactCI()
       |
       v
-Configure Node.js Environment
+Configure Node.js
       |
       v
 Install npm Dependencies
@@ -98,7 +97,7 @@ Clean Jenkins Workspace
 End Pipeline
 ```
 
-The Jenkinsfile checks out the Frontend repository and calls `reactCI()`. The library handles dependency installation, testing, report publishing, building, and artifact archiving. Jenkins then sends notifications according to the pipeline result and cleans the workspace.
+The Jenkinsfile checks out the application repository and invokes `reactCI()`. The library handles dependency installation, testing, report publishing, building, and artifact archiving. Notifications and cleanup run through Jenkins pipeline post-actions.
 
 ---
 
@@ -108,21 +107,21 @@ The Jenkinsfile checks out the Frontend repository and calls `reactCI()`. The li
 
 | Requirement | Purpose |
 |---|---|
-| Jenkins | Executes the CI pipeline |
+| Jenkins | Executes the pipeline |
 | Pipeline Plugin | Supports pipeline execution |
-| Git Plugin | Checks out application code |
-| NodeJS Plugin | Provides the Node.js installation |
-| JUnit Plugin | Publishes test reports |
+| Git Plugin | Checks out source code |
+| NodeJS Plugin | Configures Node.js |
+| JUnit Plugin | Publishes test results |
 | HTML Publisher Plugin | Publishes coverage reports |
 | Slack Plugin | Sends Slack notifications |
 | Email Extension Plugin | Sends email notifications |
-| Workspace Cleanup Plugin | Cleans the workspace |
+| Workspace Cleanup Plugin | Cleans workspace files |
 
 ## 4.2 Build Agent Requirements
 
-- Node.js 18 and npm must be available through the Jenkins installation named `NodeJS_18`.
-- Git must be installed.
-- The agent requires network connectivity to GitHub and npm registries.
+- Node.js 18 and npm must be configured in Jenkins as `NodeJS_18`.
+- Git must be installed on the build agent.
+- Network connectivity to GitHub and npm registries is required.
 - The agent must have permission to generate reports and build artifacts.
 - The shared library and GitHub credentials must be configured in Jenkins.
 
@@ -145,7 +144,7 @@ library identifier: 'allstars-shared-library@SCRUM-258-RITU',
 
 **Purpose:**
 
-- Retrieves the library from GitHub.
+- Retrieves the shared library from GitHub.
 - Uses the `SCRUM-258-RITU` branch.
 - Uses `Github-cred` for authentication.
 - Makes reusable CI and notification functions available.
@@ -166,11 +165,11 @@ stage('Checkout Code') {
 }
 ```
 
-This stage retrieves the application source code from the configured GitHub repository and branch.
+The repository URL, branch, directory, and credentials are supplied through environment variables.
 
 ## 5.3 Run React CI Process
 
-The pipeline invokes the reusable `reactCI()` function.
+The Jenkinsfile invokes the reusable `reactCI()` function.
 
 ```groovy
 reactCI(
@@ -182,13 +181,13 @@ reactCI(
 
 | Parameter | Purpose |
 |---|---|
-| `appDir` | Specifies the application directory |
-| `nodeTool` | Selects the configured Node.js installation |
+| `appDir` | Application directory |
+| `nodeTool` | Configured Node.js installation |
 | `runTests` | Enables test execution |
 
-## 5.4 Configure Node.js Environment
+## 5.4 Configure Node.js
 
-The library activates the configured Node.js installation and checks the installed versions.
+The library activates Node.js and verifies the installed versions.
 
 ```groovy
 dir(appDir) {
@@ -202,9 +201,9 @@ dir(appDir) {
 }
 ```
 
-This makes Node.js and npm available for subsequent CI operations.
+This makes Node.js and npm available for subsequent CI steps.
 
-## 5.5 Install Project Dependencies
+## 5.5 Install Dependencies
 
 The library configures npm and installs application dependencies.
 
@@ -228,16 +227,15 @@ rm .npmrc
 **Purpose:**
 
 - Reduces selected npm output.
-- Creates a temporary `.npmrc` configuration.
 - Uses `npm ci` when `package-lock.json` exists.
 - Uses `npm install` when the lockfile is absent.
-- Removes the temporary configuration after successful installation.
+- Removes the temporary `.npmrc` after successful installation.
 
-**Note:** `ignore-scripts=true` disables dependency lifecycle scripts, which may affect packages requiring installation scripts.
+**Note:** `ignore-scripts=true` disables dependency lifecycle scripts and may affect packages that require installation scripts. Because the shell uses `set -e`, `.npmrc` may remain if installation fails.
 
 ## 5.6 Run React Tests
 
-When `runTests` is enabled, the library configures JUnit output and executes the project test command.
+When `runTests` is enabled, the library configures JUnit output and executes tests.
 
 ```bash
 export CI=true
@@ -253,9 +251,9 @@ npm test -- \
     --passWithNoTests || true
 ```
 
-This step runs tests, requests HTML and text coverage reports, and configures the JUnit XML report location.
+This command runs tests, requests HTML and text coverage reports, and configures the JUnit XML output location.
 
-**Important:** `|| true` suppresses the test command's failure status. Therefore, failing tests may not cause the pipeline to fail.
+**Important:** `|| true` suppresses the test command's failure status. Consequently, failing tests may not fail the pipeline.
 
 ## 5.7 Publish Test and Coverage Reports
 
@@ -268,7 +266,7 @@ junit(
 )
 ```
 
-The HTML Publisher plugin publishes the coverage report.
+The HTML Publisher plugin publishes coverage results.
 
 ```groovy
 publishHTML(target: [
@@ -281,11 +279,11 @@ publishHTML(target: [
 ])
 ```
 
-These reports make test results and coverage information accessible from the Jenkins build page. The configured report paths must match the generated output.
+These reports make test results and coverage information accessible from the Jenkins build page. The configured paths must match the generated files.
 
 ## 5.8 Build React Application
 
-The library executes the application build command.
+The library runs the project's build script.
 
 ```bash
 set -eu
@@ -294,11 +292,11 @@ export NODE_OPTIONS=--openssl-legacy-provider
 npm run build
 ```
 
-This runs the project's build script. The pipeline expects the generated build output in the `build` directory.
+The build command generates the production application. This pipeline expects the output in the `build` directory.
 
 ## 5.9 Archive Build Artifacts
 
-The library archives the generated build and coverage files.
+The library archives the build and coverage files.
 
 ```groovy
 archiveArtifacts(
@@ -307,7 +305,7 @@ archiveArtifacts(
 )
 ```
 
-Archived artifacts are available from the Jenkins build page. The test-results directory is published separately through the JUnit plugin.
+Archived files are accessible from the Jenkins build page. JUnit results are published separately through the JUnit plugin.
 
 ---
 
@@ -317,7 +315,7 @@ The `notifyStatus.groovy` function sends build notifications through Slack and e
 
 ## 6.1 Slack Notification
 
-The `slackSend()` step sends a build summary containing:
+The `slackSend()` step sends a summary containing:
 
 - Build status.
 - Jenkins job name and build number.
@@ -330,9 +328,10 @@ Success and failure notifications use different status colors.
 
 The `emailext()` step sends an email containing:
 
-- Build status and stage name.
+- Build status.
 - Jenkins job name and build number.
 - Jenkins console URL.
+- Relevant build information.
 
 The Jenkinsfile calls the notification function from its `post` section for successful and failed builds.
 
@@ -343,24 +342,24 @@ The Jenkinsfile calls the notification function from its `post` section for succ
 | Mechanism | Purpose |
 |---|---|
 | `set -eu` | Stops shell execution on command failures or unset variables |
-| `|| true` | Prevents test command failures from propagating |
+| `|| true` | Suppresses the test command's failure status |
 | `allowEmptyResults` | Allows missing JUnit results |
 | `allowMissing` | Allows missing HTML reports |
-| `allowEmptyArchive` | Allows empty artifact archives |
-| `post { success }` | Sends success notifications |
-| `post { failure }` | Sends failure notifications |
-| `post { always }` | Runs cleanup after pipeline execution |
+| `allowEmptyArchive` | Allows an empty artifact archive |
+| `post { success }` | Handles successful builds |
+| `post { failure }` | Handles failed builds |
+| `post { always }` | Runs actions after pipeline completion |
 | `cleanWs()` | Removes workspace files and directories |
 
-Notification failures should be handled separately so that Slack or email delivery issues do not unnecessarily prevent workspace cleanup.
+Cleanup should run in the `always` post-condition so the workspace is cleaned after successful or failed builds. Notification errors should be handled separately where necessary.
 
 ---
 
 # 8. Conclusion
 
-The Jenkins Shared Library automates React CI operations, including dependency installation, test execution, report publishing, application builds, and artifact archiving.
+The Jenkins Shared Library automates React CI tasks, including dependency installation, test execution, report publishing, application builds, and artifact archiving.
 
-Reusable functions for CI execution and notifications improve consistency and simplify pipeline maintenance across frontend projects.
+Reusable CI and notification functions improve consistency and simplify pipeline maintenance across frontend projects.
 
 ---
 
